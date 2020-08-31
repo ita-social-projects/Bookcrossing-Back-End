@@ -14,7 +14,7 @@ env:
 
 addons:
   sonarcloud:
-    organization: "bookcrossing-softserve"
+    organization: "irynazavushchak"
     
 before_script:
     - ./tools/travis-ci-install-sonar.sh
