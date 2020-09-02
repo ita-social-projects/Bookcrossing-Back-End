@@ -148,6 +148,12 @@ namespace Application.Services.Implementation
             return await _paginationService.GetPageAsync<BookGetDto, Book>(query, parameters);
         }
 
+        public IQueryable<Book> GetBooksInReadStatus()
+        {
+            var userId = _userResolverService.GetUserId();
+            return _bookRepository.GetAll().Where(b => b.UserId == userId && b.State == BookState.Reading);
+        }
+
         private async Task<IEnumerable<int>> FindRegisteredBooksAsync(int userId)
         {
             //registered books            
@@ -178,7 +184,7 @@ namespace Application.Services.Implementation
             return allBooks;
         }
 
-        public async Task<PaginationDto<BookGetDto>> GetRegistered(BookQueryParams parameters)
+        public async Task<PaginationDto<BookGetDto>> GetRegisteredAsync(BookQueryParams parameters)
         {
             var userId = _userResolverService.GetUserId();
             var registeredBooks = await FindRegisteredBooksAsync(userId);
@@ -186,6 +192,14 @@ namespace Application.Services.Implementation
             query = GetFilteredQuery(query, parameters);
 
             return await _paginationService.GetPageAsync<BookGetDto, Book>(query, parameters);
+        }
+
+        public async Task<IQueryable<Book>> GetRegisteredAsync()
+        {
+            var userId = _userResolverService.GetUserId();
+            var registeredBooks = await FindRegisteredBooksAsync(userId);
+
+            return _bookRepository.GetAll().Where(x => registeredBooks.Contains(x.Id));
         }
 
         public async Task<int> GetNumberOfTimesRegisteredBooksWereReadAsync(int userId)
@@ -233,6 +247,18 @@ namespace Application.Services.Implementation
             var readBooks = ownedBooks.Union(currentlyOwnedBooks);
             var query = GetFilteredQuery(readBooks, parameters);
             return await _paginationService.GetPageAsync<BookGetDto, Book>(query, parameters);
+        }
+
+        public IQueryable<Book> GetAlreadyReadBooks()
+        {
+            var userId = _userResolverService.GetUserId();
+            var ownedBooks = _requestRepository.GetAll()
+                .Where(a => a.OwnerId == userId && a.ReceiveDate != null && a.OwnerId != a.UserId)
+                .Select(a => a.Book);
+            var currentlyOwnedReadBooks = _bookRepository.GetAll()
+                .Where(b => b.UserId == userId && b.State == BookState.Available);
+
+            return ownedBooks.Union(currentlyOwnedReadBooks);
         }
 
         public async Task<bool> ActivateAsync(int bookId)
@@ -321,10 +347,10 @@ namespace Application.Services.Implementation
 
         public async Task<int> GetNumberOfBooksInReadStatusAsync(int userId)
         {
-            var ownedBooks = _requestRepository.GetAll().Where(a => a.OwnerId == userId).Select(a => a.Book);
-            var currentlyOwnedBooks = _bookRepository.GetAll().Where(a => a.UserId == userId);
+            var currentlyOwnedBooks = _bookRepository.GetAll()
+                .Where(a => a.UserId == userId && a.State == BookState.Reading);
             
-            return await ownedBooks.Union(currentlyOwnedBooks).CountAsync();
+            return await currentlyOwnedBooks.CountAsync();
         }
 
         private IQueryable<Book> GetFilteredQuery(IQueryable<Book> query, BookQueryParams parameters)

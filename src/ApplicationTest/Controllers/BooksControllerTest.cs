@@ -186,7 +186,7 @@ namespace ApplicationTest.Controllers
         [Test]
         public async Task GetRegisteredBooksAsync_AnyBookQueryParams_ReturnsPaginatedDtoListOfBookGetDto()
         {
-            _bookService.Setup(m => m.GetRegistered(It.IsAny<BookQueryParams>()))
+            _bookService.Setup(m => m.GetRegisteredAsync(It.IsAny<BookQueryParams>()))
                 .ReturnsAsync(new PaginationDto<BookGetDto>
                 {
                     Page = new List<BookGetDto>(),

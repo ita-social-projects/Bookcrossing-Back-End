@@ -366,7 +366,7 @@ namespace ApplicationTest.Services
 
             var result = await _bookService.GetNumberOfBooksInReadStatusAsync(userId);
 
-            result.Should().Be(GetPopulatedBooks().Count(b => b.UserId == userId));
+            result.Should().Be(GetPopulatedBooks().Count(b => b.UserId == userId && b.State == BookState.Reading));
         }
 
         private List<Book> GetPopulatedBooks()
