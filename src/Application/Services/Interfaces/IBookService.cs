@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Application.Dto;
 using Application.Dto.QueryParams;
+using Domain.RDBMS.Entities;
 
 namespace Application.Services.Interfaces
 {
@@ -46,7 +48,13 @@ namespace Application.Services.Interfaces
         /// </summary>
         ///  <param name="parameters">filter parametrs</param>
         /// <returns></returns>
-        Task<PaginationDto<BookGetDto>> GetRegistered(BookQueryParams parameters);
+        Task<PaginationDto<BookGetDto>> GetRegisteredAsync(BookQueryParams parameters);
+
+        /// <summary>
+        /// Retrieve books registered by current user
+        /// </summary>
+        /// <returns>IQueryable collection of books</returns>
+        Task<IQueryable<Book>> GetRegisteredAsync();
 
         /// <summary>
         /// Retrieve books current owned by user
@@ -68,6 +76,18 @@ namespace Application.Services.Interfaces
         Task<int> GetCurrentOwnedByIdCount(int userId);
 
         Task<PaginationDto<BookGetDto>> GetReadBooksAsync(BookQueryParams parameters);
+
+        /// <summary>
+        /// Retrieve books that were read by current user
+        /// </summary>
+        /// <returns></returns>
+        IQueryable<Book> GetAlreadyReadBooks();
+
+        /// <summary>
+        /// Retrieve books in read status
+        /// </summary>
+        /// <returns></returns>
+        IQueryable<Book> GetBooksInReadStatus();
 
         /// <summary>
         /// Change book`s status to available
