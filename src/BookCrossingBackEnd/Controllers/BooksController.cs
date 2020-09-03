@@ -101,7 +101,7 @@ namespace BookCrossingBackEnd.Controllers
         [HttpGet("registered")]
         public async Task<ActionResult<PaginationDto<BookGetDto>>> GetRegisteredBooksAsync([FromQuery]BookQueryParams parameters)
         {
-            return await _bookService.GetRegistered(parameters);
+            return await _bookService.GetRegisteredAsync(parameters);
         }
 
         [HttpGet("current")]
@@ -129,6 +129,19 @@ namespace BookCrossingBackEnd.Controllers
             var insertedBook = await _bookService.AddAsync(bookDto);
             await _wishListService.AddWishAsync(insertedBook.Id);
             return CreatedAtAction("GetBook", new { id = insertedBook.Id }, insertedBook);
+        }
+        
+        
+        [HttpPost("rating")]
+        public async Task<ActionResult<bool>> SetRating([FromQuery]BookRatingQueryParams ratingQueryParams)
+        {
+            return await _bookService.SetRating(ratingQueryParams);
+        }
+
+        [HttpGet("rating/{bookId}/user/{userId}")]
+        public async Task<ActionResult<double>> GetRating(int bookId, int userId)
+        {
+            return await _bookService.GetRating(bookId, userId);
         }
     }
 }

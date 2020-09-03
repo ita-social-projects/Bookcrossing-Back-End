@@ -1,10 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Application.Dto;
+using Application.Dto.Statistics;
 using Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookCrossingBackEnd.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class StatisticsController : ControllerBase
@@ -13,21 +17,24 @@ namespace BookCrossingBackEnd.Controllers
         private readonly IUserResolverService _userResolverService;
         private readonly IBookService _bookService;
         private readonly IRequestService _requestService;
+        private readonly IStatisticsService _statisticsService;
 
         public StatisticsController(
+            IStatisticsService statisticsService,
             IWishListService wishListService, 
             IUserResolverService userResolverService,
             IRequestService requestService,
             IBookService bookService
         )
         {
+            _statisticsService = statisticsService;
             _wishListService = wishListService;
             _requestService = requestService;
             _userResolverService = userResolverService;
             _bookService = bookService;
         }
 
-        [HttpGet("{counters}")]
+        [HttpGet("counters")]
         public async Task<ActionResult<CountersSetDto>> GetCounters()
         {
             var userId = _userResolverService.GetUserId();
@@ -44,6 +51,26 @@ namespace BookCrossingBackEnd.Controllers
             };
 
             return countersDto;
+        }
+
+        [HttpGet("userDonations")]
+        public async Task<ActionResult<PieChartData>> GetUserDonationsData([FromQuery] int? amountOfDays)
+        {
+            var startDate = amountOfDays.HasValue ? DateTime.Now.AddDays(-amountOfDays.Value) : DateTime.MinValue;
+
+            return Ok(await _statisticsService.GetUserDonationsData(startDate));
+        }
+
+        [HttpGet("userRead")]
+        public ActionResult<PieChartData> GetUserReadData()
+        {
+            return Ok(_statisticsService.GetUserReadData());
+        }
+
+        [HttpGet("bookLanguages")]
+        public ActionResult<PieChartData> GetUserMostReadLanguages()
+        {
+            return Ok(_statisticsService.GetUserMostReadLanguagesData());
         }
     }
 }
