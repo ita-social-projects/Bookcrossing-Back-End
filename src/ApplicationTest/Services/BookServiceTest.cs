@@ -23,6 +23,7 @@ namespace ApplicationTest.Services
     internal class BookServiceTest
     {
         private IBookService _bookService;
+        private Mock<IRepository<BookRating>> _bookRatingRepositoryMock;
         private Mock<IRepository<Book>> _bookRepositoryMock;
         private Mock<IRepository<BookAuthor>> _bookAuthorRepositoryMock;
         private Mock<IRepository<BookGenre>> _bookGenreRepositoryMock;
@@ -53,6 +54,8 @@ namespace ApplicationTest.Services
             _imageServiceMock = new Mock<IImageService>();
             _rootCommentRepository = new Mock<IRootRepository<BookRootComment>>();
             _wishListServiceMock = new Mock<IWishListService>();
+            _bookRatingRepositoryMock = new Mock<IRepository<BookRating>>();
+
 
             var mappingConfig = new MapperConfiguration(mc =>
             {
@@ -82,7 +85,8 @@ namespace ApplicationTest.Services
                 _hangfireJobScheduleService.Object,
                 _emailSenderServiceMock.Object,
                 _rootCommentRepository.Object,
-                _wishListServiceMock.Object);
+                _wishListServiceMock.Object,
+                _bookRatingRepositoryMock.Object);
 
             var authorMock = GetBookAuthor().AsQueryable();
             var genreMock = GetBookGenre().AsQueryable();

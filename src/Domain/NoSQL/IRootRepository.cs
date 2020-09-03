@@ -1,9 +1,9 @@
-﻿using Domain.NoSQL.Entities;
-using MongoDB.Driver;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Domain.NoSQL.Entities;
+using MongoDB.Driver;
 
 namespace Domain.NoSQL
 {
@@ -32,12 +32,6 @@ namespace Domain.NoSQL
         /// </summary>
         /// <returns>Ienumerable of entities</returns>
         Task<IEnumerable<TRootEntity>> GetAllAsync();
-
-        /// <summary>
-        /// Get average book rating
-        /// </summary>
-        /// <returns>double from 1 to 5</returns>
-        Task<double> GetAvgRatingAsync(int id);
 
         /// <summary>
         /// Get entity from collection

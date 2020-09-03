@@ -115,5 +115,21 @@ namespace Application.Services.Interfaces
         /// <param name="userId"> User id </param>
         /// <returns> Number of books </returns>
         Task<int> GetNumberOfBooksInReadStatusAsync(int userId);
+
+        /// <summary>
+        /// Add rating mark for book from user
+        /// </summary>
+        /// <param name="userId">Id of user who is trying to set rating</param>
+        /// <param name="rating">Mark</param>
+        /// <returns></returns>
+        Task<bool> SetRating(BookRatingQueryParams ratingQueryParams);
+
+        /// <summary>
+        /// Get rating for book of specific user
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<double> GetRating(int bookId, int userId);
     }
 }
