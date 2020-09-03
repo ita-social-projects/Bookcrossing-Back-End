@@ -8,7 +8,7 @@ namespace Application.Dto
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public string Publisher { get; set; }
         public BookState State { get; set; }
         public string Notice { get; set; }
