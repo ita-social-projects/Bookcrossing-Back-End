@@ -7,6 +7,7 @@ using Application.Dto.QueryParams;
 using Application.Services.Interfaces;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.Implementation

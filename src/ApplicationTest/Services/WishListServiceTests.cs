@@ -9,6 +9,7 @@ using Application.Services.Implementation;
 using Application.Services.Interfaces;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 using FluentAssertions;
 using MockQueryable.Moq;
 using Moq;

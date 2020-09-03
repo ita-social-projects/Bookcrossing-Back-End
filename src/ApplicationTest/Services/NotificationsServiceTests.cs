@@ -10,6 +10,7 @@ using Application.SignalR.Hubs;
 using AutoMapper;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 using FluentAssertions;
 using Microsoft.AspNetCore.SignalR;
 using MockQueryable.Moq;

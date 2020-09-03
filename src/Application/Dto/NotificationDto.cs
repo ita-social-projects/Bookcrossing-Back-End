@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 
 namespace Application.Dto
 {

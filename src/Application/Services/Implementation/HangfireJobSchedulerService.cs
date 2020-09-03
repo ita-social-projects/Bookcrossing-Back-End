@@ -5,16 +5,23 @@ using Application.Dto.Email;
 using Application.Services.Interfaces;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 using Hangfire;
+using Org.BouncyCastle.Utilities.Collections;
 
 namespace Application.Services.Implementation
 {
     public class HangfireJobSchedulerService : IHangfireJobScheduleService
     {
+        private const SettingKey RequestAutoCancelSettingKey = SettingKey.RequestAutoCancelTimespan;
+
         private readonly IRepository<ScheduleJob> _scheduleRepository;
-        public HangfireJobSchedulerService(IRepository<ScheduleJob> scheduleRepository)
+        private readonly ISettingsService _settingsService;
+
+        public HangfireJobSchedulerService(IRepository<ScheduleJob> scheduleRepository, ISettingsService settingsService)
         {
             _scheduleRepository = scheduleRepository;
+            _settingsService = settingsService;
         }
         public async Task ScheduleRequestJob(RequestMessage message)
         {
@@ -36,7 +43,7 @@ namespace Application.Services.Implementation
             _scheduleRepository.Add(new ScheduleJob { ScheduleId = notificationJobId, RequestId = message.RequestId });
             await _scheduleRepository.SaveChangesAsync();
             var secondJobId = BackgroundJob.Schedule<RequestService>(x => x.RemoveAsync(message.RequestId),
-                TimeSpan.FromDays(10));
+                await _settingsService.GetTimeSpan(RequestAutoCancelSettingKey));
             _scheduleRepository.Add(new ScheduleJob { ScheduleId = secondJobId, RequestId = message.RequestId });
             await _scheduleRepository.SaveChangesAsync();
         }

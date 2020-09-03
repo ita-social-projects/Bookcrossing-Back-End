@@ -29,6 +29,7 @@ namespace Infrastructure.RDBMS
         public DbSet<RefreshToken> RefreshToken { get; set; }
         public DbSet<Aphorism> Aphorisms { get; set; }
         public DbSet<Notification> Notification { get; set; }
+        public DbSet<Setting> Setting { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -56,6 +57,7 @@ namespace Infrastructure.RDBMS
             modelBuilder.ApplyConfiguration(new WishConfiguration());
             modelBuilder.ApplyConfiguration(new AphorismConfiguration());
             modelBuilder.ApplyConfiguration(new NotificationConfiguration());
+            modelBuilder.ApplyConfiguration(new SettingConfiguration());
 
             DataSeeder.Seed(modelBuilder);
         }

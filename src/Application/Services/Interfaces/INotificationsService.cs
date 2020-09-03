@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Dto;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 
 namespace Application.Services.Interfaces
 {
