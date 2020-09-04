@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity.Core;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -27,36 +28,36 @@ namespace Application.Services.Implementation
             _mapper = mapper;
         }
 
-        public async Task<DescribedSettingDto> GetSetting(SettingKey key)
+        public async Task<DescribedSettingDto> GetSettingAsync(SettingKey key)
         {
-            var setting = await GetSettingEntity(key);
+            var setting = await GetSettingEntityAsync(key);
 
             return _mapper.Map<DescribedSettingDto>(setting);
         }
 
-        public async Task<int> GetInt(SettingKey key)
+        public async Task<int> GetIntAsync(SettingKey key)
         {
-            return Convert.ToInt32(await GetSettingValue(key));
+            return Convert.ToInt32(await GetSettingValueAsync(key));
         }
 
-        public async Task<double> GetDouble(SettingKey key)
+        public async Task<double> GetDoubleAsync(SettingKey key)
         {
-            return Convert.ToDouble(await GetSettingValue(key));
+            return Convert.ToDouble(await GetSettingValueAsync(key), new NumberFormatInfo());
         }
 
-        public async Task<string> GetString(SettingKey key)
+        public async Task<string> GetStringAsync(SettingKey key)
         {
-            return await GetSettingValue(key);
+            return await GetSettingValueAsync(key);
         }
 
-        public async Task<TimeSpan> GetTimeSpan(SettingKey key)
+        public async Task<TimeSpan> GetTimeSpanAsync(SettingKey key)
         {
-            return TimeSpan.Parse(await GetSettingValue(key));
+            return TimeSpan.Parse(await GetSettingValueAsync(key));
         }
 
-        public async Task SetSettingValue(SettingKey key, SettingDto settingDto)
+        public async Task SetSettingValueAsync(SettingKey key, SettingDto settingDto)
         {
-            var setting = await GetSettingEntity(key);
+            var setting = await GetSettingEntityAsync(key);
             if (setting == null)
             {
                 throw new ObjectNotFoundException($"Setting {key.ToString()} was not found");
@@ -66,7 +67,7 @@ namespace Application.Services.Implementation
             await _settingsRepository.SaveChangesAsync();
         }
 
-        protected virtual async Task<Setting> GetSettingEntity(SettingKey key)
+        protected virtual async Task<Setting> GetSettingEntityAsync(SettingKey key)
         {
             var namespaceAttribute = GetEnumAttribute<NamespaceAttribute>(key);
             var namespaceValue = namespaceAttribute?.Namespace ?? Setting.DefaultNamespace;
@@ -74,9 +75,9 @@ namespace Application.Services.Implementation
             return await _settingsRepository.FindByIdAsync(namespaceValue, key);
         }
 
-        protected virtual async Task<string> GetSettingValue(SettingKey key)
+        protected virtual async Task<string> GetSettingValueAsync(SettingKey key)
         {
-            var setting = await GetSettingEntity(key);
+            var setting = await GetSettingEntityAsync(key);
 
             var defaultValueAttribute = GetEnumAttribute<DefaultValueAttribute>(key);
             var defaultValue = defaultValueAttribute?.Value?.ToString();

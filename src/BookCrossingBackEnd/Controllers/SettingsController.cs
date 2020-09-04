@@ -24,7 +24,7 @@ namespace BookCrossingBackEnd.Controllers
         [HttpGet("{key}")]
         public async Task<ActionResult<DescribedSettingDto>> GetSetting(SettingKey key)
         {
-            var setting = await _settingsService.GetSetting(key);
+            var setting = await _settingsService.GetSettingAsync(key);
             if (setting == null)
             {
                 return NotFound();
@@ -41,7 +41,7 @@ namespace BookCrossingBackEnd.Controllers
                 return BadRequest();
             }
 
-            await _settingsService.SetSettingValue(key, settingDto);
+            await _settingsService.SetSettingValueAsync(key, settingDto);
             return NoContent();
         }
     }

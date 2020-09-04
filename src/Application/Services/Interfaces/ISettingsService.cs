@@ -10,16 +10,16 @@ namespace Application.Services.Interfaces
 {
     public interface ISettingsService
     {
-        Task<DescribedSettingDto> GetSetting(SettingKey key);
+        Task<DescribedSettingDto> GetSettingAsync(SettingKey key);
 
-        Task<int> GetInt(SettingKey key);
+        Task<int> GetIntAsync(SettingKey key);
 
-        Task<double> GetDouble(SettingKey key);
+        Task<double> GetDoubleAsync(SettingKey key);
 
-        Task<string> GetString(SettingKey key);
+        Task<string> GetStringAsync(SettingKey key);
 
-        Task<TimeSpan> GetTimeSpan(SettingKey key);
+        Task<TimeSpan> GetTimeSpanAsync(SettingKey key);
 
-        Task SetSettingValue(SettingKey key, SettingDto settingDto);
+        Task SetSettingValueAsync(SettingKey key, SettingDto settingDto);
     }
 }

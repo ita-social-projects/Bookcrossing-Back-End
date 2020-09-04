@@ -43,7 +43,7 @@ namespace Application.Services.Implementation
             _scheduleRepository.Add(new ScheduleJob { ScheduleId = notificationJobId, RequestId = message.RequestId });
             await _scheduleRepository.SaveChangesAsync();
             var secondJobId = BackgroundJob.Schedule<RequestService>(x => x.RemoveAsync(message.RequestId),
-                await _settingsService.GetTimeSpan(RequestAutoCancelSettingKey));
+                await _settingsService.GetTimeSpanAsync(RequestAutoCancelSettingKey));
             _scheduleRepository.Add(new ScheduleJob { ScheduleId = secondJobId, RequestId = message.RequestId });
             await _scheduleRepository.SaveChangesAsync();
         }
