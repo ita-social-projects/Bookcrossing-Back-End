@@ -119,7 +119,7 @@ namespace BookCrossingBackEnd.Controllers
         {
             return await _bookService.GetReadBooksAsync(parameters);
         }
-
+  
         [HttpPost("rating")]
         public async Task<ActionResult<bool>> SetRating([FromQuery]BookRatingQueryParams ratingQueryParams)
         {
