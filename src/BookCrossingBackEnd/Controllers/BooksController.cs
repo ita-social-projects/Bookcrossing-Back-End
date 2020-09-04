@@ -12,12 +12,10 @@ namespace BookCrossingBackEnd.Controllers
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
-        private readonly IWishListService _wishListService;
 
         public BooksController(IBookService bookService, IWishListService wishListService)
         {
             _bookService = bookService;
-            _wishListService = wishListService;
         }
 
         // GET: api/Books
@@ -121,17 +119,7 @@ namespace BookCrossingBackEnd.Controllers
         {
             return await _bookService.GetReadBooksAsync(parameters);
         }
-
-        // POST: api/Books
-        [HttpPost("fromcompany")]
-        public async Task<ActionResult<BookPutDto>> PostBookFromCompany([FromForm] BookPostDto bookDto)
-        {
-            var insertedBook = await _bookService.AddAsync(bookDto);
-            await _wishListService.AddWishAsync(insertedBook.Id);
-            return CreatedAtAction("GetBook", new { id = insertedBook.Id }, insertedBook);
-        }
-        
-        
+  
         [HttpPost("rating")]
         public async Task<ActionResult<bool>> SetRating([FromQuery]BookRatingQueryParams ratingQueryParams)
         {
