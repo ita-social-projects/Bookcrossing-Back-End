@@ -32,10 +32,10 @@ namespace Application.Services.Implementation
         private readonly IRepository<UserRoom> _userRoomRepository;
         private readonly IPaginationService _paginationService;
         private readonly PasswordHasher<User> _passwordHasher;
-        private readonly BookCrossingContext _context; 
+        private readonly BookCrossingContext _context;
 
-        public UsersService(IRepository<User> userRepository, IMapper mapper, IEmailSenderService emailSenderService, 
-            IRepository<ResetPassword> resetPasswordRepository, IRepository<UserRoom> userRoomRepository, IBookService bookService, 
+        public UsersService(IRepository<User> userRepository, IMapper mapper, IEmailSenderService emailSenderService,
+            IRepository<ResetPassword> resetPasswordRepository, IRepository<UserRoom> userRoomRepository, IBookService bookService,
             BookCrossingContext context, IPaginationService paginationService, IRequestService requestService)
         {
             _userRepository = userRepository;
@@ -115,7 +115,7 @@ namespace Application.Services.Implementation
             {
                 var user = _mapper.Map<User>(userRegisterDto);
 
-                if(!String.IsNullOrEmpty(user.AzureId))
+                if (!String.IsNullOrEmpty(user.AzureId))
                 {
                     user.AzureId = _passwordHasher.HashPassword(user, user.AzureId);
                 }
@@ -127,7 +127,7 @@ namespace Application.Services.Implementation
                 user.FirstName = Regex.Replace(user.FirstName, "[ ]+", " ");
                 user.LastName = Regex.Replace(user.LastName, "[ ]+", " ");
                 _userRepository.Add(user);
-                await _userRepository.SaveChangesAsync();  
+                await _userRepository.SaveChangesAsync();
                 return _mapper.Map<RegisterDto>(user);
             }
             else
@@ -148,7 +148,7 @@ namespace Application.Services.Implementation
                 throw new InvalidOperationException();
             }
             var requestsIds = user.RequestUser.Where(request => request.ReceiveDate == null).Select(request => request.Id).ToList();
-            foreach(var requestId in requestsIds)
+            foreach (var requestId in requestsIds)
             {
                 await _requestService.RemoveAsync(requestId);
             }
@@ -181,7 +181,7 @@ namespace Application.Services.Implementation
             }
         }
 
-            /// <inheritdoc />
+        /// <inheritdoc />
         public async Task SendPasswordResetConfirmation(string email)
         {
             var user = await _userRepository.FindByCondition(c => c.Email == email);

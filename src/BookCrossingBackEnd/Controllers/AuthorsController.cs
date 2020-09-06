@@ -62,7 +62,7 @@ namespace BookCrossingBackEnd.Controllers
         // PUT: api/Authors
         [Authorize(Roles = "Admin")]
         [HttpPut("merge")]
-        public async Task<IActionResult> PutAuthor([FromBody]AuthorMergeDto authorDto)
+        public async Task<IActionResult> PutAuthor([FromBody] AuthorMergeDto authorDto)
         {
             var author = await _authorService.Merge(authorDto);
             if (author == null)
@@ -74,7 +74,7 @@ namespace BookCrossingBackEnd.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut]
-        public async Task<IActionResult> PutAuthor([FromBody]AuthorDto authorDto)
+        public async Task<IActionResult> PutAuthor([FromBody] AuthorDto authorDto)
         {
             var success = await _authorService.Update(authorDto);
             if (!success)

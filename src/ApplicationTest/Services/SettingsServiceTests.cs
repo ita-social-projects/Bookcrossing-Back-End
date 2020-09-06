@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity.Core;
 using System.Globalization;
-using System.Text;
 using System.Threading.Tasks;
 using Application.Dto.Settings;
 using Application.Services.Implementation;
-using Application.Services.Interfaces;
 using AutoMapper;
-using BookCrossingBackEnd.Migrations;
 using Domain.RDBMS;
 using Domain.RDBMS.Attributes;
 using Domain.RDBMS.Entities;
@@ -21,7 +17,7 @@ using NUnit.Framework;
 namespace ApplicationTest.Services
 {
     [TestFixture]
-    class SettingsServiceTests
+    internal class SettingsServiceTests
     {
         private Mock<IRepository<Setting>> _settingsRepositoryMock;
         private Mock<IMapper> _mapperMock;
@@ -159,11 +155,11 @@ namespace ApplicationTest.Services
         [Test]
         public async Task GetSettingValueAsync_GetSettingEntityAsyncReturnedNull_ReturnsDefaultValueOfSettingKeysAttribute()
         {
-            const SettingKey settingKey = SettingKey.RequestAutoCancelTimespan;
+            const SettingKey SettingKey = SettingKey.RequestAutoCancelTimespan;
             _service.GetSettingEntityAsyncMock = key => null;
             _service.GetEnumAttributeMock = (key, type) =>
             {
-                if (key == settingKey && type == _defaultValueAttribute.GetType())
+                if (key == SettingKey && type == _defaultValueAttribute.GetType())
                 {
                     return _defaultValueAttribute;
                 }
@@ -171,7 +167,7 @@ namespace ApplicationTest.Services
                 return null;
             };
 
-            var result = await _service.GetSettingValueAsyncProxy(settingKey);
+            var result = await _service.GetSettingValueAsyncProxy(SettingKey);
 
             result
                 .Should()
@@ -184,7 +180,7 @@ namespace ApplicationTest.Services
             _service.GetSettingEntityAsyncMock = key => null;
 
             await _service.Invoking(s => s.SetSettingValueAsync(
-                    It.IsAny<SettingKey>(), 
+                    It.IsAny<SettingKey>(),
                     It.IsAny<SettingDto>()))
                 .Should()
                 .ThrowAsync<ObjectNotFoundException>();
@@ -344,17 +340,7 @@ namespace ApplicationTest.Services
 
         private class SettingsServiceProxy : SettingsService
         {
-            public delegate Task<Setting> GetSettingEntityAsyncDelegate(SettingKey key);
-            public delegate Task<string> GetSettingValueAsyncDelegate(SettingKey key);
-            public delegate Attribute GetEnumAttributeDelegate(SettingKey key, Type attributeType);
-
             private readonly SettingsServiceTests _settingsServiceTests;
-
-            public GetSettingEntityAsyncDelegate GetSettingEntityAsyncMock { get; set; }
-
-            public GetSettingValueAsyncDelegate GetSettingValueAsyncMock { get; set; }
-
-            public GetEnumAttributeDelegate GetEnumAttributeMock { get; set; }
 
             public SettingsServiceProxy(
                 IRepository<Setting> settingsRepository,
@@ -364,6 +350,18 @@ namespace ApplicationTest.Services
                 _settingsServiceTests = settingsServiceTests;
             }
 
+            public delegate Task<Setting> GetSettingEntityAsyncDelegate(SettingKey key);
+
+            public delegate Task<string> GetSettingValueAsyncDelegate(SettingKey key);
+
+            public delegate Attribute GetEnumAttributeDelegate(SettingKey key, Type attributeType);
+
+            public GetSettingEntityAsyncDelegate GetSettingEntityAsyncMock { get; set; }
+
+            public GetSettingValueAsyncDelegate GetSettingValueAsyncMock { get; set; }
+
+            public GetEnumAttributeDelegate GetEnumAttributeMock { get; set; }
+
             public async Task<Setting> GetSettingEntityAsyncProxy(SettingKey key) => await base.GetSettingEntityAsync(key);
 
             public async Task<string> GetSettingValueAsyncProxy(SettingKey key) => await base.GetSettingValueAsync(key);
@@ -372,12 +370,12 @@ namespace ApplicationTest.Services
 
             protected override async Task<Setting> GetSettingEntityAsync(SettingKey key)
             {
-                return await (GetSettingEntityAsyncMock?.Invoke(key) ?? Task.FromResult<Setting>(null));
+                return await(GetSettingEntityAsyncMock?.Invoke(key) ?? Task.FromResult<Setting>(null));
             }
 
             protected override async Task<string> GetSettingValueAsync(SettingKey key)
             {
-                return await (GetSettingValueAsyncMock?.Invoke(key) ?? Task.FromResult<string>(null));
+                return await(GetSettingValueAsyncMock?.Invoke(key) ?? Task.FromResult<string>(null));
             }
 
             protected override T GetEnumAttribute<T>(SettingKey key)

@@ -37,7 +37,7 @@ namespace Application.Services.Implementation
 
         public BookService(IRepository<Book> bookRepository, IMapper mapper, IRepository<BookAuthor> bookAuthorRepository, IRepository<BookGenre> bookGenreRepository,
             IRepository<Language> bookLanguageRepository, IRepository<User> userLocationRepository, IPaginationService paginationService, IRepository<Request> requestRepository,
-            IUserResolverService userResolverService, IImageService imageService, IHangfireJobScheduleService hangfireJobScheduleService, IEmailSenderService emailSenderService, 
+            IUserResolverService userResolverService, IImageService imageService, IHangfireJobScheduleService hangfireJobScheduleService, IEmailSenderService emailSenderService,
             IRootRepository<BookRootComment> rootCommentRepository, IWishListService wishListService)
         {
             _bookRepository = bookRepository;
@@ -129,8 +129,8 @@ namespace Application.Services.Implementation
             await _bookRepository.Update(book, bookDto.FieldMasks);
             var affectedRows = await _bookRepository.SaveChangesAsync();
             var isDatabaseUpdated = affectedRows > 0;
-            if (isDatabaseUpdated && 
-                bookDto.FieldMasks.Contains("State") && 
+            if (isDatabaseUpdated &&
+                bookDto.FieldMasks.Contains("State") &&
                 bookDto.State == BookState.Available)
             {
                 await _wishListService.NotifyAboutAvailableBookAsync(book.Id);
@@ -139,7 +139,7 @@ namespace Application.Services.Implementation
         }
 
         public async Task<PaginationDto<BookGetDto>> GetAllAsync(BookQueryParams parameters)
-        {  
+        {
             var query = GetFilteredQuery(_bookRepository.GetAll(), parameters);
             if (parameters.SortableParams != null)
             {
@@ -244,7 +244,7 @@ namespace Application.Services.Implementation
             {
                 return false;
             }
-            
+
             book.State = BookState.Available;
             await _bookRepository.Update(book, new List<string>() { "State" });
             var isDatabaseUpdated = await _bookRepository.SaveChangesAsync() > 0;
@@ -284,7 +284,7 @@ namespace Application.Services.Implementation
                 var request = _requestRepository.GetAll()
                     .Include(i => i.Book)
                     .Include(i => i.Book)
-                    .Include(i => i.User).Where(x=>x.BookId == bookId).ToList()
+                    .Include(i => i.User).Where(x => x.BookId == bookId).ToList()
                     .Last();
                 if (_userLocationRepository.FindByCondition(u => u.Email == book.User.Email).Result.IsEmailAllowed)
                 {
@@ -323,7 +323,7 @@ namespace Application.Services.Implementation
         {
             var ownedBooks = _requestRepository.GetAll().Where(a => a.OwnerId == userId).Select(a => a.Book);
             var currentlyOwnedBooks = _bookRepository.GetAll().Where(a => a.UserId == userId);
-            
+
             return await ownedBooks.Union(currentlyOwnedBooks).CountAsync();
         }
 

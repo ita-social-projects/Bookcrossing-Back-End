@@ -187,9 +187,9 @@ namespace ApplicationTest.Services
                 _currentUser.Email));
             _notificationServiceMock.Verify(
                 obj => obj.NotifyAsync(
-                    _currentUser.Id, 
+                    _currentUser.Id,
                     $"The book '{_book.Name}' from your wish list is available now.",
-                    _book.Id, 
+                    _book.Id,
                     NotificationAction.Request),
                 Times.Once);
             _notificationServiceMock.Verify(

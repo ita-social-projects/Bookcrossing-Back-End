@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Application.Dto.Settings;
 using Application.Services.Interfaces;
 using BookCrossingBackEnd.Controllers;
@@ -14,7 +11,7 @@ using NUnit.Framework;
 namespace ApplicationTest.Controllers
 {
     [TestFixture]
-    class SettingsControllerTests
+    internal class SettingsControllerTests
     {
         private Mock<ISettingsService> _settingsServiceMock;
         private SettingsController _controller;

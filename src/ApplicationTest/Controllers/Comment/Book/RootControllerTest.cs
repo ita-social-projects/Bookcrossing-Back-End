@@ -1,4 +1,8 @@
-﻿using Application.Dto.Comment;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Application.Dto.Comment;
 using Application.Dto.Comment.Book;
 using Application.Services.Interfaces;
 using BookCrossingBackEnd.Controllers;
@@ -6,10 +10,6 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ApplicationTest.Controllers.Comment.Book
 {

@@ -1,12 +1,12 @@
-﻿using Domain.NoSQL;
-using Domain.NoSQL.Entities;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Domain.NoSQL;
+using Domain.NoSQL.Entities;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Infrastructure.NoSQL
 {
@@ -47,7 +47,7 @@ namespace Infrastructure.NoSQL
 
         public async Task<DeleteResult> DeleteByIdAsync(string id)
         {
-            return await _collection.DeleteOneAsync(root=> root.Id==id);
+            return await _collection.DeleteOneAsync(root => root.Id == id);
         }
 
         public async Task<DeleteResult> DeleteManyAsync(Expression<Func<TRootEntity, bool>> predicate)
@@ -110,36 +110,36 @@ namespace Infrastructure.NoSQL
         public async Task<UpdateResult> UpdateByIdAsync(string id, TRootEntity entity)
         {
             return await _collection.UpdateOneAsync(
-                root => root.Id == id, 
+                root => root.Id == id,
                 new BsonDocument("$set", entity.ToBsonDocument()));
         }
 
         public async Task<UpdateResult> UpdateManyAsync(Expression<Func<TRootEntity, bool>> predicate, TRootEntity entity)
         {
             return await _collection.UpdateManyAsync(
-                predicate, 
+                predicate,
                 new BsonDocument("$set", entity.ToBsonDocument()));
         }
 
         public async Task<UpdateResult> UpdateManyAsync(TRootEntity filter, TRootEntity entity)
         {
             return await _collection.UpdateManyAsync(
-                filter.ToBsonDocument(), 
+                filter.ToBsonDocument(),
                 new BsonDocument("$set", entity.ToBsonDocument()));
         }
 
         public async Task<UpdateResult> UpdateOneAsync(Expression<Func<TRootEntity, bool>> predicate, TRootEntity entity)
         {
             return await _collection.UpdateOneAsync(
-                predicate, 
+                predicate,
                 new BsonDocument("$set", entity.ToBsonDocument()));
         }
 
         public async Task<UpdateResult> UpdateOneAsync(TRootEntity filter, TRootEntity entity)
         {
             return await _collection.UpdateOneAsync(
-                filter.ToBsonDocument(), 
+                filter.ToBsonDocument(),
                 new BsonDocument("$set", entity.ToBsonDocument()));
-        }      
+        }
     }
 }

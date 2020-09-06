@@ -307,7 +307,7 @@ namespace Application.Services.Implementation
 
                 await _emailSenderService.SendThatBookWasReceivedToNewOwnerAsync(emailMessage);
             }
-            
+
             await _notificationsService.NotifyAsync(
                 request.Owner.Id,
                 $"{request.User.FirstName} {request.User.LastName} has successfully received and started reading '{book.Name}'.",
@@ -319,7 +319,7 @@ namespace Application.Services.Implementation
                 book.Id,
                 NotificationAction.Open);
 
-                await _hangfireJobScheduleService.DeleteRequestScheduleJob(requestId);
+            await _hangfireJobScheduleService.DeleteRequestScheduleJob(requestId);
             return affectedRows > 0;
         }
 

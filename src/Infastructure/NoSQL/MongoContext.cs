@@ -1,7 +1,7 @@
-﻿using Domain.NoSQL;
+﻿using System;
+using Domain.NoSQL;
 using Domain.NoSQL.Entities;
 using MongoDB.Driver;
-using System;
 
 namespace Infrastructure.NoSQL
 {

@@ -1,4 +1,3 @@
-using System;
 using Domain.RDBMS.Entities;
 using Infrastructure.RDBMS.Configuration;
 using Infrastructure.RDBMS.Seeder;

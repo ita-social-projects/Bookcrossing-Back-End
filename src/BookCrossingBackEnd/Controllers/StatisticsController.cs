@@ -15,7 +15,7 @@ namespace BookCrossingBackEnd.Controllers
         private readonly IRequestService _requestService;
 
         public StatisticsController(
-            IWishListService wishListService, 
+            IWishListService wishListService,
             IUserResolverService userResolverService,
             IRequestService requestService,
             IBookService bookService

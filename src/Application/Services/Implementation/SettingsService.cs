@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity.Core;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using Application.Dto.Settings;
 using Application.Services.Interfaces;
@@ -62,7 +60,7 @@ namespace Application.Services.Implementation
             {
                 throw new ObjectNotFoundException($"Setting {key.ToString()} was not found");
             }
-            
+
             setting.Value = settingDto.Value;
             await _settingsRepository.SaveChangesAsync();
         }

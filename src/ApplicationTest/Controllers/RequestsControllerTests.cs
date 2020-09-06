@@ -8,7 +8,6 @@ using Application.Services.Interfaces;
 using BookCrossingBackEnd.Controllers;
 using Domain.RDBMS.Entities;
 using FluentAssertions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -63,9 +62,9 @@ namespace ApplicationTest.Controllers
             {
                 Id = 1,
                 RequestDate = new DateTime(1999, 05, 28),
-                User = new UserDto() {Id = 1},
-                Book = new BookGetDto() {Id = 1},
-                Owner = new UserDto() {Id = 1},
+                User = new UserDto() { Id = 1 },
+                Book = new BookGetDto() { Id = 1 },
+                Owner = new UserDto() { Id = 1 },
                 ReceiveDate = null
             };
 
@@ -74,7 +73,7 @@ namespace ApplicationTest.Controllers
                 First = true,
                 Last = false
             };
-            _requestServiceMock.Setup(s => s.GetByBookAsync(It.IsAny<Expression<Func<Request,bool>>>(), queryParameter))
+            _requestServiceMock.Setup(s => s.GetByBookAsync(It.IsAny<Expression<Func<Request, bool>>>(), queryParameter))
                 .ReturnsAsync(expectedRequest);
 
             var result = await _requestController.GetByBook(It.IsAny<int>(), queryParameter);

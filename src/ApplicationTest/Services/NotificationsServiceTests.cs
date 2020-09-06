@@ -229,7 +229,7 @@ namespace ApplicationTest.Services
             var notificationsToRemove = _notifications.Where(entity => entity.UserId == _currentUser.Id);
 
             await _service.RemoveAllForCurrentUserAsync();
-            
+
             _notificationsRepositoryMock.Verify(obj => obj.RemoveRange(notificationsToRemove));
             _notificationsRepositoryMock.Verify(obj => obj.SaveChangesAsync());
         }

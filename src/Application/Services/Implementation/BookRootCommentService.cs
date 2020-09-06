@@ -26,7 +26,7 @@ namespace Application.Services.Implementation
 
         public async Task<int> Add(RootInsertDto insertDto)
         {
-            var comment =  await _rootCommentRepository.InsertOneAsync(
+            var comment = await _rootCommentRepository.InsertOneAsync(
                     new BookRootComment(true)
                     {
                         Text = insertDto.Text,
@@ -49,7 +49,7 @@ namespace Application.Services.Implementation
 
         public async Task<IEnumerable<RootDto>> GetByBookId(int bookId)
         {
-            return await _commentOwnerMapper.MapAsync(await _rootCommentRepository.FindManyAsync(root=>root.BookId==bookId));
+            return await _commentOwnerMapper.MapAsync(await _rootCommentRepository.FindManyAsync(root => root.BookId == bookId));
         }
 
         public async Task<RootDto> GetById(string id)
@@ -82,7 +82,7 @@ namespace Application.Services.Implementation
 
         public async Task<int> Update(RootUpdateDto updateDto)
         {
-            var updateResult = await _rootCommentRepository.UpdateByIdAsync(updateDto.Id, new BookRootComment() { Text = updateDto.Text, Rating = updateDto.Rating});
+            var updateResult = await _rootCommentRepository.UpdateByIdAsync(updateDto.Id, new BookRootComment() { Text = updateDto.Text, Rating = updateDto.Rating });
             var comment = await _rootCommentRepository.FindByIdAsync(updateDto.Id);
             var book = _bookRepository.FindByIdAsync(comment.BookId).Result;
             book.Rating = await _rootCommentRepository.GetAvgRatingAsync(book.Id);

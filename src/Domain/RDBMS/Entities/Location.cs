@@ -9,6 +9,6 @@ namespace Domain.RDBMS.Entities
         public string Street { get; set; }
         public string OfficeName { get; set; }
         public bool IsActive { get; set; }
-        public virtual List<UserRoom> UserRoom { get; set; } 
+        public virtual List<UserRoom> UserRoom { get; set; }
     }
 }
