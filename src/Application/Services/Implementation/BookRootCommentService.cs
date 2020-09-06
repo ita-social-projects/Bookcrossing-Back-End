@@ -26,19 +26,15 @@ namespace Application.Services.Implementation
 
         public async Task<int> Add(RootInsertDto insertDto)
         {
-            var comment = await _rootCommentRepository.InsertOneAsync(
-                    new BookRootComment(true)
-                    {
-                        Text = insertDto.Text,
-                        BookId = insertDto.BookId,
-                        OwnerId = insertDto.OwnerId,
-                        Date = DateTime.Now.ToUniversalTime().ToString(),
-                        Rating = insertDto.Rating
-                    });
-            var book = _bookRepository.FindByIdAsync(insertDto.BookId).Result;
-            book.Rating = await _rootCommentRepository.GetAvgRatingAsync(book.Id);
-            await _bookRepository.Update(book, new List<string>() { "Rating" });
-            await _bookRepository.SaveChangesAsync();
+            var comment =  await _rootCommentRepository.InsertOneAsync(
+                new BookRootComment(true) 
+                {
+                    Text = insertDto.Text,
+                    BookId = insertDto.BookId,
+                    OwnerId = insertDto.OwnerId,
+                    Date = DateTime.Now.ToUniversalTime().ToString(),
+                });
+            
             return comment;
         }
 
@@ -49,7 +45,7 @@ namespace Application.Services.Implementation
 
         public async Task<IEnumerable<RootDto>> GetByBookId(int bookId)
         {
-            return await _commentOwnerMapper.MapAsync(await _rootCommentRepository.FindManyAsync(root => root.BookId == bookId));
+            return await _commentOwnerMapper.MapAsync(await _rootCommentRepository.FindManyAsync(root=>root.BookId==bookId));
         }
 
         public async Task<RootDto> GetById(string id)
@@ -60,7 +56,6 @@ namespace Application.Services.Implementation
         public async Task<int> Remove(string id)
         {
             var comment = await _rootCommentRepository.FindByIdAsync(id);
-            var book = _bookRepository.FindByIdAsync(comment.BookId).Result;
             int deletedCount = 0;
             if (comment.Comments != null && comment.Comments.Any(c => c.IsDeleted == false))
             {
@@ -72,22 +67,16 @@ namespace Application.Services.Implementation
             {
                 var deleteResult = await _rootCommentRepository.DeleteByIdAsync(id);
                 deletedCount = Convert.ToInt32(deleteResult.DeletedCount);
-                book.Rating = await _rootCommentRepository.GetAvgRatingAsync(book.Id);
-                await _bookRepository.Update(book, new List<string>() { "Rating" });
             }
 
-            await _bookRepository.SaveChangesAsync();
             return deletedCount;
         }
 
         public async Task<int> Update(RootUpdateDto updateDto)
         {
-            var updateResult = await _rootCommentRepository.UpdateByIdAsync(updateDto.Id, new BookRootComment() { Text = updateDto.Text, Rating = updateDto.Rating });
+            var updateResult = await _rootCommentRepository.UpdateByIdAsync(updateDto.Id, new BookRootComment() { Text = updateDto.Text });
             var comment = await _rootCommentRepository.FindByIdAsync(updateDto.Id);
-            var book = _bookRepository.FindByIdAsync(comment.BookId).Result;
-            book.Rating = await _rootCommentRepository.GetAvgRatingAsync(book.Id);
-            await _bookRepository.Update(book, new List<string>() { "Rating" });
-            await _bookRepository.SaveChangesAsync();
+
             return Convert.ToInt32(updateResult.ModifiedCount);
         }
 

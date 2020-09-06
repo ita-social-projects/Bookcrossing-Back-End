@@ -293,7 +293,7 @@ namespace Infrastructure.RDBMS.Seeder
                 new Genre
                 {
                     Id = 1,
-                    Name = "Fantasy"
+                    Name = "Unknown"
                 }
             );
         }
@@ -304,7 +304,7 @@ namespace Infrastructure.RDBMS.Seeder
                 new Language
                 {
                     Id = 1,
-                    Name = "Ukrainian"
+                    Name = "Unknown"
                 }
             );
         }
@@ -361,7 +361,7 @@ namespace Infrastructure.RDBMS.Seeder
                     MiddleName = "Adminovski",
                     LastName = "Adminovich",
                     Email = "admin@gmail.com",
-                    Password = "admin",
+                    Password = "AQAAAAEAACcQAAAAEF4qkrO2H0/sZvpx2lCnaFSQhEJZ5/vsMx4V3ZD3x8529ymU0VjTytn3HA94R/RSmw==", // "admin"
                     RoleId = 2
                 },
                 new User
@@ -371,8 +371,18 @@ namespace Infrastructure.RDBMS.Seeder
                     MiddleName = "Test",
                     LastName = "Testerovich",
                     Email = "test@gmail.com",
-                    Password = "test",
+                    Password = "AQAAAAEAACcQAAAAEF4qkrO2H0/sZvpx2lCnaFSQhEJZ5/vsMx4V3ZD3x8529ymU0VjTytn3HA94R/RSmw==", // "test"
                     RoleId = 1,
+                    UserRoomId = 1
+                },
+                new User
+                {
+                    Id = 3,
+                    FirstName = "Unavailable",
+                    LastName = "Unavailbale",
+                    Email = "unavailable@gmail.com",
+                    Password = "unavailablepassword",
+                    RoleId = 2,
                     UserRoomId = 1
                 }
             );

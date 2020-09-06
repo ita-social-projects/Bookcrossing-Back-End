@@ -197,9 +197,6 @@ namespace ApplicationTest.Services.Comment.Book
                 .ReturnsAsync(new UpdateResult.Acknowledged(updateValue, updateValue, commentId));
             _mockRootRepository.Setup(x => x.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(new BookRootComment());
             _bookRepositoryMock.Setup(x => x.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(new Domain.RDBMS.Entities.Book() { Id = 1232 });
-            _mockRootRepository.Setup(x => x.GetAvgRatingAsync(It.IsAny<int>())).ReturnsAsync(1);
-            _bookRepositoryMock.Setup(x => x.Update(It.IsAny<Domain.RDBMS.Entities.Book>(), new List<string>())).Returns(Task.CompletedTask);
-            _bookRepositoryMock.Setup(x => x.SaveChangesAsync()).ReturnsAsync(1);
 
             var result = await _bookRootCommentService.Update(updateDto);
 
@@ -213,7 +210,7 @@ namespace ApplicationTest.Services.Comment.Book
         [Test]
         [TestCase(1, "5e9c9ee859231a63bc853bf0", 1)]
         [TestCase(0, null, 0)]
-        public async Task RemoveComment_BookRootCommentExistsAndNot_ReturnsNumberOfCommentsRemoved(int updateValue, string commentId, int expectedResult)
+        public async Task RemoveComment_BookRootCommentExistsAndNot_ReturnsNumberOfCommentsRemoved(int updateValue,string commentId, int expectedResult)
         {
             RootDeleteDto deleteDto = new RootDeleteDto()
             {
@@ -224,9 +221,6 @@ namespace ApplicationTest.Services.Comment.Book
                 .ReturnsAsync(new DeleteResult.Acknowledged(updateValue));
             _mockRootRepository.Setup(x => x.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(new BookRootComment());
             _bookRepositoryMock.Setup(x => x.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(new Domain.RDBMS.Entities.Book() { Id = 1232 });
-            _mockRootRepository.Setup(x => x.GetAvgRatingAsync(It.IsAny<int>())).ReturnsAsync(1);
-            _bookRepositoryMock.Setup(x => x.Update(It.IsAny<Domain.RDBMS.Entities.Book>(), new List<string>())).Returns(Task.CompletedTask);
-            _bookRepositoryMock.Setup(x => x.SaveChangesAsync()).ReturnsAsync(1);
 
             var result = await _bookRootCommentService.Remove(deleteDto.Id);
 
@@ -244,10 +238,7 @@ namespace ApplicationTest.Services.Comment.Book
             _mockRootRepository
                 .Setup(s => s.InsertOneAsync(It.IsAny<BookRootComment>()))
                 .ReturnsAsync(1);
-            _bookRepositoryMock.Setup(x => x.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(new Domain.RDBMS.Entities.Book() { Id = 1232 });
-            _mockRootRepository.Setup(x => x.GetAvgRatingAsync(It.IsAny<int>())).ReturnsAsync(0);
-            _bookRepositoryMock.Setup(x => x.Update(It.IsAny<Domain.RDBMS.Entities.Book>(), new List<string>())).Returns(Task.CompletedTask);
-            _bookRepositoryMock.Setup(x => x.SaveChangesAsync()).ReturnsAsync(1);
+            _bookRepositoryMock.Setup(x => x.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(new Domain.RDBMS.Entities.Book(){Id = 1232});
 
             var result = await _bookRootCommentService.Add(insertDto);
 
@@ -262,9 +253,6 @@ namespace ApplicationTest.Services.Comment.Book
                 .Setup(s => s.InsertOneAsync(It.IsAny<BookRootComment>()))
                 .ReturnsAsync(0);
             _bookRepositoryMock.Setup(x => x.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(new Domain.RDBMS.Entities.Book() { Id = 1232 });
-            _mockRootRepository.Setup(x => x.GetAvgRatingAsync(It.IsAny<int>())).ReturnsAsync(1);
-            _bookRepositoryMock.Setup(x => x.Update(It.IsAny<Domain.RDBMS.Entities.Book>(), new List<string>())).Returns(Task.CompletedTask);
-            _bookRepositoryMock.Setup(x => x.SaveChangesAsync()).ReturnsAsync(1);
 
             var result = await _bookRootCommentService.Add(insertDto);
 
@@ -312,7 +300,7 @@ namespace ApplicationTest.Services.Comment.Book
             IEnumerable<BookRootComment> expectedEntities = GetTestCommentsEntities().Where(x => x.BookId == bookId).ToList();
             IEnumerable<RootDto> expectedDtos = GetTestCommentsDtos().Where(x => x.BookId == bookId).ToList();
 
-            _mockRootRepository.Setup(s => s.FindManyAsync(It.IsAny<Expression<Func<BookRootComment, bool>>>()))
+            _mockRootRepository.Setup(s => s.FindManyAsync(It.IsAny< Expression<Func<BookRootComment, bool>>>()))
                 .ReturnsAsync(expectedEntities);
             _mockMapper.Setup(s => s.MapAsync(expectedEntities)).ReturnsAsync(expectedDtos);
 

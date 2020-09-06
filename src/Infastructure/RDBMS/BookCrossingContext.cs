@@ -17,6 +17,7 @@ namespace Infrastructure.RDBMS
         public DbSet<Book> Book { get; set; }
         public DbSet<BookAuthor> BookAuthor { get; set; }
         public DbSet<BookGenre> BookGenre { get; set; }
+        public DbSet<BookRating> BookRating { get; set; }
         public DbSet<Genre> Genre { get; set; }
         public DbSet<Language> Language { get; set; }
         public DbSet<Location> Location { get; set; }
@@ -47,6 +48,7 @@ namespace Infrastructure.RDBMS
             modelBuilder.ApplyConfiguration(new BookConfiguration());
             modelBuilder.ApplyConfiguration(new GenreConfiguration());
             modelBuilder.ApplyConfiguration(new BookGenreConfiguration());
+            modelBuilder.ApplyConfiguration(new BookRatingConfiguration());
             modelBuilder.ApplyConfiguration(new AuthorConfiguration());
             modelBuilder.ApplyConfiguration(new BookAuthorConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());

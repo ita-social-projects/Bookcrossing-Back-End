@@ -16,6 +16,7 @@ namespace ApplicationTest.Controllers
         private Mock<IUserResolverService> _userResolverServiceMock;
         private Mock<IRequestService> _requestServiceMock;
         private Mock<IBookService> _bookServiceMock;
+        private Mock<IStatisticsService> _statisticsServiceMock;
 
         private CountersSetDto _countersSetDto;
 
@@ -26,7 +27,9 @@ namespace ApplicationTest.Controllers
             _userResolverServiceMock = new Mock<IUserResolverService>();
             _requestServiceMock = new Mock<IRequestService>();
             _bookServiceMock = new Mock<IBookService>();
+            _statisticsServiceMock = new Mock<IStatisticsService>();
             _controller = new StatisticsController(
+                _statisticsServiceMock.Object,
                 _wishListServiceMock.Object,
                 _userResolverServiceMock.Object,
                 _requestServiceMock.Object,

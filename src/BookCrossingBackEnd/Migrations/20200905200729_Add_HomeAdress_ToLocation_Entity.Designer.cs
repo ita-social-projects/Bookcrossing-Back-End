@@ -4,14 +4,16 @@ using Infrastructure.RDBMS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookCrossingBackEnd.Migrations
 {
     [DbContext(typeof(BookCrossingContext))]
-    partial class BookCrossingContextModelSnapshot : ModelSnapshot
+    [Migration("20200905200729_Add_HomeAdress_ToLocation_Entity")]
+    partial class Add_HomeAdress_ToLocation_Entity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -429,7 +431,6 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-
                             DateAdded = new DateTime(2020, 9, 5, 23, 7, 28, 127, DateTimeKind.Local).AddTicks(7668),
                             LanguageId = 1,
                             Name = "Adventures of Junior",
@@ -485,26 +486,6 @@ namespace BookCrossingBackEnd.Migrations
                             BookId = 1,
                             GenreId = 1
                         });
-                });
-
-            modelBuilder.Entity("Domain.RDBMS.Entities.BookRating", b =>
-                {
-                    b.Property<int>("BookId")
-                        .HasColumnName("book_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnName("user_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("BookRating");
                 });
 
             modelBuilder.Entity("Domain.RDBMS.Entities.Genre", b =>
@@ -780,34 +761,6 @@ namespace BookCrossingBackEnd.Migrations
                     b.ToTable("ScheduleJob");
                 });
 
-            modelBuilder.Entity("Domain.RDBMS.Entities.Setting", b =>
-                {
-                    b.Property<string>("Namespace")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)")
-                        .HasDefaultValue("Global");
-
-                    b.Property<string>("Key")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Namespace", "Key");
-
-                    b.ToTable("Setting");
-
-                    b.HasData(
-                        new
-                        {
-                            Namespace = "Timespans",
-                            Key = "RequestAutoCancelTimespan"
-                        });
-                });
-
             modelBuilder.Entity("Domain.RDBMS.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -1009,21 +962,6 @@ namespace BookCrossingBackEnd.Migrations
                     b.HasOne("Domain.RDBMS.Entities.Genre", "Genre")
                         .WithMany("BookGenre")
                         .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.RDBMS.Entities.BookRating", b =>
-                {
-                    b.HasOne("Domain.RDBMS.Entities.Book", "Book")
-                        .WithMany("BookRating")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.RDBMS.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

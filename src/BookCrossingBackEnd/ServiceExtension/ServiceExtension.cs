@@ -50,6 +50,7 @@ namespace BookCrossingBackEnd.ServiceExtension
             services.AddScoped<IWishListService, WishListService>();
             services.AddScoped<IAphorismService, AphorismService>();
             services.AddScoped<ISettingsService, SettingsService>();
+            services.AddScoped<IStatisticsService, StatisticsService>();
         }
 
         public static void AddNotifications(this IServiceCollection services)
