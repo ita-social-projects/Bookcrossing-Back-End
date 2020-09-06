@@ -20,6 +20,7 @@ namespace Domain.RDBMS.Entities
         public virtual User User { get; set; }
         public virtual List<BookAuthor> BookAuthor { get; set; }
         public virtual List<BookGenre> BookGenre { get; set; }
+        public virtual List<BookRating> BookRating { get; set; }
         public virtual List<Request> Request { get; set; }
     }
 }

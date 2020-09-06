@@ -119,6 +119,17 @@ namespace BookCrossingBackEnd.Controllers
         {
             return await _bookService.GetReadBooksAsync(parameters);
         }
+  
+        [HttpPost("rating")]
+        public async Task<ActionResult<bool>> SetRating([FromQuery]BookRatingQueryParams ratingQueryParams)
+        {
+            return await _bookService.SetRating(ratingQueryParams);
+        }
 
+        [HttpGet("rating/{bookId}/user/{userId}")]
+        public async Task<ActionResult<double>> GetRating(int bookId, int userId)
+        {
+            return await _bookService.GetRating(bookId, userId);
+        }
     }
 }
