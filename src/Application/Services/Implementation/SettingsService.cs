@@ -29,8 +29,25 @@ namespace Application.Services.Implementation
         public async Task<DescribedSettingDto> GetSettingAsync(SettingKey key)
         {
             var setting = await GetSettingEntityAsync(key);
+            DescribedSettingDto settingDto;
+            if (setting == null)
+            {
+                var descriptionAttribute = GetEnumAttribute<DescriptionAttribute>(key);
 
-            return _mapper.Map<DescribedSettingDto>(setting);
+                settingDto = new DescribedSettingDto
+                {
+                    Description = descriptionAttribute?.Description,
+                    Key = key
+                };
+            }
+            else
+            {
+                settingDto = _mapper.Map<DescribedSettingDto>(setting);
+            }
+
+            var defaultValueAttribute = GetEnumAttribute<DefaultValueAttribute>(key);
+            settingDto.DefaultValue = defaultValueAttribute?.Value?.ToString();
+            return settingDto;
         }
 
         public async Task<int> GetIntAsync(SettingKey key)
@@ -50,7 +67,13 @@ namespace Application.Services.Implementation
 
         public async Task<TimeSpan> GetTimeSpanAsync(SettingKey key)
         {
-            return TimeSpan.Parse(await GetSettingValueAsync(key));
+            if (!TimeSpan.TryParse(await GetSettingValueAsync(key), out var timeSpan))
+            {
+                var defaultValueAttribute = GetEnumAttribute<DefaultValueAttribute>(key);
+                timeSpan = TimeSpan.Parse(defaultValueAttribute?.Value?.ToString() ?? "0");
+            }
+
+            return timeSpan;
         }
 
         public async Task SetSettingValueAsync(SettingKey key, SettingDto settingDto)
@@ -58,7 +81,19 @@ namespace Application.Services.Implementation
             var setting = await GetSettingEntityAsync(key);
             if (setting == null)
             {
-                throw new ObjectNotFoundException($"Setting {key.ToString()} was not found");
+                var namespaceAttribute = GetEnumAttribute<NamespaceAttribute>(key);
+                var descriptionAttribute = GetEnumAttribute<DescriptionAttribute>(key);
+
+                var namespaceValue = namespaceAttribute?.Namespace ?? Setting.DefaultNamespace;
+                var descriptionValue = descriptionAttribute?.Description;
+                setting = new Setting
+                {
+                    Namespace = namespaceValue,
+                    Description = descriptionValue,
+                    Key = key
+                };
+
+                _settingsRepository.Add(setting);
             }
 
             setting.Value = settingDto.Value;

@@ -53,6 +53,19 @@ namespace ApplicationTest.Controllers
         }
 
         [Test]
+        public async Task PutSetting_IdInSettingDtoDoesNotEqualToIdInRoute_ReturnsBadRequestResult()
+        {
+            var settingKey = SettingKey.RequestAutoCancelRemindTimespan;
+            var settingDto = new SettingDto { Key = SettingKey.RequestAutoCancelTimespan };
+
+            var result = await _controller.PutSetting(settingKey, settingDto);
+
+            result
+                .Should()
+                .BeOfType<BadRequestResult>();
+        }
+
+        [Test]
         public async Task PutSetting_NoExceptionsWasThrown_ReturnNoContentResult()
         {
             var settingKey = SettingKey.RequestAutoCancelTimespan;

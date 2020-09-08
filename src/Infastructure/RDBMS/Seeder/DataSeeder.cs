@@ -25,7 +25,6 @@ namespace Infrastructure.RDBMS.Seeder
             Seed(builder.Entity<BookGenre>());
             Seed(builder.Entity<BookAuthor>());
             Seed(builder.Entity<Aphorism>());
-            Seed(builder.Entity<Setting>());
         }
 
         private static void Seed(EntityTypeBuilder<Aphorism> builder)
@@ -423,36 +422,6 @@ namespace Infrastructure.RDBMS.Seeder
                     AuthorId = 1
                 }
             );
-        }
-
-        private static void Seed(EntityTypeBuilder<Setting> builder)
-        {
-            var settingKeyEnum = typeof(SettingKey);
-            var enumValuesNames = settingKeyEnum.GetEnumNames();
-
-            foreach (var enumValuesName in enumValuesNames)
-            {
-                var memberInfo = settingKeyEnum.GetMember(enumValuesName)
-                    .FirstOrDefault(value => value.DeclaringType == settingKeyEnum);
-                if (memberInfo == null)
-                {
-                    continue;
-                }
-
-                var namespaceAttribute = memberInfo.GetCustomAttribute<NamespaceAttribute>();
-                var namespaceValue = namespaceAttribute?.Namespace;
-
-                var descriptionAttribute = memberInfo.GetCustomAttribute<DescriptionAttribute>();
-                var descriptionValue = descriptionAttribute?.Description;
-
-                builder.HasData(new Setting
-                {
-                    Namespace = namespaceValue ?? Setting.DefaultNamespace,
-                    Key = Enum.Parse<SettingKey>(memberInfo.Name),
-                    Value = null,
-                    Description = descriptionValue
-                });
-            }
         }
     }
 }

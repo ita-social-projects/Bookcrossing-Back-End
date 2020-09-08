@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookCrossingBackEnd.Migrations
 {
     [DbContext(typeof(BookCrossingContext))]
-    [Migration("20200903204625_AddedSettingsTable")]
-    partial class AddedSettingsTable
+    [Migration("20200908153039_AddedSettingsTabler")]
+    partial class AddedSettingsTabler
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -431,7 +431,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            DateAdded = new DateTime(2020, 9, 3, 23, 46, 24, 675, DateTimeKind.Local).AddTicks(8440),
+                            DateAdded = new DateTime(2020, 9, 8, 18, 30, 38, 516, DateTimeKind.Local).AddTicks(8995),
                             LanguageId = 1,
                             Name = "Adventures of Junior",
                             Rating = 0.0,
@@ -488,6 +488,26 @@ namespace BookCrossingBackEnd.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.RDBMS.Entities.BookRating", b =>
+                {
+                    b.Property<int>("BookId")
+                        .HasColumnName("book_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnName("user_id")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
+
+                    b.HasKey("BookId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BookRating");
+                });
+
             modelBuilder.Entity("Domain.RDBMS.Entities.Genre", b =>
                 {
                     b.Property<int>("Id")
@@ -510,7 +530,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Fantasy"
+                            Name = "Unknown"
                         });
                 });
 
@@ -536,7 +556,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Ukrainian"
+                            Name = "Unknown"
                         });
                 });
 
@@ -553,6 +573,9 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnName("city")
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
+
+                    b.Property<string>("HomeAdress")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnName("is_active")
@@ -777,13 +800,6 @@ namespace BookCrossingBackEnd.Migrations
                     b.HasKey("Namespace", "Key");
 
                     b.ToTable("Setting");
-
-                    b.HasData(
-                        new
-                        {
-                            Namespace = "Timespans",
-                            Key = "RequestAutoCancelTimespan"
-                        });
                 });
 
             modelBuilder.Entity("Domain.RDBMS.Entities.User", b =>
@@ -877,7 +893,7 @@ namespace BookCrossingBackEnd.Migrations
                             IsEmailAllowed = false,
                             LastName = "Adminovich",
                             MiddleName = "Adminovski",
-                            Password = "admin",
+                            Password = "AQAAAAEAACcQAAAAEF4qkrO2H0/sZvpx2lCnaFSQhEJZ5/vsMx4V3ZD3x8529ymU0VjTytn3HA94R/RSmw==",
                             RegisteredDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 2
                         },
@@ -891,9 +907,23 @@ namespace BookCrossingBackEnd.Migrations
                             IsEmailAllowed = false,
                             LastName = "Testerovich",
                             MiddleName = "Test",
-                            Password = "test",
+                            Password = "AQAAAAEAACcQAAAAEF4qkrO2H0/sZvpx2lCnaFSQhEJZ5/vsMx4V3ZD3x8529ymU0VjTytn3HA94R/RSmw==",
                             RegisteredDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 1,
+                            UserRoomId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "unavailable@gmail.com",
+                            FirstName = "Unavailable",
+                            IsDeleted = false,
+                            IsEmailAllowed = false,
+                            LastName = "Unavailbale",
+                            Password = "unavailablepassword",
+                            RegisteredDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RoleId = 2,
                             UserRoomId = 1
                         });
                 });
@@ -987,6 +1017,21 @@ namespace BookCrossingBackEnd.Migrations
                     b.HasOne("Domain.RDBMS.Entities.Genre", "Genre")
                         .WithMany("BookGenre")
                         .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.RDBMS.Entities.BookRating", b =>
+                {
+                    b.HasOne("Domain.RDBMS.Entities.Book", "Book")
+                        .WithMany("BookRating")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.RDBMS.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

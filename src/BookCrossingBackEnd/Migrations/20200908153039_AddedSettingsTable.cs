@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BookCrossingBackEnd.Migrations
 {
-    public partial class AddedSettingsTable : Migration
+    public partial class AddedSettingsTabler : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,11 +20,6 @@ namespace BookCrossingBackEnd.Migrations
                 {
                     table.PrimaryKey("PK_Setting", x => new { x.Namespace, x.Key });
                 });
-
-            migrationBuilder.InsertData(
-                table: "Setting",
-                columns: new[] { "Namespace", "Key", "Description", "Value" },
-                values: new object[] { "Timespans", "RequestAutoCancelTimespan", null, null });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

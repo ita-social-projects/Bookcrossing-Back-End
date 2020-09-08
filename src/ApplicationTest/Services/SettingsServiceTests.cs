@@ -13,6 +13,7 @@ using Domain.RDBMS.Enums;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using DescriptionAttribute = System.ComponentModel.DescriptionAttribute;
 
 namespace ApplicationTest.Services
 {
@@ -29,6 +30,8 @@ namespace ApplicationTest.Services
         private SettingDto _settingDto;
         private DescribedSettingDto _describedSettingDto;
         private DefaultValueAttribute _defaultValueAttribute;
+        private NamespaceAttribute _namespaceAttribute;
+        private DescriptionAttribute _descriptionAttribute;
 
         [OneTimeSetUp]
         public void InitializeClass()
@@ -65,6 +68,34 @@ namespace ApplicationTest.Services
             result
                 .Should()
                 .Be(_describedSettingDto);
+        }
+
+        [Test]
+        public async Task GetSettingAsync_GetSettingEntityAsyncReturnedNull_ReturnsSettingDtoWithValuesFromAttributes()
+        {
+            var settingKey = SettingKey.RequestAutoCancelRemindTimespan;
+            _service.GetSettingEntityAsyncMock = key => null;
+            _service.GetEnumAttributeMock = (key, type) =>
+            {
+                if (key == settingKey && type == _descriptionAttribute.GetType())
+                {
+                    return _descriptionAttribute;
+                }
+
+                if (key == settingKey && type == _defaultValueAttribute.GetType())
+                {
+                    return _defaultValueAttribute;
+                }
+
+                return null;
+            };
+
+            var result = await _service.GetSettingAsync(settingKey);
+
+            result.DefaultValue.Should().Be(_defaultValueAttribute.Value?.ToString());
+            result.Description.Should().Be(_descriptionAttribute.Description);
+            result.Key.Should().Be(settingKey);
+            result.Value.Should().BeNull();
         }
 
         [Test]
@@ -177,13 +208,36 @@ namespace ApplicationTest.Services
         [Test]
         public async Task SetSettingValueAsync_GetSettingEntityAsyncReturnedNull_ThrowsObjectNotFoundException()
         {
+            var settingKey = SettingKey.RequestAutoCancelRemindTimespan;
             _service.GetSettingEntityAsyncMock = key => null;
+            _service.GetEnumAttributeMock = (key, type) =>
+            {
+                if (key == settingKey && type == _descriptionAttribute.GetType())
+                {
+                    return _descriptionAttribute;
+                }
 
-            await _service.Invoking(s => s.SetSettingValueAsync(
-                    It.IsAny<SettingKey>(),
-                    It.IsAny<SettingDto>()))
-                .Should()
-                .ThrowAsync<ObjectNotFoundException>();
+                if (key == settingKey && type == _defaultValueAttribute.GetType())
+                {
+                    return _defaultValueAttribute;
+                }
+
+                if (key == settingKey && type == _namespaceAttribute.GetType())
+                {
+                    return _namespaceAttribute;
+                }
+
+                return null;
+            };
+
+            await _service.SetSettingValueAsync(settingKey, _settingDto);
+
+            _settingsRepositoryMock.Verify(
+                obj => obj.Add(It.Is<Setting>(setting => setting.Key == settingKey &&
+                                                         setting.Description == _descriptionAttribute.Description && 
+                                                         setting.Namespace == _namespaceAttribute.Namespace)), 
+                Times.Once);
+            _settingsRepositoryMock.Verify(obj => obj.SaveChangesAsync());
         }
 
         [Test]
@@ -296,6 +350,37 @@ namespace ApplicationTest.Services
                 .Be(value);
         }
 
+        [Test]
+        public async Task GetTimeSpanAsync_TryParseReturnedFalse_ReturnsDefaultValue()
+        {
+            var settingKey = SettingKey.RequestAutoCancelTimespan;
+            var defaultTimeSpanAttribute = new DefaultValueAttribute("9.00:00:00");
+            _service.GetSettingValueAsyncMock = async key =>
+            {
+                if (key == settingKey)
+                {
+                    return "Invalid time span";
+                }
+
+                return null;
+            };
+            _service.GetEnumAttributeMock = (key, type) =>
+            {
+                if (key == settingKey && type == defaultTimeSpanAttribute.GetType())
+                {
+                    return defaultTimeSpanAttribute;
+                }
+
+                return null;
+            };
+
+            var result = await _service.GetTimeSpanAsync(settingKey);
+
+            result
+                .Should()
+                .Be(TimeSpan.Parse(defaultTimeSpanAttribute.Value?.ToString()));
+        }
+
         private void MockData()
         {
             _setting = new Setting
@@ -322,6 +407,10 @@ namespace ApplicationTest.Services
                 Description = "desc"
             };
 
+            _defaultValueAttribute = new DefaultValueAttribute("defaultValue");
+            _descriptionAttribute = new DescriptionAttribute("description");
+            _namespaceAttribute = new NamespaceAttribute("namespace");
+
             _settingDto = new SettingDto
             {
                 Key = _setting.Key,
@@ -332,10 +421,9 @@ namespace ApplicationTest.Services
             {
                 Key = _setting.Key,
                 Value = _setting.Value,
-                Description = _setting.Description
+                Description = _setting.Description,
+                DefaultValue = _defaultValueAttribute.Value?.ToString()
             };
-
-            _defaultValueAttribute = new DefaultValueAttribute("defaultValue");
         }
 
         private class SettingsServiceProxy : SettingsService
