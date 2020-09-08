@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Data.Entity.Core;
 using System.Globalization;
 using System.Threading.Tasks;
 using Application.Dto.Settings;
