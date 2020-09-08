@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net;
 using System.Threading.Tasks;
 using Application.Dto;
 using Application.Dto.QueryParams;
@@ -122,7 +123,6 @@ namespace ApplicationTest.Controllers
         #endregion Remove
 
         #region Make
-
         [Test]
         public async Task MakeRequest_BookIsNotAvailableForRequest_Returns_OkResult()
         {
@@ -132,6 +132,25 @@ namespace ApplicationTest.Controllers
             var result = await _requestController.Make(It.IsAny<int>());
             result.Result.Should().BeOfType<NotFoundResult>();
         }
+
+        [Test]
+        public async Task MakeRequest_ServiceThrownInvalidOperationException_ReturnsForbiddenResult()
+        {
+            var userId = 1;
+            var bookId = 1;
+            var exceptionMessage = "message";
+            _userResolverServiceMock.Setup(obj => obj.GetUserId())
+                .Returns(userId);
+            _requestServiceMock.Setup(obj => obj.MakeAsync(userId, bookId))
+                .ThrowsAsync(new InvalidOperationException(exceptionMessage));
+
+            var result = await _requestController.Make(bookId);
+
+            var objectResult = result.Result.Should().BeOfType<ObjectResult>().Subject;
+            objectResult.StatusCode.Should().Be((int) HttpStatusCode.Forbidden);
+            objectResult.Value.Should().Be(exceptionMessage);
+        }
+
         [Test]
         public async Task MakeRequest_BookIsAvailableForRequest_Return_NoFound()
         {
