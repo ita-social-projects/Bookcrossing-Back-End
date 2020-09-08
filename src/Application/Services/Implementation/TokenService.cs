@@ -48,13 +48,13 @@ namespace Application.Services.Implementation
             var user = await _userRepository.GetAll()
                 .Include(r => r.Role)
                 .FirstOrDefaultAsync(p => p.Email == loginModel.Email);
-            
-            if(user == null)
+
+            if (user == null)
             {
                 throw new InvalidCredentialException("User not found");
             }
 
-            if(!String.IsNullOrWhiteSpace(loginModel.AzureId) &&
+            if (!String.IsNullOrWhiteSpace(loginModel.AzureId) &&
                 _passwordHasher.VerifyHashedPassword(user, user.AzureId, loginModel.AzureId) == PasswordVerificationResult.Success &&
                 !user.IsDeleted)
             {
@@ -65,7 +65,7 @@ namespace Application.Services.Implementation
             {
                 throw new InvalidCredentialException("Password doesn't fit");
             }
-                
+
 
             return user;
         }

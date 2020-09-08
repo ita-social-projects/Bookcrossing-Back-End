@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Application.Dto;
 using Application.Dto.QueryParams;
@@ -13,7 +12,6 @@ using FluentAssertions;
 using Infrastructure.RDBMS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using MimeKit.Cryptography;
 using MockQueryable.Moq;
 using Moq;
 using NUnit.Framework;
@@ -99,7 +97,7 @@ namespace ApplicationTest.Services
             _locationRepositoryMock.Setup(obj => obj.GetAll())
                 .Returns(_locationsQueryableMock.Object);
             _paginationServiceMock.Setup(obj => obj.GetPageAsync<LocationDto, Location>(
-                    _locationsQueryableMock.Object, 
+                    _locationsQueryableMock.Object,
                     pageableParams))
                 .ReturnsAsync(paginatedLocations);
 
@@ -120,7 +118,7 @@ namespace ApplicationTest.Services
 
             _locationRepositoryMock.Verify(obj => obj.Remove(_location), Times.Once);
             _locationRepositoryMock.Verify(obj => obj.SaveChangesAsync(), Times.Once);
-            
+
             locationResult.Should().Be(_locationDto);
         }
 

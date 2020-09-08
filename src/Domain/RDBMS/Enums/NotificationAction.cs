@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Domain.RDBMS.Entities
+namespace Domain.RDBMS.Enums
 {
     [Flags]
     public enum NotificationAction

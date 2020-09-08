@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
-namespace Application.Dto.Password
+﻿namespace Application.Dto.Password
 {
     public class ResetPasswordDto
     {

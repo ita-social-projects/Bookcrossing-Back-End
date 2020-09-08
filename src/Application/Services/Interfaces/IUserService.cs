@@ -11,7 +11,7 @@ namespace Application.Services.Interfaces
 {
     public interface IUserService
     {
-       
+
         Task<List<UserDto>> GetAllUsers();
 
         /// <summary>

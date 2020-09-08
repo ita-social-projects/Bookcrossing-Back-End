@@ -1,11 +1,11 @@
-﻿using Application.Dto.Comment.Book;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Dto.Comment.Book;
 
 namespace Application.Services.Interfaces
 {
     public interface IBookChildCommentService
-    {      
+    {
         /// <summary>
         /// Update specified comment
         /// </summary>

@@ -82,7 +82,7 @@ namespace BookCrossingBackEnd.Controllers
         /// </summary>
         /// <param name="user"></param>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody]UserUpdateDto user)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UserUpdateDto user)
         {
             _logger.LogInformation("Updating user {id}", id);
             if (id == _userResolverService.GetUserId() || _userResolverService.IsUserAdmin())
@@ -119,21 +119,21 @@ namespace BookCrossingBackEnd.Controllers
         }
 
         [HttpPost("password")]
-        public async Task<IActionResult> ForgotPassword([FromBody]ResetPasswordDto email)
+        public async Task<IActionResult> ForgotPassword([FromBody] ResetPasswordDto email)
         {
             await _userService.SendPasswordResetConfirmation(email.Email);
             return Ok();
         }
 
         [HttpPut("password")]
-        public async Task<IActionResult> CreateNewPassword([FromBody]ResetPasswordDto newPassword)
+        public async Task<IActionResult> CreateNewPassword([FromBody] ResetPasswordDto newPassword)
         {
             await _userService.ResetPassword(newPassword);
             return Ok();
         }
 
         [HttpPut("email")]
-        public async Task<IActionResult> ForbidEmailNotification([FromBody]ForbidEmailDto email)
+        public async Task<IActionResult> ForbidEmailNotification([FromBody] ForbidEmailDto email)
         {
             _logger.LogInformation("Forbid email notififcations for {email}", email);
             if (await _userService.ForbidEmailNotification(email))

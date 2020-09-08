@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace BookCrossingBackEnd.Validators
 {
-    public class BookValidator: AbstractValidator<BookPostDto>
+    public class BookValidator : AbstractValidator<BookPostDto>
     {
         public BookValidator()
         {

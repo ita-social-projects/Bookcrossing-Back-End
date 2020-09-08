@@ -36,7 +36,7 @@ namespace ApplicationTest.ContollerTests
         [Test]
         public async Task ResetPassword_ValidUser_ReturnsIActionResultOK()
         {
-            var resetPasswordDto = new ResetPasswordDto() {Email = "test@gmail.com"};
+            var resetPasswordDto = new ResetPasswordDto() { Email = "test@gmail.com" };
             _mockUserService.Setup(x => x.SendPasswordResetConfirmation(resetPasswordDto.Email))
                 .Returns(Task.CompletedTask);
             var result = await _usersController.ForgotPassword(resetPasswordDto);
@@ -68,8 +68,8 @@ namespace ApplicationTest.ContollerTests
             var result = await _usersController.GetUserId();
 
             //assert
-           result.Should().BeOfType<ActionResult<int>>();
-           result.Result.Should().BeOfType<OkObjectResult>();
+            result.Should().BeOfType<ActionResult<int>>();
+            result.Result.Should().BeOfType<OkObjectResult>();
         }
 
         #region api/users [get] tests
@@ -78,7 +78,7 @@ namespace ApplicationTest.ContollerTests
         public async Task Get_WithAListOfUsers_ReturnsViewResultListOfUsers()
         {
             //arrange
-            
+
             _mockUserService.Setup(p => p.GetAllUsers())
                 .ReturnsAsync(GetTestUsers);
             //act
@@ -93,7 +93,7 @@ namespace ApplicationTest.ContollerTests
         public async Task GetUsers_WhenThereIsNoUsers_ReturnsNoContentResult()
         {
             //arrange
-            
+
             _mockUserService
                 .Setup(p => p.GetAllUsers())
                 .ReturnsAsync((List<UserDto>)null);
@@ -125,13 +125,13 @@ namespace ApplicationTest.ContollerTests
 
 
         #region api/users/{id} [put] tests
-        [TestCase(false,1)]
-        [TestCase(false,5)]
-        [TestCase(false,8)]
-        public async Task UpdateUser_UserWantsChangeNotHisProfileAndUserIsNotAdmin_ReturnsForbidden(bool userIsAdmin,int idFromCredential)
+        [TestCase(false, 1)]
+        [TestCase(false, 5)]
+        [TestCase(false, 8)]
+        public async Task UpdateUser_UserWantsChangeNotHisProfileAndUserIsNotAdmin_ReturnsForbidden(bool userIsAdmin, int idFromCredential)
         {
             //arrange
-            
+
             _mockUserResolverService.Setup(p => p.IsUserAdmin()).Returns(userIsAdmin);
             _mockUserResolverService.Setup(p => p.GetUserId()).Returns(idFromCredential);
 
@@ -151,11 +151,11 @@ namespace ApplicationTest.ContollerTests
             result.Should().BeOfType<ForbidResult>();
         }
 
-        [TestCase(2,2,false)]
-        [TestCase(1,1,false)]
-        [TestCase(5,5,false)]
-        [TestCase(2,5,true)]
-        public async Task UpdateUser_ChangesHisProfileUserIsAdmin__ReturnsNoContent204(int idFromRoute,int idFromCredentials,bool userIsAdmin)
+        [TestCase(2, 2, false)]
+        [TestCase(1, 1, false)]
+        [TestCase(5, 5, false)]
+        [TestCase(2, 5, true)]
+        public async Task UpdateUser_ChangesHisProfileUserIsAdmin__ReturnsNoContent204(int idFromRoute, int idFromCredentials, bool userIsAdmin)
         {
             //arrange
             _mockUserResolverService.Setup(p => p.IsUserAdmin()).Returns(userIsAdmin);
@@ -172,7 +172,7 @@ namespace ApplicationTest.ContollerTests
 
             //act
             var result = await _usersController.Update(idFromRoute, updatingUser);
-            
+
             //assert
             result.Should().BeOfType<NoContentResult>();
         }
@@ -196,7 +196,7 @@ namespace ApplicationTest.ContollerTests
 
             result.Result.Should().BeOfType<CreatedAtActionResult>();
             (result.Result as CreatedAtActionResult).Value.Should()
-                .BeEquivalentTo(testRegisterDto, 
+                .BeEquivalentTo(testRegisterDto,
                     opt => opt.Excluding(m => m.Id));
         }
 
@@ -215,7 +215,7 @@ namespace ApplicationTest.ContollerTests
         [Test]
         public async Task Get_UserWasFound_ReturnsOkObjectResultWithUserDto()
         {
-            var expectedResult = new UserDto() {Id = 1};
+            var expectedResult = new UserDto() { Id = 1 };
             _mockUserService.Setup(m => m.GetById(It.IsAny<Expression<Func<User, bool>>>()))
                 .ReturnsAsync(expectedResult);
 
@@ -280,7 +280,7 @@ namespace ApplicationTest.ContollerTests
                 Id = 1,
                 LastName = "Rudenko",
                 MiddleName = "Stepanovich"
-                
+
 
             });
             userDtos.Add(new UserDto()

@@ -9,7 +9,6 @@ using Application.Dto.Email;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using MimeKit;
-using MimeKit.Cryptography;
 using ISmtpClient = Application.Services.Interfaces.ISmtpClient;
 
 namespace Application.Services.Implementation
@@ -185,7 +184,7 @@ namespace Application.Services.Implementation
         private MimeMessage CreateEmailMessage(Message message)
         {
             var emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress("Book Crossing",_emailConfig.From));
+            emailMessage.From.Add(new MailboxAddress("Book Crossing", _emailConfig.From));
             emailMessage.To.AddRange(message.To);
             emailMessage.Subject = message.Subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = message.Content };

@@ -23,10 +23,10 @@ namespace Application.Services.Implementation
         private readonly BookCrossingContext _context;
 
         public AuthorService(
-            IRepository<Author> authorRepository, 
-            IMapper mapper, 
+            IRepository<Author> authorRepository,
+            IMapper mapper,
             IPaginationService paginationService,
-            IRepository<BookAuthor> bookAuthorRepository, 
+            IRepository<BookAuthor> bookAuthorRepository,
             BookCrossingContext context)
         {
             _authorRepository = authorRepository;
@@ -61,7 +61,7 @@ namespace Application.Services.Implementation
         public async Task<List<AuthorDto>> FilterAuthors(string filter)
         {
             return _mapper.Map<List<AuthorDto>>(await _authorRepository.GetAll()
-                                                                 .Where(x => x.FirstName.StartsWith(filter) 
+                                                                 .Where(x => x.FirstName.StartsWith(filter)
                                                                      || x.LastName.StartsWith(filter))
                                                                  .ToListAsync());
         }

@@ -13,6 +13,7 @@ using Domain.NoSQL;
 using Domain.NoSQL.Entities;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using MimeKit;
@@ -312,7 +313,7 @@ namespace Application.Services.Implementation
 
                 await _emailSenderService.SendThatBookWasReceivedToNewOwnerAsync(emailMessage);
             }
-            
+
             await _notificationsService.NotifyAsync(
                 request.Owner.Id,
                 $"{request.User.FirstName} {request.User.LastName} has successfully received and started reading '{book.Name}'.",
@@ -324,7 +325,7 @@ namespace Application.Services.Implementation
                 book.Id,
                 NotificationAction.Open);
 
-                await _hangfireJobScheduleService.DeleteRequestScheduleJob(requestId);
+            await _hangfireJobScheduleService.DeleteRequestScheduleJob(requestId);
             return affectedRows > 0;
         }
 

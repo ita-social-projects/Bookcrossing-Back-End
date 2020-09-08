@@ -84,7 +84,7 @@ namespace BookCrossingBackEnd
                       Enter 'Bearer' [space] and then your token in the text input below.
                       \r\n\r\nExample: 'Bearer 12345abcdef'",
                     In = ParameterLocation.Header,
-                    Type= SecuritySchemeType.ApiKey,
+                    Type = SecuritySchemeType.ApiKey,
                     BearerFormat = "JWT",
                     Scheme = "Bearer"
                 });

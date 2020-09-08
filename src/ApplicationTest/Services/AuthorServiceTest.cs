@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using NUnit.Framework;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Application.Dto;
 using Application.Services.Implementation;
 using Application.Services.Interfaces;
@@ -14,6 +10,7 @@ using Infrastructure.RDBMS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Moq;
+using NUnit.Framework;
 
 namespace ApplicationTest.Services
 {
@@ -165,6 +162,6 @@ namespace ApplicationTest.Services
 
         #endregion Update
 
-        
+
     }
 }

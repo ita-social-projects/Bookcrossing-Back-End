@@ -429,8 +429,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-
-                            DateAdded = new DateTime(2020, 9, 5, 23, 7, 28, 127, DateTimeKind.Local).AddTicks(7668),
+                            DateAdded = new DateTime(2020, 9, 8, 18, 30, 38, 516, DateTimeKind.Local).AddTicks(8995),
                             LanguageId = 1,
                             Name = "Adventures of Junior",
                             Rating = 0.0,
@@ -497,8 +496,8 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnName("user_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
 
                     b.HasKey("BookId", "UserId");
 
@@ -529,7 +528,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Fantasy"
+                            Name = "Unknown"
                         });
                 });
 
@@ -555,7 +554,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Ukrainian"
+                            Name = "Unknown"
                         });
                 });
 
@@ -780,6 +779,27 @@ namespace BookCrossingBackEnd.Migrations
                     b.ToTable("ScheduleJob");
                 });
 
+            modelBuilder.Entity("Domain.RDBMS.Entities.Setting", b =>
+                {
+                    b.Property<string>("Namespace")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValue("Global");
+
+                    b.Property<string>("Key")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Namespace", "Key");
+
+                    b.ToTable("Setting");
+                });
+
             modelBuilder.Entity("Domain.RDBMS.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -871,7 +891,7 @@ namespace BookCrossingBackEnd.Migrations
                             IsEmailAllowed = false,
                             LastName = "Adminovich",
                             MiddleName = "Adminovski",
-                            Password = "admin",
+                            Password = "AQAAAAEAACcQAAAAEF4qkrO2H0/sZvpx2lCnaFSQhEJZ5/vsMx4V3ZD3x8529ymU0VjTytn3HA94R/RSmw==",
                             RegisteredDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 2
                         },
@@ -885,9 +905,23 @@ namespace BookCrossingBackEnd.Migrations
                             IsEmailAllowed = false,
                             LastName = "Testerovich",
                             MiddleName = "Test",
-                            Password = "test",
+                            Password = "AQAAAAEAACcQAAAAEF4qkrO2H0/sZvpx2lCnaFSQhEJZ5/vsMx4V3ZD3x8529ymU0VjTytn3HA94R/RSmw==",
                             RegisteredDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 1,
+                            UserRoomId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "unavailable@gmail.com",
+                            FirstName = "Unavailable",
+                            IsDeleted = false,
+                            IsEmailAllowed = false,
+                            LastName = "Unavailbale",
+                            Password = "unavailablepassword",
+                            RegisteredDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RoleId = 2,
                             UserRoomId = 1
                         });
                 });
