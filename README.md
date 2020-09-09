@@ -1,6 +1,6 @@
 # BookCrossingBackEnd  
 Platform for book crossing between company employees
-[Website](https://localhost:44370/)  
+[Website](https://book-crossing-web.azurewebsites.net/)  
   
 ## Git Flow  
 We are using simpliest github flow to organize our work:  
