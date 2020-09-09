@@ -50,6 +50,18 @@ namespace ApplicationTest.Controllers
         }
 
         [Test]
+        public async Task AddNotification_ReturnsOkObjectResult()
+        {
+            var result = await _controller.Add(It.IsAny<MessageDto>());
+
+            _notificationsServiceMock.Verify(obj => obj.AddAsync(It.IsAny<MessageDto>()));
+
+            result
+                .Should()
+                .BeOfType<OkResult>();
+        }
+
+        [Test]
         public async Task MarkAsRead_ServiceMethodThrowsInvalidOperationException_ReturnsForbiddenStatusCodeWishMessage()
         {
             var exceptionMessage = "User cannot mark as read notification that does not belong to him";

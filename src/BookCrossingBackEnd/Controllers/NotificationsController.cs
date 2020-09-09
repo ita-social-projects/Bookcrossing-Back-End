@@ -41,6 +41,13 @@ namespace BookCrossingBackEnd.Controllers
             }
         }
 
+        [HttpPost("add")]
+        public async Task<ActionResult> Add(MessageDto message)
+        {
+            await _notificationsService.AddAsync(message);
+            return Ok();
+        }
+
         [HttpPut("read/all")]
         public async Task<ActionResult> MarkAllAsRead()
         {

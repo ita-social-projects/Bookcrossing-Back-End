@@ -16,6 +16,8 @@ namespace Application.Services.Interfaces
 
         Task MarkAllAsReadForCurrentUserAsync();
 
+        Task AddAsync(MessageDto message);
+
         Task RemoveAsync(int id);
 
         Task RemoveAllForCurrentUserAsync();

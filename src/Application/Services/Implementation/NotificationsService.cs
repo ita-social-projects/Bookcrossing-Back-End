@@ -107,6 +107,24 @@ namespace Application.Services.Implementation
             await _notificationsRepository.SaveChangesAsync();
         }
 
+        public async Task AddAsync(MessageDto message)
+        {
+            var currentUserId = _userResolverService.GetUserId();
+            var notification = new Notification
+            {
+                UserId = message.UserId,
+                Message = message.Message,
+                Action = (NotificationAction)4,
+                ReceiverUserId = currentUserId
+            };
+
+            _notificationsRepository.Add(notification);
+            await _notificationsRepository.SaveChangesAsync();
+            await _notificationHubContext.Clients.User(notification.UserId.ToString())
+               .SendAsync(
+                   MethodNameOfHubProxy, _mapper.Map<NotificationDto>(notification));
+        }
+
         public async Task RemoveAsync(int id)
         {
             var currentUserId = _userResolverService.GetUserId();

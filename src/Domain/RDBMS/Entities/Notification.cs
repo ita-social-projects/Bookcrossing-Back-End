@@ -11,6 +11,8 @@ namespace Domain.RDBMS.Entities
 
         public int UserId { get; set; }
 
+        public int? ReceiverUserId { get; set; }
+
         public int? BookId { get; set; }
 
         public NotificationAction Action { get; set; }

@@ -36,6 +36,7 @@ namespace ApplicationTest.Services
         private List<Notification> _notifications;
         private NotificationDto _notificationDto;
         private List<NotificationDto> _notificationDtos;
+        private MessageDto _messageDto;
 
         [OneTimeSetUp]
         public void InitializeClass()
@@ -189,6 +190,24 @@ namespace ApplicationTest.Services
         }
 
         [Test]
+        public async Task AddAsync_MessageArgumentIsValid_AddsMessageToDatabaseAndSendsItToClientWithUserId()
+        {
+            var clientProxyMock = new Mock<IClientProxy>();
+            _hubClientsMock.Setup(obj => obj.User(_notification.UserId.ToString()))
+                .Returns(clientProxyMock.Object);
+            
+
+            await _service.AddAsync(_messageDto);
+
+            _notificationsRepositoryMock.Verify(
+                obj => obj.Add(It.Is<Notification>(notification =>
+                    notification.ReceiverUserId == _messageDto.UserId && notification.Message == _messageDto.Message &&
+                    notification.Action == (NotificationAction)4 )),
+                Times.Once);
+            _notificationsRepositoryMock.Verify(obj => obj.SaveChangesAsync());
+        }
+
+        [Test]
         public async Task RemoveAsync_NotificationWithPassedIdDoesNotExist_ThrowsObjectNotFoundException()
         {
             _notificationsRepositoryMock.Setup(obj => obj.FindByIdAsync(_notification.Id))
@@ -302,6 +321,7 @@ namespace ApplicationTest.Services
 
             _notification = _notifications.First();
             _notificationDto = _notificationDtos.First();
+            _messageDto = new MessageDto { Message = "Hello", UserId = 1 };
         }
 
         private bool ListsHasSameElements(List<Notification> obj1, List<Notification> obj2)

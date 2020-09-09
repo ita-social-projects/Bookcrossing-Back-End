@@ -8,6 +8,7 @@ namespace Domain.RDBMS.Enums
         None,
         Open,
         Request,
-        StartReading
+        StartReading,
+        Message
     }
 }
