@@ -12,8 +12,8 @@ namespace Domain.NoSQL
     /// </summary>
     /// <typeparam name="TRootEntity">Root entity</typeparam>
     /// <typeparam name="TChildEntity">Entity of arr item</typeparam>
-    public interface IChildRepository<TRootEntity,TChildEntity> 
-        where TRootEntity : class, IRootEntityBase, new() 
+    public interface IChildRepository<TRootEntity, TChildEntity>
+        where TRootEntity : class, IRootEntityBase, new()
         where TChildEntity : class, IChildEntityBase, new()
     {
         /// <summary>

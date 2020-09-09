@@ -7,6 +7,7 @@ using Application.Dto.QueryParams;
 using Application.Services.Interfaces;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.Implementation
@@ -102,9 +103,9 @@ namespace Application.Services.Implementation
             foreach (var wish in wishes)
             {
                 await _notificationsService.NotifyAsync(
-                    wish.User.Id, 
-                    $"The book '{wish.Book.Name}' from your wish list is available now.", 
-                    wish.BookId, 
+                    wish.User.Id,
+                    $"The book '{wish.Book.Name}' from your wish list is available now.",
+                    wish.BookId,
                     NotificationAction.Request);
                 if (wish.User.IsEmailAllowed)
                 {

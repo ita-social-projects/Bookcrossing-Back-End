@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Application.Dto;
 using Application.Dto.QueryParams;
@@ -25,14 +27,21 @@ namespace BookCrossingBackEnd.Controllers
         [HttpPost]
         public async Task<ActionResult<RequestDto>> Make([FromRoute] int bookId)
         {
-            var userId = _userResolverService.GetUserId();
-            var request = await _requestService.MakeAsync(userId, bookId);
-            if (request == null)
+            try
             {
-                return NotFound();
-            }
+                var userId = _userResolverService.GetUserId();
+                var request = await _requestService.MakeAsync(userId, bookId);
+                if (request == null)
+                {
+                    return NotFound();
+                }
 
-            return Ok(request);
+                return Ok(request);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode((int) HttpStatusCode.Forbidden, ex.Message);
+            }
         }
 
         [Authorize]

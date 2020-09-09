@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Dto;
 using Application.Services.Interfaces;
@@ -59,7 +56,7 @@ namespace ApplicationTest.Controllers
         [Test]
         public async Task GetLanguageAsync_LanguageNotExist_ReturnsNotFoundResult()
         {
-          _languageService.Setup(s => s.GetById(It.IsAny<int>())).ReturnsAsync(null as LanguageDto);
+            _languageService.Setup(s => s.GetById(It.IsAny<int>())).ReturnsAsync(null as LanguageDto);
 
             var result = await _languageController.GetLanguage(It.IsAny<int>());
 

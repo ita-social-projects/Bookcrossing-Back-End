@@ -47,7 +47,7 @@ namespace Application.Services.Interfaces
         /// <param name="id">Request Id</param>
         /// <returns>boolean</returns>
         Task<bool> ApproveReceiveAsync(int id);
-       
+
         /// <summary>
         /// Remove request from database
         /// </summary>

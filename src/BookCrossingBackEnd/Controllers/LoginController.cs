@@ -28,7 +28,7 @@ namespace BookCrossingBackEnd.Controllers
         /// <returns>Returns JSON web token or http response code 401(Unauthorized)</returns>
         [HttpPost]
         [LoginFilter]
-        public async Task<ActionResult<UserTokenDto>> Login([FromBody]LoginDto model)
+        public async Task<ActionResult<UserTokenDto>> Login([FromBody] LoginDto model)
         {
             var user = await _tokenService.VerifyUserCredentials(model);
 

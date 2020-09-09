@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -10,7 +9,6 @@ using Application.Dto;
 using Application.Dto.OuterSource;
 using Application.Dto.QueryParams;
 using Application.Services.Interfaces;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 using Org.BouncyCastle.Security;
 

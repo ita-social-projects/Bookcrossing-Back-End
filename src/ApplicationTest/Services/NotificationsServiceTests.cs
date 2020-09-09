@@ -10,6 +10,7 @@ using Application.SignalR.Hubs;
 using AutoMapper;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 using FluentAssertions;
 using Microsoft.AspNetCore.SignalR;
 using MockQueryable.Moq;
@@ -247,7 +248,7 @@ namespace ApplicationTest.Services
             var notificationsToRemove = _notifications.Where(entity => entity.UserId == _currentUser.Id);
 
             await _service.RemoveAllForCurrentUserAsync();
-            
+
             _notificationsRepositoryMock.Verify(obj => obj.RemoveRange(notificationsToRemove));
             _notificationsRepositoryMock.Verify(obj => obj.SaveChangesAsync());
         }

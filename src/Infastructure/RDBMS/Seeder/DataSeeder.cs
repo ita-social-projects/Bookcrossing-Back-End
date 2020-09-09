@@ -1,5 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+using Domain.RDBMS.Attributes;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

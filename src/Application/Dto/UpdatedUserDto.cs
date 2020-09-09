@@ -13,7 +13,7 @@ namespace Application.Dto
 
         public DateTime BirthDate { get; set; }
 
-        public int UserRoomId { get; set;}
+        public int UserRoomId { get; set; }
 
         public bool IsEmailAllowed { get; set; }
 

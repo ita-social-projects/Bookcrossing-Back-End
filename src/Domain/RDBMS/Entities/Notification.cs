@@ -1,4 +1,5 @@
 ﻿using System;
+using Domain.RDBMS.Enums;
 
 namespace Domain.RDBMS.Entities
 {

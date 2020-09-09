@@ -1,5 +1,4 @@
 ﻿using BookCrossingBackEnd.Validators;
-using Domain.RDBMS.Entities;
 using FluentValidation.TestHelper;
 using NUnit.Framework;
 
@@ -9,7 +8,7 @@ namespace ApplicationTest.Validators
     public class LanguageValidatorTest
     {
         private LanguageValidator _validator;
-        private static string[] _namesWithForbiddenCharacters = {"-English","_German_", "E'-glsh", "E.", "..." };
+        private static string[] _namesWithForbiddenCharacters = { "-English", "_German_", "E'-glsh", "E.", "..." };
 
         [SetUp]
         public void Setup()
@@ -20,13 +19,13 @@ namespace ApplicationTest.Validators
         [Test]
         public void LanguageName_IsNull_ThrowsException()
         {
-            _validator.ShouldHaveValidationErrorFor(lang =>lang.Name, null as string);
+            _validator.ShouldHaveValidationErrorFor(lang => lang.Name, null as string);
         }
 
         [Test]
         public void LanguageName_IsNotNull_ShouldNotThrowException()
         {
-            _validator.ShouldNotHaveValidationErrorFor(language =>language.Name, "English");
+            _validator.ShouldNotHaveValidationErrorFor(language => language.Name, "English");
         }
 
         [Test]

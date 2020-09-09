@@ -9,6 +9,7 @@ using Application.SignalR.Hubs;
 using AutoMapper;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,9 +25,9 @@ namespace Application.Services.Implementation
         private readonly IHubContext<NotificationsHub> _notificationHubContext;
 
         public NotificationsService(
-            IRepository<Notification> notificationsRepository, 
-            IUserResolverService userResolverService, 
-            IMapper mapper, 
+            IRepository<Notification> notificationsRepository,
+            IUserResolverService userResolverService,
+            IMapper mapper,
             IHubContext<NotificationsHub> notificationHubContext)
         {
             _notificationsRepository = notificationsRepository;
@@ -47,7 +48,7 @@ namespace Application.Services.Implementation
                 throw new ArgumentException("Message of notification cannot contain only white spaces or be empty", nameof(message));
             }
 
-            var newNotification = new Notification 
+            var newNotification = new Notification
             {
                 UserId = userId,
                 Message = message,
@@ -59,7 +60,7 @@ namespace Application.Services.Implementation
             await _notificationsRepository.SaveChangesAsync();
             await _notificationHubContext.Clients.User(userId.ToString())
                 .SendAsync(
-                    MethodNameOfHubProxy, 
+                    MethodNameOfHubProxy,
                     _mapper.Map<NotificationDto>(newNotification));
         }
 

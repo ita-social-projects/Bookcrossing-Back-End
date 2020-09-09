@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.RDBMS.Configuration
 {
-    class NotificationConfiguration: IEntityTypeConfiguration<Notification>
+    class NotificationConfiguration : IEntityTypeConfiguration<Notification>
     {
         public void Configure(EntityTypeBuilder<Notification> builder)
         {
