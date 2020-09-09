@@ -26,6 +26,10 @@ namespace Infrastructure.RDBMS.Configuration
                 .WithMany()
                 .HasForeignKey(notification => notification.UserId);
 
+            builder.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(notification => notification.ReceiverUserId);
+
             builder.HasOne<Book>()
                 .WithMany()
                 .HasForeignKey(notification => notification.BookId);
