@@ -23,6 +23,7 @@ namespace Application.Services.Implementation
         private readonly IRepository<Book> _bookRepository;
         private readonly IRepository<BookAuthor> _bookAuthorRepository;
         private readonly IRepository<BookGenre> _bookGenreRepository;
+        private readonly IRepository<BookRating> _bookRatingRepository;
         private readonly IRepository<Language> _bookLanguageRepository;
         private readonly IRepository<User> _userLocationRepository;
         private readonly IRepository<Request> _requestRepository;
@@ -38,11 +39,12 @@ namespace Application.Services.Implementation
         public BookService(IRepository<Book> bookRepository, IMapper mapper, IRepository<BookAuthor> bookAuthorRepository, IRepository<BookGenre> bookGenreRepository,
             IRepository<Language> bookLanguageRepository, IRepository<User> userLocationRepository, IPaginationService paginationService, IRepository<Request> requestRepository,
             IUserResolverService userResolverService, IImageService imageService, IHangfireJobScheduleService hangfireJobScheduleService, IEmailSenderService emailSenderService, 
-            IRootRepository<BookRootComment> rootCommentRepository, IWishListService wishListService)
+            IRootRepository<BookRootComment> rootCommentRepository, IWishListService wishListService, IRepository<BookRating> bookRatingRepository)
         {
             _bookRepository = bookRepository;
             _bookAuthorRepository = bookAuthorRepository;
             _bookGenreRepository = bookGenreRepository;
+            _bookRatingRepository = bookRatingRepository;
             _bookLanguageRepository = bookLanguageRepository;
             _userLocationRepository = userLocationRepository;
             _requestRepository = requestRepository;
@@ -238,7 +240,6 @@ namespace Application.Services.Implementation
             return books.Count();
         }
 
-
         public async Task<PaginationDto<BookGetDto>> GetReadBooksAsync(BookQueryParams parameters)
         {
             var userId = _userResolverService.GetUserId();
@@ -351,6 +352,34 @@ namespace Application.Services.Implementation
                 .Where(a => a.UserId == userId && a.State == BookState.Reading);
             
             return await currentlyOwnedBooks.CountAsync();
+        }
+
+        public async Task<bool> SetRating(BookRatingQueryParams ratingQueryParams)
+        {
+            var book = await _bookRepository.FindByIdAsync(ratingQueryParams.BookId);
+            if (book == null)
+            {
+                return false;
+            }
+
+            var bookRating = new BookRating(ratingQueryParams.BookId, ratingQueryParams.UserId, ratingQueryParams.Rating);
+            _bookRatingRepository.Add(bookRating);
+            await _bookRatingRepository.SaveChangesAsync();
+            var avgRating = _bookRatingRepository.GetAll()
+                .Where(b => b.BookId == ratingQueryParams.BookId)
+                .Average(b => b.Rating);
+            book.Rating = avgRating;
+            _bookRepository.Update(book);
+            await _bookRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<double> GetRating(int bookId, int userId)
+        {
+            var rating = await _bookRatingRepository.FindByIdAsync(bookId, userId);
+
+            return rating != null ? rating.Rating : 0;
         }
 
         private IQueryable<Book> GetFilteredQuery(IQueryable<Book> query, BookQueryParams parameters)

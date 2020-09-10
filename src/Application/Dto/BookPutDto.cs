@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Domain.RDBMS.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Dto
 {

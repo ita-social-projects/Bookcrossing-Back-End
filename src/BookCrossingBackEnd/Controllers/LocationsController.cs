@@ -20,7 +20,7 @@ namespace BookCrossingBackEnd.Controllers
 
         // GET: api/Locations/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<LocationDto>> GetLocation([FromRoute]int id)
+        public async Task<ActionResult<LocationDto>> GetLocation([FromRoute] int id)
         {
             var location = await _locationService.GetById(id);
             if (location == null)

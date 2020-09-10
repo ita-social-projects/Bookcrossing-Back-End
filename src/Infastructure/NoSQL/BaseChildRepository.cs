@@ -60,7 +60,7 @@ namespace Infrastructure.NoSQL
             var update = Builders<TRootEntity>.Update.PullFilter(pathStr,
                 Builders<TChildEntity>.Filter.And(filterDefinitions));
 
-            return await _collection.UpdateOneAsync(root=>root.Id==rootId, update, updateOptions);
+            return await _collection.UpdateOneAsync(root => root.Id == rootId, update, updateOptions);
         }
 
         public async Task<UpdateResult> PullAsync(TRootEntity filterEntity, TChildEntity childEntity, IEnumerable<(string nestedArrayName, string itemId)> path, string arrName)
@@ -95,8 +95,8 @@ namespace Infrastructure.NoSQL
             List<FilterDefinition<TChildEntity>> filterDefinitions = new List<FilterDefinition<TChildEntity>>();
 
 
-            filterDefinitions.Add(Builders<TChildEntity>.Filter.Eq(child=>child.Id, childId));
-  
+            filterDefinitions.Add(Builders<TChildEntity>.Filter.Eq(child => child.Id, childId));
+
             var update = Builders<TRootEntity>.Update.PullFilter(pathStr,
                 Builders<TChildEntity>.Filter.And(filterDefinitions));
 
@@ -119,7 +119,7 @@ namespace Infrastructure.NoSQL
             var update = Builders<TRootEntity>.Update.PullFilter(pathStr,
                 Builders<TChildEntity>.Filter.And(filterDefinitions));
 
-            return await _collection.UpdateOneAsync(root=>root.Id==rootId, update, updateOptions);
+            return await _collection.UpdateOneAsync(root => root.Id == rootId, update, updateOptions);
         }
 
         public async Task<UpdateResult> PullAsync(TRootEntity filterEntity, string childId, IEnumerable<(string nestedArrayName, string itemId)> path, string arrName)
@@ -164,7 +164,7 @@ namespace Infrastructure.NoSQL
             updateOptions.ArrayFilters = arrayFilterDefinitions;
 
             return await _collection.UpdateOneAsync(
-                root=> root.Id== rootId,
+                root => root.Id == rootId,
                 new BsonDocument("$push", new BsonDocument(pathStr, childEntity.ToBsonDocument())),
                 updateOptions);
         }
@@ -185,7 +185,7 @@ namespace Infrastructure.NoSQL
 
         public async Task<UpdateResult> SetAsync(Expression<Func<TRootEntity, bool>> predicate, TChildEntity childEntity, IEnumerable<(string nestedArrayName, string itemId)> path)
         {
-            UpdateResult updateResult=new UpdateResult.Acknowledged(0,0,null);
+            UpdateResult updateResult = new UpdateResult.Acknowledged(0, 0, null);
             UpdateOptions updateOptions = new UpdateOptions();
             (string pathStr, IEnumerable<ArrayFilterDefinition> arrayFilterDefinitions) = GetPathAndArrayFilterDefinitions(path);
 
@@ -193,7 +193,7 @@ namespace Infrastructure.NoSQL
 
             foreach (var el in childEntity.ToBsonDocument().Elements)
             {
-                updateResult = await _collection.UpdateManyAsync(predicate,new BsonDocument("$set", new BsonDocument(pathStr+ el.Name, el.Value)), updateOptions);
+                updateResult = await _collection.UpdateManyAsync(predicate, new BsonDocument("$set", new BsonDocument(pathStr + el.Name, el.Value)), updateOptions);
             }
 
             return updateResult;
@@ -220,7 +220,7 @@ namespace Infrastructure.NoSQL
 
             foreach (var el in childEntity.ToBsonDocument().Elements)
             {
-                updateResult = await _collection.UpdateOneAsync(root=>root.Id==rootId, new BsonDocument("$set", new BsonDocument(pathStr + el.Name, el.Value)), updateOptions);
+                updateResult = await _collection.UpdateOneAsync(root => root.Id == rootId, new BsonDocument("$set", new BsonDocument(pathStr + el.Name, el.Value)), updateOptions);
             }
 
             return updateResult;
@@ -234,7 +234,7 @@ namespace Infrastructure.NoSQL
             updateOptions.ArrayFilters = arrayFilterDefinitions;
             pathStr += pathStr + fieldName;
 
-            return await _collection.UpdateOneAsync(root=>root.Id == rootId, new BsonDocument("$set", fieldNewValue), updateOptions);
+            return await _collection.UpdateOneAsync(root => root.Id == rootId, new BsonDocument("$set", fieldNewValue), updateOptions);
         }
 
         public async Task<UpdateResult> SetAsync(TRootEntity filterEntity, TChildEntity childEntity, IEnumerable<(string nestedArrayName, string itemId)> path)
@@ -297,7 +297,7 @@ namespace Infrastructure.NoSQL
             {
                 do
                 {
-                    index = GenerateIndexName(5,true);
+                    index = GenerateIndexName(5, true);
                 } while (pathStr.Contains(index));
                 arrayFilters.Add(new BsonDocumentArrayFilterDefinition<TChildEntity>(new BsonDocument($"{index}._id", new ObjectId(itemId))));
                 pathStr += $"{nestedArrayKey}.$[{index}].";

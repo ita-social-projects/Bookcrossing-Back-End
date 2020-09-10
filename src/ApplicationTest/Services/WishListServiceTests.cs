@@ -9,6 +9,7 @@ using Application.Services.Implementation;
 using Application.Services.Interfaces;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 using FluentAssertions;
 using MockQueryable.Moq;
 using Moq;
@@ -186,9 +187,9 @@ namespace ApplicationTest.Services
                 _currentUser.Email));
             _notificationServiceMock.Verify(
                 obj => obj.NotifyAsync(
-                    _currentUser.Id, 
+                    _currentUser.Id,
                     $"The book '{_book.Name}' from your wish list is available now.",
-                    _book.Id, 
+                    _book.Id,
                     NotificationAction.Request),
                 Times.Once);
             _notificationServiceMock.Verify(

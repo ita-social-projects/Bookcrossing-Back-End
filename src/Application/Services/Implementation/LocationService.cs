@@ -1,13 +1,13 @@
-﻿using Application.Dto;
-using AutoMapper;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Domain.RDBMS;
-using Domain.RDBMS.Entities;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Application.Dto;
 using Application.Dto.QueryParams;
 using Application.Services.Interfaces;
+using AutoMapper;
+using Domain.RDBMS;
+using Domain.RDBMS.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.Implementation
 {

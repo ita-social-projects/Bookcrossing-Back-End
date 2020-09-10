@@ -9,7 +9,7 @@ namespace Infrastructure.RDBMS.Configuration
         public void Configure(EntityTypeBuilder<BookAuthor> builder)
         {
             builder.ToTable("BookAuthor");
-            builder.HasKey(e => new {e.BookId, e.AuthorId});
+            builder.HasKey(e => new { e.BookId, e.AuthorId });
 
             builder.Property(e => e.BookId).HasColumnName("book_id");
 

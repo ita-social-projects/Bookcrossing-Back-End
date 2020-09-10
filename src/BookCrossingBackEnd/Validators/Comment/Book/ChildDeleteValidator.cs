@@ -1,6 +1,6 @@
-﻿using Application.Dto.Comment.Book;
+﻿using System.Linq;
+using Application.Dto.Comment.Book;
 using FluentValidation;
-using System.Linq;
 
 namespace BookCrossingBackEnd.Validators.Comment.Book
 {

@@ -1,8 +1,8 @@
-﻿using Application.Dto.Comment.Book;
+﻿using System.Collections.Generic;
+using Application.Dto.Comment.Book;
 using BookCrossingBackEnd.Validators.Comment.Book;
 using FluentValidation.TestHelper;
 using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace ApplicationTest.Validators.Comment.Book
 {

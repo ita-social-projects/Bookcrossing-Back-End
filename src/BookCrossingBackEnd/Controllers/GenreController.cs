@@ -59,7 +59,7 @@ namespace BookCrossingBackEnd.Controllers
 
         // POST: api/Genre
         [HttpPost]
-        public async Task<ActionResult<GenreDto>> PostGenre([FromBody]GenreDto genreDto)
+        public async Task<ActionResult<GenreDto>> PostGenre([FromBody] GenreDto genreDto)
         {
             _logger.LogInformation("Post genre {GenreDto}", genreDto);
             var insertedGenre = await _genreService.Add(genreDto);

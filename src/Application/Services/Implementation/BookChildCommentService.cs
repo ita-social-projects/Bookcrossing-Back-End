@@ -65,7 +65,7 @@ namespace Application.Services.Implementation
             var path = ids.Skip(1).Select(x => ("Comments", x)).ToList();
             return (int)(await _childCommentRepository.SetAsync(
                 rootId,
-                new BookChildComment() {IsDeleted = true, Text = childComment.Text, Comments = children},
+                new BookChildComment() { IsDeleted = true, Text = childComment.Text, Comments = children },
                 path
             )).ModifiedCount;
         }
@@ -88,7 +88,7 @@ namespace Application.Services.Implementation
                 await ClearCommentBranch(rootComment, ids.Skip(1).SkipLast(1));
             }
 
-            return (int) updateResult.ModifiedCount;
+            return (int)updateResult.ModifiedCount;
         }
 
         public async Task<int> Update(ChildUpdateDto updateDto)
@@ -113,7 +113,7 @@ namespace Application.Services.Implementation
 
             var updateResult = await _childCommentRepository.SetAsync(
                 rootId,
-                new BookChildComment() {Text = updateDto.Text, Comments = children},
+                new BookChildComment() { Text = updateDto.Text, Comments = children },
                 path);
 
             return Convert.ToInt32(updateResult.MatchedCount);

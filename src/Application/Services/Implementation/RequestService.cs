@@ -13,6 +13,7 @@ using Domain.NoSQL;
 using Domain.NoSQL.Entities;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using MimeKit;
@@ -73,10 +74,20 @@ namespace Application.Services.Implementation
         {
             var book = await _bookRepository.GetAll().Include(x => x.User).FirstOrDefaultAsync(x => x.Id == bookId);
             var isNotAvailableForRequest = book == null || book.State != BookState.Available;
-            var user = _userRepository.FindByIdAsync(userId).Result;
             if (isNotAvailableForRequest)
             {
                 return null;
+            }
+
+            if (userId == book.UserId)
+            {
+                throw new InvalidOperationException("You cannot request your book");
+            }
+
+            var user = await _userRepository.FindByIdAsync(userId);
+            if (user.IsDeleted)
+            {
+                throw new InvalidOperationException("As deleted user you cannot request books");
             }
 
             var request = new Request()
@@ -86,10 +97,6 @@ namespace Application.Services.Implementation
                 UserId = userId,
                 RequestDate = DateTime.UtcNow
             };
-            if (user.IsDeleted)
-            {
-                throw new InvalidOperationException();
-            }
             _requestRepository.Add(request);
             await _requestRepository.SaveChangesAsync();
             book.State = BookState.Requested;
@@ -306,7 +313,7 @@ namespace Application.Services.Implementation
 
                 await _emailSenderService.SendThatBookWasReceivedToNewOwnerAsync(emailMessage);
             }
-            
+
             await _notificationsService.NotifyAsync(
                 request.Owner.Id,
                 $"{request.User.FirstName} {request.User.LastName} has successfully received and started reading '{book.Name}'.",
@@ -318,7 +325,7 @@ namespace Application.Services.Implementation
                 book.Id,
                 NotificationAction.Open);
 
-                await _hangfireJobScheduleService.DeleteRequestScheduleJob(requestId);
+            await _hangfireJobScheduleService.DeleteRequestScheduleJob(requestId);
             return affectedRows > 0;
         }
 

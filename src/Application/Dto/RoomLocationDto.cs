@@ -2,7 +2,7 @@
 {
     public class RoomLocationDto
     {
-       public LocationDto Location { get; set; }
-       public string RoomNumber { get; set; }
+        public LocationDto Location { get; set; }
+        public string RoomNumber { get; set; }
     }
 }

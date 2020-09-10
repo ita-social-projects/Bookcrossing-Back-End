@@ -7,7 +7,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Dto;
-using Application.Dto.QueryParams;
 using Application.Services.Implementation;
 using Application.Services.Interfaces;
 using AutoMapper;
@@ -64,9 +63,11 @@ namespace ApplicationTest.Services
             var _mapper = mappingConfig.CreateMapper();
             var options = new DbContextOptionsBuilder<BookCrossingContext>().UseInMemoryDatabase(databaseName: "Fake DB").ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning)).Options;
             _context = new BookCrossingContext(options);
+
             _usersService = new UsersService(_userRepositoryMock.Object, _mapper,_emailSenderServiceMock.Object,
                                              _resetPasswordRepositoryMock.Object, _userRoomRepositoryMock.Object, _bookServiceMock.Object,
                                              _context, _paginationServiceMock.Object, _requestServiceMock.Object,_userHomeAdressRepositoryMock.Object);
+
         }
         [SetUp]
         public void SetUp()
@@ -80,7 +81,7 @@ namespace ApplicationTest.Services
             var usersMock = GetTestUsers().AsQueryable().BuildMock();
             _userRepositoryMock.Setup(s => s.GetAll()).Returns(usersMock.Object);
 
-            var usersResult = await _usersService.GetById(x=>x.Id == 1);
+            var usersResult = await _usersService.GetById(x => x.Id == 1);
 
             usersResult.Should().BeOfType<UserDto>();
             usersResult.Id.Should().Be(1);
@@ -141,7 +142,7 @@ namespace ApplicationTest.Services
             _userRepositoryMock.Setup(s => s.FindByCondition(It.IsAny<Expression<Func<User, bool>>>())).ReturnsAsync(expectedUser);
             string mail = "test1@gmail.com";
 
-            var result = await _usersService.ForbidEmailNotification(new ForbidEmailDto() { Email = mail, Code = string.Join(null, SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(mail)).Select(x => x.ToString("x2"))) } );
+            var result = await _usersService.ForbidEmailNotification(new ForbidEmailDto() { Email = mail, Code = string.Join(null, SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(mail)).Select(x => x.ToString("x2"))) });
 
             result.Should().BeTrue();
         }
@@ -181,7 +182,7 @@ namespace ApplicationTest.Services
         }
 
         [Test]
-        public void  RemoveUser_AffectedRowsAreEqualToZero_ThrowsObjectNotFoundException()
+        public void RemoveUser_AffectedRowsAreEqualToZero_ThrowsObjectNotFoundException()
         {
             int userId = 5;
             _userRepositoryMock.Setup(s => s.FindByIdAsync(userId)).ReturnsAsync(new User());
@@ -189,7 +190,7 @@ namespace ApplicationTest.Services
 
             Func<Task> a = async () => await _usersService.RemoveUser(userId);
 
-            a.Should().Throw<ObjectNotFoundException> ();
+            a.Should().Throw<ObjectNotFoundException>();
         }
 
         [Test]
@@ -213,13 +214,13 @@ namespace ApplicationTest.Services
                 new Book {Id = 1, State = BookState.Available},
                 new Book {Id = 2, State = BookState.Reading}
             };
-            var user = new User {Id = userId, Book = books};
-             _userRepositoryMock.Setup(s => s.FindByIdAsync(userId))
-                .ReturnsAsync(user);
+            var user = new User { Id = userId, Book = books };
+            _userRepositoryMock.Setup(s => s.FindByIdAsync(userId))
+               .ReturnsAsync(user);
             _userRepositoryMock.Setup(r => r.SaveChangesAsync())
                 .ReturnsAsync(1);
             _userRepositoryMock.Setup(s => s.GetAll())
-                .Returns(new List<User> {user}.AsQueryable);
+                .Returns(new List<User> { user }.AsQueryable);
             Func<Task> a = async () => await _usersService.RemoveUser(userId);
 
             a.Should().Throw<InvalidOperationException>();

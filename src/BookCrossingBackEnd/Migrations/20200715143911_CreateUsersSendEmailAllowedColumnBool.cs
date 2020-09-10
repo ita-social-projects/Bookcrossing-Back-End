@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BookCrossingBackEnd.Migrations
 {
@@ -19,7 +18,7 @@ namespace BookCrossingBackEnd.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "email_allowed",
-                table: "User");  
+                table: "User");
         }
     }
 }

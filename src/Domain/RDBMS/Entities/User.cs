@@ -37,9 +37,9 @@ namespace Domain.RDBMS.Entities
 
         public virtual Role Role { get; set; }
 
-        public virtual List<Book> Book { get; set; } 
+        public virtual List<Book> Book { get; set; }
 
-        public virtual List<Request> RequestOwner { get; set; } 
+        public virtual List<Request> RequestOwner { get; set; }
 
         public virtual List<Request> RequestUser { get; set; }
 

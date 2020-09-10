@@ -21,9 +21,9 @@ namespace Infrastructure.RDBMS.Configuration
                 .IsRequired()
                 .HasColumnName("lastname")
                 .HasMaxLength(100);
-            
+
             builder.Property(e => e.IsConfirmed)
                 .HasColumnName("is_confirmed");
-        }       
+        }
     }
 }

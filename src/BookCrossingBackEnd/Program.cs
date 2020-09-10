@@ -36,6 +36,6 @@ namespace BookCrossingBackEnd
                                 ApplicationInsightsLoggerProvider>
                             ("", LogLevel.Information);
                 });
-        
+
     }
 }

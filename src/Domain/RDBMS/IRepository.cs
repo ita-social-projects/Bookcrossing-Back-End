@@ -1,9 +1,9 @@
-﻿using Domain.RDBMS.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Domain.RDBMS.Entities;
 
 namespace Domain.RDBMS
 {
@@ -34,7 +34,7 @@ namespace Domain.RDBMS
         /// </summary>
         /// <param name="entity">entity framework's entity</param>
         void Add(TEntity entity);
-       
+
         /// <summary>
         /// Adds multiple entities into DBContext
         /// </summary>

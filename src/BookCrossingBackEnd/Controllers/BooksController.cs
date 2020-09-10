@@ -20,7 +20,7 @@ namespace BookCrossingBackEnd.Controllers
 
         // GET: api/Books
         [HttpGet]
-        public async Task<ActionResult<PaginationDto<BookGetDto>>> GetAllBooksAsync([FromQuery]BookQueryParams parameters)
+        public async Task<ActionResult<PaginationDto<BookGetDto>>> GetAllBooksAsync([FromQuery] BookQueryParams parameters)
         {
             return await _bookService.GetAllAsync(parameters);
         }
@@ -60,7 +60,7 @@ namespace BookCrossingBackEnd.Controllers
 
             return NoContent();
         }
-        
+
         [HttpPut("{id}/deactivate")]
         public async Task<IActionResult> DeactivateBookAsync([FromRoute] int id)
         {
@@ -97,13 +97,13 @@ namespace BookCrossingBackEnd.Controllers
         }
 
         [HttpGet("registered")]
-        public async Task<ActionResult<PaginationDto<BookGetDto>>> GetRegisteredBooksAsync([FromQuery]BookQueryParams parameters)
+        public async Task<ActionResult<PaginationDto<BookGetDto>>> GetRegisteredBooksAsync([FromQuery] BookQueryParams parameters)
         {
             return await _bookService.GetRegisteredAsync(parameters);
         }
 
         [HttpGet("current")]
-        public async Task<ActionResult<PaginationDto<BookGetDto>>> GetCurrentOwnedBooksAsync([FromQuery]BookQueryParams parameters)
+        public async Task<ActionResult<PaginationDto<BookGetDto>>> GetCurrentOwnedBooksAsync([FromQuery] BookQueryParams parameters)
         {
             return await _bookService.GetCurrentOwned(parameters);
         }
@@ -115,10 +115,21 @@ namespace BookCrossingBackEnd.Controllers
         }
 
         [HttpGet("read")]
-        public async Task<ActionResult<PaginationDto<BookGetDto>>> GetReadBooksAsync([FromQuery]BookQueryParams parameters)
+        public async Task<ActionResult<PaginationDto<BookGetDto>>> GetReadBooksAsync([FromQuery] BookQueryParams parameters)
         {
             return await _bookService.GetReadBooksAsync(parameters);
         }
+  
+        [HttpPost("rating")]
+        public async Task<ActionResult<bool>> SetRating([FromQuery]BookRatingQueryParams ratingQueryParams)
+        {
+            return await _bookService.SetRating(ratingQueryParams);
+        }
 
+        [HttpGet("rating/{bookId}/user/{userId}")]
+        public async Task<ActionResult<double>> GetRating(int bookId, int userId)
+        {
+            return await _bookService.GetRating(bookId, userId);
+        }
     }
 }

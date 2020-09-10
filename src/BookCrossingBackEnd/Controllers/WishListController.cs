@@ -27,7 +27,7 @@ namespace BookCrossingBackEnd.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<ActionResult> AddWish([FromBody]int bookId)
+        public async Task<ActionResult> AddWish([FromBody] int bookId)
         {
             try
             {

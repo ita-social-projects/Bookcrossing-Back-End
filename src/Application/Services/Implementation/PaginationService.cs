@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Services.Implementation
 {
 
-public class PaginationService : IPaginationService
+    public class PaginationService : IPaginationService
     {
         private readonly IMapper _mapper;
         public PaginationService(IMapper mapper)

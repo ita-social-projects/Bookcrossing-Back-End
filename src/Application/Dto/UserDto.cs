@@ -30,5 +30,7 @@ namespace Application.Dto
         public UserHomeAdressDto UserHomeAdress { get; set; }
 
         public int? NumberOfBooksOwned { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

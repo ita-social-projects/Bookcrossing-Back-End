@@ -1,4 +1,5 @@
 ﻿using System;
+using Domain.RDBMS.Enums;
 
 namespace Domain.RDBMS.Entities
 {
@@ -9,6 +10,8 @@ namespace Domain.RDBMS.Entities
         public string Message { get; set; }
 
         public int UserId { get; set; }
+
+        public int? ReceiverUserId { get; set; }
 
         public int? BookId { get; set; }
 

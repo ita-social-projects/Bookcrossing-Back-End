@@ -1,8 +1,5 @@
 ﻿using Application.Dto;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using RdbmsEntities = Domain.RDBMS.Entities;
 namespace Application.MapperProfilers
 {

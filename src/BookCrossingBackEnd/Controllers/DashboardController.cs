@@ -45,7 +45,7 @@ namespace BookCrossingBackEnd.Controllers
         [HttpGet("BookUserComparison")]
         public async Task<ActionResult> GetBookUserData([FromQuery] string city, [FromQuery] bool byMonth = true)
         {
-            var bookUserComparisonData = await _dashboardService.GetBookUserData(city,byMonth);
+            var bookUserComparisonData = await _dashboardService.GetBookUserData(city, byMonth);
             return Ok(bookUserComparisonData);
         }
     }
