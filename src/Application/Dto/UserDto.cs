@@ -25,7 +25,9 @@ namespace Application.Dto
 
         public bool IsEmailAllowed { get; set; }
 
-        public RoomLocationDto UserLocation { get; set; }
+        public RoomLocationDto UserRoomLocation { get; set; }
+
+        public UserHomeAdressDto UserHomeAdress { get; set; }
 
         public int? NumberOfBooksOwned { get; set; }
     }

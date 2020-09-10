@@ -28,7 +28,8 @@ namespace Application.MapperProfilers
 
             CreateMap<UserDto, RdbmsEntities.User>().ReverseMap()
                 .ForMember(a => a.Id, opt => opt.Condition(a => a.Id != 0))
-                .ForMember(dto => dto.UserLocation, opt => opt.MapFrom(x => x.UserRoom))
+                .ForMember(dto => dto.UserRoomLocation, opt => opt.MapFrom(x => x.UserRoom))
+                .ForMember(dto => dto.UserHomeAdress, opt => opt.MapFrom(x => x.UserHomeAdress))
                 .ForMember(dto => dto.Role, opt => opt.MapFrom(x => x.Role));
         }
     }

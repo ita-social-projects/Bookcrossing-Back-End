@@ -21,7 +21,9 @@ namespace Application.Dto
 
         public DateTime RegisteredDate { get; set; }
 
-        public RoomLocationDto UserLocation { get; set; }
+        public RoomLocationDto UserRoomLocation { get; set; }
+
+        public UserHomeAdressDto UserHomeAdress { get; set; }
 
         public int RoleId { get; set; }
 

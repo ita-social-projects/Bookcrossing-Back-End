@@ -14,7 +14,7 @@ namespace Domain.RDBMS.Entities
 
         public bool IsActive { get; set; }
 
-        public string HomeAdress { get; set; }
+        public virtual List<UserHomeAdress> UserHomeAdress { get; set; }
 
         public virtual List<UserRoom> UserRoom { get; set; } 
     }

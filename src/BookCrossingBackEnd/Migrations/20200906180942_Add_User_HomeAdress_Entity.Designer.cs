@@ -4,14 +4,16 @@ using Infrastructure.RDBMS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookCrossingBackEnd.Migrations
 {
     [DbContext(typeof(BookCrossingContext))]
-    partial class BookCrossingContextModelSnapshot : ModelSnapshot
+    [Migration("20200906180942_Add_User_HomeAdress_Entity")]
+    partial class Add_User_HomeAdress_Entity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -429,7 +431,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            DateAdded = new DateTime(2020, 9, 10, 16, 12, 41, 251, DateTimeKind.Local).AddTicks(6808),
+                            DateAdded = new DateTime(2020, 9, 6, 21, 9, 41, 854, DateTimeKind.Local).AddTicks(5965),
                             LanguageId = 1,
                             Name = "Adventures of Junior",
                             Rating = 0.0,
@@ -1032,7 +1034,7 @@ namespace BookCrossingBackEnd.Migrations
                         .HasForeignKey("RoleId")
                         .IsRequired();
 
-                    b.HasOne("Domain.RDBMS.Entities.UserHomeAdress", "UserHomeAdress")
+                    b.HasOne("Domain.RDBMS.Entities.UserHomeAdress", null)
                         .WithMany("User")
                         .HasForeignKey("UserHomeAdressId");
 

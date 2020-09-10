@@ -25,6 +25,8 @@ namespace Domain.RDBMS.Entities
 
         public int? UserRoomId { get; set; }
 
+        public int? UserHomeAdressId { get; set; }
+
         public DateTime BirthDate { get; set; }
 
         public DateTime RegisteredDate { get; set; }
@@ -43,7 +45,10 @@ namespace Domain.RDBMS.Entities
 
         public virtual List<RefreshToken> RefreshTokens { get; set; }
 
+        public virtual UserHomeAdress UserHomeAdress { get; set; }
+
         public virtual UserRoom UserRoom { get; set; }
+
         public virtual List<Wish> Wish { get; set; }
     }
 }

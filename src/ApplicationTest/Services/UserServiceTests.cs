@@ -33,6 +33,7 @@ namespace ApplicationTest.Services
         private Mock<IRepository<User>> _userRepositoryMock;
         private Mock<IPaginationService> _paginationServiceMock;
         private Mock<IRepository<UserRoom>> _userRoomRepositoryMock;
+        private Mock<IRepository<UserHomeAdress>> _userHomeAdressRepositoryMock;
         private Mock<IRepository<ResetPassword>> _resetPasswordRepositoryMock;
         private Mock<IBookService> _bookServiceMock;
         private Mock<IRequestService> _requestServiceMock;
@@ -45,6 +46,7 @@ namespace ApplicationTest.Services
             _mapperMock = new Mock<IMapper>();
             _emailSenderServiceMock = new Mock<IEmailSenderService>();
             _userRoomRepositoryMock = new Mock<IRepository<UserRoom>>();
+            _userHomeAdressRepositoryMock = new Mock<IRepository<UserHomeAdress>>();
             _bookServiceMock = new Mock<IBookService>();
             _paginationServiceMock = new Mock<IPaginationService>();
             _requestServiceMock = new Mock<IRequestService>();
@@ -63,8 +65,8 @@ namespace ApplicationTest.Services
             var options = new DbContextOptionsBuilder<BookCrossingContext>().UseInMemoryDatabase(databaseName: "Fake DB").ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning)).Options;
             _context = new BookCrossingContext(options);
             _usersService = new UsersService(_userRepositoryMock.Object, _mapper,_emailSenderServiceMock.Object,
-                                                _resetPasswordRepositoryMock.Object, _userRoomRepositoryMock.Object, _bookServiceMock.Object,
-                                                    _context, _paginationServiceMock.Object, _requestServiceMock.Object);
+                                             _resetPasswordRepositoryMock.Object, _userRoomRepositoryMock.Object, _bookServiceMock.Object,
+                                             _context, _paginationServiceMock.Object, _requestServiceMock.Object,_userHomeAdressRepositoryMock.Object);
         }
         [SetUp]
         public void SetUp()
@@ -167,7 +169,8 @@ namespace ApplicationTest.Services
                 FirstName = "Test",
                 LastName = "Test",
                 RoleId = 2,
-                UserLocation = new RoomLocationDto() { Location = new LocationDto() { Id = 1, City = "Lviv" }, RoomNumber = "11" }
+                UserRoomLocation = new RoomLocationDto() { Location = new LocationDto() { Id = 1, City = "Lviv" }, RoomNumber = "11" },
+                UserHomeAdress = new UserHomeAdressDto() { Location=new LocationDto() { Id = 1, City = "Lviv"}, HomeAdress = "Stusa5A" }
             };
 
 

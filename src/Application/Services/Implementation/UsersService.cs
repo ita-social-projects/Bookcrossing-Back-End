@@ -30,13 +30,14 @@ namespace Application.Services.Implementation
         private readonly IEmailSenderService _emailSenderService;
         private readonly IRepository<ResetPassword> _resetPasswordRepository;
         private readonly IRepository<UserRoom> _userRoomRepository;
+        private readonly IRepository<UserHomeAdress> _userHomeAdressRepository;
         private readonly IPaginationService _paginationService;
         private readonly PasswordHasher<User> _passwordHasher;
         private readonly BookCrossingContext _context; 
 
         public UsersService(IRepository<User> userRepository, IMapper mapper, IEmailSenderService emailSenderService, 
             IRepository<ResetPassword> resetPasswordRepository, IRepository<UserRoom> userRoomRepository, IBookService bookService, 
-            BookCrossingContext context, IPaginationService paginationService, IRequestService requestService)
+            BookCrossingContext context, IPaginationService paginationService, IRequestService requestService, IRepository<UserHomeAdress> userHomeAdressRepository)
         {
             _userRepository = userRepository;
             _mapper = mapper;
@@ -48,6 +49,7 @@ namespace Application.Services.Implementation
             _passwordHasher = new PasswordHasher<User>();
             _paginationService = paginationService;
             _requestService = requestService;
+            _userHomeAdressRepository = userHomeAdressRepository;
         }
         ///<inheritdoc/>
         public async Task<UserDto> GetById(Expression<Func<User, bool>> predicate)
@@ -55,6 +57,7 @@ namespace Application.Services.Implementation
 
             var user = await _userRepository.GetAll()
                 .Include(i => i.UserRoom).ThenInclude(i => i.Location)
+                .Include(x => x.UserHomeAdress).ThenInclude(x => x.Location)
                 .Include(x => x.Role)
                 .FirstOrDefaultAsync(predicate);
             if (user == null)
@@ -66,12 +69,12 @@ namespace Application.Services.Implementation
 
         public async Task<List<UserDto>> GetAllUsers()
         {
-            return _mapper.Map<List<UserDto>>(await _userRepository.GetAll().Include(p => p.UserRoom).ToListAsync());
+            return _mapper.Map<List<UserDto>>(await _userRepository.GetAll().Include(p => p.UserRoom).Include(p => p.UserHomeAdress).ToListAsync());
         }
 
         public async Task<PaginationDto<UserDto>> GetAllUsers(FullPaginationQueryParams parameters)
         {
-            var userList = _userRepository.GetAll().Include(p => p.UserRoom);
+            var userList = _userRepository.GetAll().Include(p => p.UserRoom).Include(p => p.UserHomeAdress);
             var paginatedListOfUsers = await _paginationService.GetPageAsync<UserDto, User>(userList, parameters);
             paginatedListOfUsers.Page.ForEach(async user => user.NumberOfBooksOwned = await _bookService.GetCurrentOwnedByIdCount(user.Id));
             return paginatedListOfUsers;
@@ -79,14 +82,23 @@ namespace Application.Services.Implementation
 
         public async Task UpdateUser(UserUpdateDto userUpdateDto)
         {
-            UserRoom newRoomId = _userRoomRepository.GetAll().FirstOrDefault(x => x.Location.Id == userUpdateDto.UserLocation.Location.Id
-                                                && x.RoomNumber == userUpdateDto.UserLocation.RoomNumber);
+            UserRoom newRoomId = _userRoomRepository.GetAll().FirstOrDefault(x => x.Location.Id == userUpdateDto.UserRoomLocation.Location.Id
+                                                && x.RoomNumber == userUpdateDto.UserRoomLocation.RoomNumber);
+            UserHomeAdress newUserHomeAdressId = _userHomeAdressRepository.GetAll().FirstOrDefault(x => x.Location.Id == userUpdateDto.UserRoomLocation.Location.Id
+                                                && x.HomeAdress == userUpdateDto.UserHomeAdress.HomeAdress);
 
-            if (newRoomId == null)
+            if (newRoomId == null) 
             {
-                newRoomId = new UserRoom() { LocationId = userUpdateDto.UserLocation.Location.Id, RoomNumber = userUpdateDto.UserLocation.RoomNumber };
+                newRoomId = new UserRoom() { LocationId = userUpdateDto.UserRoomLocation.Location.Id, RoomNumber = userUpdateDto.UserRoomLocation.RoomNumber };
                 _userRoomRepository.Add(newRoomId);
                 await _userRoomRepository.SaveChangesAsync();
+            }
+
+            if (newUserHomeAdressId == null)
+            {
+                newUserHomeAdressId = new UserHomeAdress() { LocationId = userUpdateDto.UserRoomLocation.Location.Id, HomeAdress = userUpdateDto.UserHomeAdress.HomeAdress };
+                _userHomeAdressRepository.Add(newUserHomeAdressId);
+                await _userHomeAdressRepository.SaveChangesAsync();
             }
 
             var newUser = new UpdatedUserDto()
@@ -96,6 +108,7 @@ namespace Application.Services.Implementation
                 LastName = userUpdateDto.LastName,
                 BirthDate = userUpdateDto.BirthDate,
                 UserRoomId = newRoomId.Id,
+                UserHomeAdressId = newUserHomeAdressId.Id,
                 IsEmailAllowed = userUpdateDto.IsEmailAllowed,
                 FieldMasks = userUpdateDto.FieldMasks
             };
