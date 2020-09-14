@@ -382,6 +382,18 @@ namespace Application.Services.Implementation
             return rating != null ? rating.Rating : 0;
         }
 
+        public IEnumerable<Request> GetBooksTransitions()
+        {
+            return _requestRepository.GetAll()
+                .Where(r => r.ReceiveDate != null && r.OwnerId != r.UserId)
+                .Include(r => r.User)
+                .ThenInclude(u => u.UserRoom)
+                .ThenInclude(r => r.Location)
+                .Include(r => r.Book)
+                .ThenInclude(b => b.BookGenre)
+                .ThenInclude(g => g.Genre);
+        }
+
         private IQueryable<Book> GetFilteredQuery(IQueryable<Book> query, BookQueryParams parameters)
         {
             if (parameters.ShowAvailable == true)
