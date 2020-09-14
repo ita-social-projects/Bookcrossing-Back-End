@@ -18,6 +18,8 @@ namespace Application.Services.Interfaces
 
         Task AddAsync(MessageDto message);
 
+        Task AddAsync(string message);
+
         Task RemoveAsync(int id);
 
         Task RemoveAllForCurrentUserAsync();
