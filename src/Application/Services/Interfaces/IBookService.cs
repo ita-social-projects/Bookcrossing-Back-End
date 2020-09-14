@@ -131,11 +131,5 @@ namespace Application.Services.Interfaces
         /// <param name="userId"></param>
         /// <returns></returns>
         Task<double> GetRating(int bookId, int userId);
-
-        /// <summary>
-        /// Get books transitions between users
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Request> GetBooksTransitions();
     }
 }

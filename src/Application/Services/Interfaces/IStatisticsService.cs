@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Application.Dto;
 using Application.Dto.Statistics;
 
 namespace Application.Services.Interfaces
@@ -25,18 +24,5 @@ namespace Application.Services.Interfaces
         /// </summary>
         /// <returns></returns>
         PieChartData GetUserMostReadLanguagesData();
-
-        /// <summary>
-        /// Get statistics data about book's genres that are reading
-        /// </summary>
-        /// <param name="query">filters</param>
-        Task<StatisticsChartData> GetReadingStatisticsData(StatisticsQueryParams query);
-
-        /// <summary>
-        /// Get statistics data about donations
-        /// </summary>
-        /// <param name="query">filters</param>
-        /// <returns></returns>
-        Task<StatisticsChartData> GetDonationStatisticsData(StatisticsQueryParams query);
     }
 }
