@@ -9,7 +9,7 @@ namespace ApplicationTest.Validators
     public class AuthorValidatorTest
     {
         private AuthorValidator _validator;
-        private static string[] _namesWithForbiddenCharacters = { "John@", "_John_", "J0hn", "J.", "..." };
+        private static string[] _namesWithForbiddenCharacters = { "John@", "_John_", "J0hn" };
         private static string[] _namesWithPermittedCharacters = { "De-John", "De'John" };
 
         [SetUp]
