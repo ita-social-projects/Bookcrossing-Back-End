@@ -125,6 +125,23 @@ namespace Application.Services.Implementation
                    MethodNameOfHubProxy, _mapper.Map<NotificationDto>(notification));
         }
 
+        public async Task AddAsync(string message)
+        {
+            var currentUserId = _userResolverService.GetUserId();
+            var notification = new Notification
+            {
+                UserId = currentUserId,
+                Message = message,
+                Action = (NotificationAction)0
+            };
+
+            _notificationsRepository.Add(notification);
+            await _notificationsRepository.SaveChangesAsync();
+            await _notificationHubContext.Clients.User(notification.UserId.ToString())
+               .SendAsync(
+                   MethodNameOfHubProxy, _mapper.Map<NotificationDto>(notification));
+        }
+
         public async Task RemoveAsync(int id)
         {
             var currentUserId = _userResolverService.GetUserId();
