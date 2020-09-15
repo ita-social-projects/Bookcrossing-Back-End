@@ -7,10 +7,10 @@ sudo: false
 git:
    depth: false
 
-env:
-    global:
-        - DOTNET_CLI_TELEMETRY_OPTOUT: 1
-        - CODECOV_TOKEN="030b932b-3989-4b6f-91ce-b70a152bb005"
+#env:
+#    global:
+#        - DOTNET_CLI_TELEMETRY_OPTOUT: 1
+#        - CODECOV_TOKEN="030b932b-3989-4b6f-91ce-b70a152bb005"
 
 addons:
   sonarcloud:
@@ -20,13 +20,11 @@ before_script:
     - ./tools/travis-ci-install-sonar.sh
 
 script:
-    - dotnet tools/sonar/SonarScanner.MSBuild.dll begin /o:"irynazavushchak" /k:"Bookcrossing-Back-End" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=${SONAR_TOKEN}
-    - dotnet build src/BookCrossingBackEnd.sln -c Release
-    - dotnet test -c Release --no-build src/ApplicationTest/ApplicationTest.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-    - dotnet tools/sonar/SonarScanner.MSBuild.dll end /d:sonar.login=${SONAR_TOKEN}
-
-after_script:
-    - bash <(curl -s https://codecov.io/bash) 
+    - cd src/
+    - dotnet ../tools/sonar/SonarScanner.MSBuild.dll begin /o:"irynazavushchak" /k:"Bookcrossing-Back-End" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=${SONAR_TOKEN}
+    - dotnet build -c Release
+    - dotnet test -c Release ApplicationTest/ApplicationTest.csproj 
+    - dotnet ../tools/sonar/SonarScanner.MSBuild.dll end /d:sonar.login=${SONAR_TOKEN}
 
 deploy:
     provider: azure_web_apps
