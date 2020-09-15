@@ -21,7 +21,7 @@ before_script:
 
 script:
     - cd src/
-    - dotnet ../tools/sonar/SonarScanner.MSBuild.dll begin /o:"irynazavushchak" /k:"Bookcrossing-Back-End" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=${SONAR_TOKEN}
+    - dotnet ../tools/sonar/SonarScanner.MSBuild.dll begin /o:"irynazavushchak" /k:"ita-social-projects_Bookcrossing-Back-End" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=${SONAR_TOKEN}
     - dotnet build -c Release
     - dotnet test -c Release ApplicationTest/ApplicationTest.csproj 
     - dotnet ../tools/sonar/SonarScanner.MSBuild.dll end /d:sonar.login=${SONAR_TOKEN}
