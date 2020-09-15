@@ -1,7 +1,7 @@
 ﻿language: csharp
 
 dotnet: 3.1.301
-mono: latest
+mono: none
 sudo: false
 
 git:
