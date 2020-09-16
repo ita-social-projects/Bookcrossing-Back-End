@@ -13,6 +13,7 @@ addons:
     
 before_script:
     - dotnet tool install --global dotnet-sonarscanner --version 4.10.0
+    - export PATH="$PATH:$HOME/.dotnet/tools"
     
 script:
     - dotnet sonarscanner begin /o:ita-social-projects /k:ita-social-projects-bookcrossing-back-end /d:sonar.host.url=https://sonarcloud.io
