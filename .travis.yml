@@ -20,9 +20,6 @@ script:
     - dotnet build src/BookCrossingBackEnd.sln -c Release 
     - dotnet test src/ApplicationTest/ApplicationTest.csproj --no-build -c Release 
     - dotnet sonarscanner end
-#    - dotnet build src/BookCrossingBackEnd.sln -c Release 
-#    - dotnet test src/ApplicationTest/ApplicationTest.csproj --no-build -c Release 
-#    - sonar-scanner
  
 deploy:
     provider: azure_web_apps
