@@ -10,8 +10,6 @@ git:
 addons:
   sonarcloud:
     organization: "ita-social-projects"
-    token:
-      secure: ${SONAR_TOKEN}
     
 script:
     - dotnet build src/BookCrossingBackEnd.sln -c Release 
