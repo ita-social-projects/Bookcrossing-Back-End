@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Services.Implementation;
 using Application.Services.Interfaces;
+using Domain.RDBMS;
 using Domain.RDBMS.Entities;
 using FluentAssertions;
 using Moq;
@@ -21,6 +22,9 @@ namespace ApplicationTest.Services
 
         private IStatisticsService _statisticsService;
         private Mock<IBookService> _bookServiceMock;
+        private Mock<IRepository<Genre>> _genreRepositoryMock;
+        private Mock<IRepository<Location>> _locationRepositoryMock;
+        private Mock<IRepository<Book>> _bookRepositoryMock;
 
         private List<Book> _books;
         private List<Book> _bookInReadStatus;
@@ -30,7 +34,15 @@ namespace ApplicationTest.Services
         public StatisticsServiceTest()
         {
             _bookServiceMock = new Mock<IBookService>();
-            _statisticsService = new StatisticsService(_bookServiceMock.Object);
+            _genreRepositoryMock = new Mock<IRepository<Genre>>();
+            _locationRepositoryMock = new Mock<IRepository<Location>>();
+            _bookRepositoryMock = new Mock<IRepository<Book>>();
+            _statisticsService = new StatisticsService(
+                _bookServiceMock.Object,
+                _genreRepositoryMock.Object,
+                _locationRepositoryMock.Object,
+                _bookRepositoryMock.Object
+            );
 
             MockData();
         }

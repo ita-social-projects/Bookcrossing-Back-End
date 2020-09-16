@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Application.Dto.Comment.Book
 {
-    public  class RootDto
+    public class RootDto
     {
         public string Id { get; set; }
 

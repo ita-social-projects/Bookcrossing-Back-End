@@ -1,6 +1,6 @@
-﻿using Domain.NoSQL.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.NoSQL.Entities;
 
 namespace Application
 {

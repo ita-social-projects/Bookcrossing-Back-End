@@ -26,6 +26,6 @@ namespace Infrastructure.RDBMS.Configuration
                 .WithOne(p => p.UserRoom)
                 .HasForeignKey(d => d.UserRoomId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
-        }       
+        }
     }
 }

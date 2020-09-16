@@ -64,11 +64,11 @@ namespace ApplicationTest.Controllers
         [TestCase(201)]
         public async Task GetAuthor_AuthorExists_Returns_OkObjectResultWithRequestedId(int id)
         {
-            var expectedAuthor = new AuthorDto() {Id = 201};
+            var expectedAuthor = new AuthorDto() { Id = 201 };
             _authorServiceMock.Setup(s => s.GetById(It.IsAny<int>())).ReturnsAsync(expectedAuthor);
 
             var result = await _authorController.GetAuthor(id);
-            var author = (AuthorDto) ((OkObjectResult) result).Value;
+            var author = (AuthorDto)((OkObjectResult)result).Value;
 
             result.Should().BeOfType<OkObjectResult>();
             author.Id.Should().Be(id);
@@ -127,13 +127,13 @@ namespace ApplicationTest.Controllers
         [Test]
         public async Task AddAuthor_Success_ReturnsActionResultAuthorDtoWhichWasAdded()
         {
-            var insertDto = new AuthorDto() {FirstName = "Max", LastName = "Novitskyi"};
+            var insertDto = new AuthorDto() { FirstName = "Max", LastName = "Novitskyi" };
             var expectedAuthorDto = new AuthorDto()
-                {Id = 201, FirstName = "Max", LastName = "Novitskyi"};
+            { Id = 201, FirstName = "Max", LastName = "Novitskyi" };
             _authorServiceMock.Setup(s => s.Add(It.IsAny<AuthorDto>())).ReturnsAsync(expectedAuthorDto);
 
             var createdAtActionResult = await _authorController.PostAuthor(insertDto);
-            var result = (AuthorDto) ((CreatedAtActionResult) createdAtActionResult.Result).Value;
+            var result = (AuthorDto)((CreatedAtActionResult)createdAtActionResult.Result).Value;
 
             result.Should().BeOfType<AuthorDto>();
             createdAtActionResult.Should().BeOfType<ActionResult<AuthorDto>>();
@@ -168,7 +168,7 @@ namespace ApplicationTest.Controllers
         public async Task PutAuthor_AuthorsSuccessfullyMerged_ReturnsCreatedAtActionResult()
         {
             _authorServiceMock.Setup(m => m.Merge(It.IsAny<AuthorMergeDto>()))
-                .ReturnsAsync(new AuthorDto() {Id = 0});
+                .ReturnsAsync(new AuthorDto() { Id = 0 });
 
             var result = await _authorController.PutAuthor(It.IsAny<AuthorMergeDto>());
 

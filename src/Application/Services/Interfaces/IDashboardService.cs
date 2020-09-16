@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Application.Dto;
+﻿using System.Threading.Tasks;
 using Application.Dto.Dashboard;
-using Application.Dto.QueryParams;
-using Application.QueryableExtension;
 
 namespace Application.Services.Interfaces
 {

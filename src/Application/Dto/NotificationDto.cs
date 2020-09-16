@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 
 namespace Application.Dto
 {
@@ -10,6 +8,8 @@ namespace Application.Dto
         public int Id { get; set; }
 
         public string Message { get; set; }
+
+        public int? ReceiverUserId { get; set; }
 
         public int? BookId { get; set; }
 

@@ -1,6 +1,7 @@
-# BookCrossingBackEnd  
+# BookCrossingBackEnd   [![License: MIT](https://img.shields.io/badge/license-MIT-ff69b4)](https://github.com/ita-social-projects/Bookcrossing-Back-End/blob/develop/LICENSE) [![Build Status](https://travis-ci.org/ita-social-projects/Bookcrossing-Back-End.svg?branch=develop)](https://travis-ci.org/ita-social-projects/Bookcrossing-Back-End) [![Build number](https://img.shields.io/badge/build-number-blue.svg)](https://travis-ci.org/github/ita-social-projects/Bookcrossing-Back-End/builds) 
+
 Platform for book crossing between company employees
-[Website](https://localhost:44370/)  
+[Website](https://book-crossing-web.azurewebsites.net/)  
   
 ## Git Flow  
 We are using simpliest github flow to organize our work:  
