@@ -15,7 +15,8 @@ git:
 addons:
   sonarcloud:
     organization: "irynazavushchak"
-    secure: ${SONAR_TOKEN}
+    token:
+      secure: ${SONAR_TOKEN}
     
 #before_script:
 #    - ./tools/travis-ci-install-sonar.sh
