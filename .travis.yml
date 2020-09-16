@@ -12,9 +12,13 @@ addons:
     organization: "ita-social-projects"
     
 script:
+    - dotnet sonarscanner begin /o:ita-social-projects /k:ita-social-projects-bookcrossing-back-end /d:sonar.host.url=https://sonarcloud.io
     - dotnet build src/BookCrossingBackEnd.sln -c Release 
     - dotnet test src/ApplicationTest/ApplicationTest.csproj --no-build -c Release 
-    - sonar-scanner
+    - dotnet sonarscanner end
+#    - dotnet build src/BookCrossingBackEnd.sln -c Release 
+#    - dotnet test src/ApplicationTest/ApplicationTest.csproj --no-build -c Release 
+#    - sonar-scanner
     
 deploy:
     provider: azure_web_apps
