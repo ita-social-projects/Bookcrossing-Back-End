@@ -292,7 +292,8 @@ namespace Infrastructure.RDBMS.Seeder
                 new Genre
                 {
                     Id = 1,
-                    Name = "Unknown"
+                    Name = "Unknown",
+                    NameUk = "Невідомий"
                 }
             );
         }
