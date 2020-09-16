@@ -11,10 +11,10 @@ git:
 #    global:
 #        - DOTNET_CLI_TELEMETRY_OPTOUT: 1 
 #        - CODECOV_TOKEN="030b932b-3989-4b6f-91ce-b70a152bb005" 
-
+     
 addons:
   sonarcloud:
-    organization: "irynazavushchak"
+    organization: "ita-social-projects"
     token:
       secure: ${SONAR_TOKEN}
     
