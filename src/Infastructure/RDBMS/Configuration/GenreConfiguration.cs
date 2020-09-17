@@ -16,6 +16,11 @@ namespace Infrastructure.RDBMS.Configuration
                 .IsRequired()
                 .HasColumnName("name")
                 .HasMaxLength(20);
+
+            builder.Property(e => e.NameUk)
+                .IsRequired()
+                .HasColumnName("nameuk")
+                .HasMaxLength(20);
         }
     }
 }

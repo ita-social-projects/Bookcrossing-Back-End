@@ -1,4 +1,5 @@
-# BookCrossingBackEnd   [![License: MIT](https://img.shields.io/badge/license-MIT-ff69b4)](https://github.com/ita-social-projects/Bookcrossing-Back-End/blob/develop/LICENSE) 
+# BookCrossingBackEnd   [![License: MIT](https://img.shields.io/badge/license-MIT-ff69b4)](https://github.com/ita-social-projects/Bookcrossing-Back-End/blob/develop/LICENSE) [![Build Status](https://travis-ci.org/ita-social-projects/Bookcrossing-Back-End.svg?branch=develop)](https://travis-ci.org/ita-social-projects/Bookcrossing-Back-End) [![Build number](https://img.shields.io/badge/build-number-blue.svg)](https://travis-ci.org/github/ita-social-projects/Bookcrossing-Back-End/builds) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ita-social-projects-bookcrossing-back-end&metric=alert_status)](https://sonarcloud.io/dashboard?id=ita-social-projects-bookcrossing-back-end) 
+
 Platform for book crossing between company employees
 [Website](https://book-crossing-web.azurewebsites.net/)  
   

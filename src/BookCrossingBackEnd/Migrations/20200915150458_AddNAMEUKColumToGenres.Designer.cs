@@ -4,14 +4,16 @@ using Infrastructure.RDBMS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookCrossingBackEnd.Migrations
 {
     [DbContext(typeof(BookCrossingContext))]
-    partial class BookCrossingContextModelSnapshot : ModelSnapshot
+    [Migration("20200915150458_AddNAMEUKColumToGenres")]
+    partial class AddNAMEUKColumToGenres
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -377,9 +379,6 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<string>("ISBN")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ImagePath")
                         .HasColumnName("imagepath")
                         .HasColumnType("nvarchar(260)")
@@ -432,9 +431,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-
-                            DateAdded = new DateTime(2020, 9, 17, 20, 20, 48, 146, DateTimeKind.Local).AddTicks(9679),
-
+                            DateAdded = new DateTime(2020, 9, 15, 18, 4, 56, 679, DateTimeKind.Local).AddTicks(5493),
                             LanguageId = 1,
                             Name = "Adventures of Junior",
                             Rating = 0.0,
@@ -644,17 +641,12 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("nvarchar(512)")
                         .HasMaxLength(512);
 
-                    b.Property<int?>("ReceiverUserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
-
-                    b.HasIndex("ReceiverUserId");
 
                     b.HasIndex("UserId");
 
@@ -794,27 +786,6 @@ namespace BookCrossingBackEnd.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ScheduleJob");
-                });
-
-            modelBuilder.Entity("Domain.RDBMS.Entities.Setting", b =>
-                {
-                    b.Property<string>("Namespace")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)")
-                        .HasDefaultValue("Global");
-
-                    b.Property<string>("Key")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Namespace", "Key");
-
-                    b.ToTable("Setting");
                 });
 
             modelBuilder.Entity("Domain.RDBMS.Entities.User", b =>
@@ -1056,10 +1027,6 @@ namespace BookCrossingBackEnd.Migrations
                     b.HasOne("Domain.RDBMS.Entities.Book", null)
                         .WithMany()
                         .HasForeignKey("BookId");
-
-                    b.HasOne("Domain.RDBMS.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("ReceiverUserId");
 
                     b.HasOne("Domain.RDBMS.Entities.User", null)
                         .WithMany()

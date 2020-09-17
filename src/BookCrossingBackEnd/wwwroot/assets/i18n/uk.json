@@ -44,11 +44,53 @@
     "searchBar": {
       "searchPlaceholder": "Введіть назву книги або автора"
     },
+    "book-edit": {
+      "editbook": "Редагувати книгу",
+      "booktitle": "Назва:",
+      "fieldrequaired": "Це поле обов'язкове.",
+      "withoutauthor": "Без автора",
+      "author": "Автор",
+      "lastnamerequaired": "Прізвище обов'язкове.",
+      "notconfirmedsave": "Введений автор збережений як 'не затверджений'",
+      "category": "Категорія",
+      "language": "Мова",
+      "publishinghouse": "Будинок видавництва",
+      "notice": "Зауваження",
+      "inactive": "Неактивна",
+      "editimage": "Редагувати зображення",
+      "image": "Зображення",
+      "newimage": "Нове зображення",
+      "save": "Зберегти",
+      "cancel": "Відмінити"
+    },
     "books": {
+      "authors": "Автори",
+      "author": "Автор",
+      "status": "Статус",
+      "language": "Мова",
+      "location": "Локація",
+      "category": "Категорія",
       "languages": "Мови",
       "locations": "Локації",
       "categories": "Катерогії",
-      "availableOnly": "В Наявності"
+      "availableOnly": "В Наявності",
+      "requestfromcompany": "Зробити запит у компанії",
+      "nobooksfound": "Не знайдено жодної книги",
+      "statuses": {
+        "available": "Доступна",
+        "request": "Зробити запит",
+        "requested": "Запитана",
+        "cancelrequest": "Відмінити запит",
+        "reading": "Читається",
+        "inactive": "Неактивна",
+        "unavailable": "Недоступна"
+      }
+    },
+    "booksfilter": {
+      "rating": "Рейтингом",
+      "dateadded": "Датою запису",
+      "bookstitle": "Назвою книги",
+      "sortby": "Сортувати за"
     },
     "requests": {
       "requests": "Всі реквести",
@@ -78,7 +120,30 @@
       "available": "Доступна",
       "notAvailable": "Зайнята",
       "request": "Зареквестити",
-      "reviews": "Відгуки на книгу"
+      "reviews": "Відгуки на книгу",
+      "startreading": "Почати читати",
+      "cancelrequest": "Відмінити запит",
+      "makeavailable": "Зробити доступною",
+      "readby": "Прочитали",
+      "author": "Автор",
+      "category": "Категорія",
+      "categories": "Категорії",
+      "language": "Мова",
+      "location": "Локація",
+      "currentowner": "Теперішній власник",
+      "registeredby": "Реєструвач",
+      "requestedby": "Запитувач",
+      "status": "Статус",
+      "statuses": {
+        "available": "Доступна",
+        "request": "Зробити запит",
+        "requested": "Запитана",
+        "cancelrequest": "Відмінити запит",
+        "reading": "Читається",
+        "inactive": "Неактивна",
+        "unavailable": "Недоступна"
+      },
+      "notice": "Зауваження"
     },
     "password": {
       "reset-error": "Сталася помилка при зміні паролю!",
@@ -142,7 +207,8 @@
       },
       "genres": {
         "genre": "Категорія",
-        "genres": "Категорії"
+        "genres": "Категорії Англійською",
+        "genresUk": "Категорії Українською"
       },
       "dashboard": {
         "data-range": "Діапазон даних",
@@ -215,6 +281,19 @@
         "timespan": "Таймспан",
         "timespans": "Таймспани"
       }
+    },
+    "comment": {
+      "commentplaceholder": "Напишіть коментар до 500 символів",
+      "post": "Залишити коментар",
+      "logintocommentmessage": "Увійдіть, щоб залишати коментарі",
+      "edit": "Редагувати",
+      "delete": "Видалити",
+      "deletemessage": "[Цей коментар видалено]",
+      "reply": "Відповісти",
+      "replymessage": "Будьласка увійдіть щоб залишати будь якого роду коментарі",
+      "editplaceholder": "Відредагуйте свій коментар...",
+      "viewall": "Відкрити усі відповіді",
+      "hideall": "Заховати усі відповіді"
     }
   }
 }
