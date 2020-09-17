@@ -168,6 +168,8 @@ namespace ApplicationTest.Services
                     IsActive = true,
                     Street = "Panasa Myrnogo",
                     OfficeName = "HQ",
+                    Latitude = 49.8263716,
+                    Longitude = 23.9449697,
                     UserRoom = new List<UserRoom> { new UserRoom { Id = 1, LocationId = 1, RoomNumber = "33" } }
                 },
                 new Location()
@@ -177,6 +179,8 @@ namespace ApplicationTest.Services
                     IsActive = true,
                     Street = "Gorodotska",
                     OfficeName = "1",
+                    Latitude = 49.8263716,
+                    Longitude = 23.9449697,
                     UserRoom = new List<UserRoom> { new UserRoom { Id = 2, LocationId = 2, RoomNumber = "1" } }
                 }
             };
