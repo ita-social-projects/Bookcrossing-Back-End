@@ -318,6 +318,8 @@ namespace Infrastructure.RDBMS.Seeder
                     City = "Lviv",
                     Street = "Gorodoc'kogo",
                     OfficeName = "SoftServe",
+                    Latitude = 49.8263716,
+                    Longitude = 23.9449697,
                     IsActive = true
                 }
             );
