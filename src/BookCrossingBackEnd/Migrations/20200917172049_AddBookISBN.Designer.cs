@@ -4,14 +4,16 @@ using Infrastructure.RDBMS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookCrossingBackEnd.Migrations
 {
     [DbContext(typeof(BookCrossingContext))]
-    partial class BookCrossingContextModelSnapshot : ModelSnapshot
+    [Migration("20200917172049_AddBookISBN")]
+    partial class AddBookISBN
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -432,10 +434,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-
-
                             DateAdded = new DateTime(2020, 9, 17, 20, 20, 48, 146, DateTimeKind.Local).AddTicks(9679),
-
                             LanguageId = 1,
                             Name = "Adventures of Junior",
                             Rating = 0.0,
@@ -526,12 +525,6 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
-                    b.Property<string>("NameUk")
-                        .IsRequired()
-                        .HasColumnName("nameuk")
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
-
                     b.HasKey("Id");
 
                     b.ToTable("Genre");
@@ -540,8 +533,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Unknown",
-                            NameUk = "Невідомий"
+                            Name = "Unknown"
                         });
                 });
 
@@ -592,14 +584,6 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnName("is_active")
                         .HasColumnType("bit");
 
-                    b.Property<double>("Latitude")
-                        .HasColumnName("latitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnName("longitude")
-                        .HasColumnType("float");
-
                     b.Property<string>("OfficeName")
                         .HasColumnName("office_name")
                         .HasColumnType("nvarchar(10)")
@@ -621,8 +605,6 @@ namespace BookCrossingBackEnd.Migrations
                             Id = 1,
                             City = "Lviv",
                             IsActive = true,
-                            Latitude = 49.826371600000002,
-                            Longitude = 23.944969700000001,
                             OfficeName = "SoftServe",
                             Street = "Gorodoc'kogo"
                         });
