@@ -49,13 +49,7 @@ namespace BookCrossingBackEnd.Controllers
         public async Task<ActionResult<PaginationDto<RequestDto>>> GetByUser([FromQuery] BookQueryParams query)
         {
             var userId = _userResolverService.GetUserId();
-            var requests = await _requestService.GetAsync(x => x.UserId == userId && x.ReceiveDate == null, query);
-            if (requests == null)
-            {
-                return NotFound();
-            }
-
-            return requests;
+            return await _requestService.GetAsync(x => x.UserId == userId && x.ReceiveDate == null, query);
         }
 
 
