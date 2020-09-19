@@ -432,10 +432,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-
-
-                            DateAdded = new DateTime(2020, 9, 17, 20, 20, 48, 146, DateTimeKind.Local).AddTicks(9679),
-
+                            DateAdded = new DateTime(2020, 9, 19, 16, 31, 42, 880, DateTimeKind.Local).AddTicks(7662),
                             LanguageId = 1,
                             Name = "Adventures of Junior",
                             Rating = 0.0,
@@ -585,9 +582,6 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.Property<string>("HomeAdress")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsActive")
                         .HasColumnName("is_active")
                         .HasColumnType("bit");
@@ -625,6 +619,48 @@ namespace BookCrossingBackEnd.Migrations
                             Longitude = 23.944969700000001,
                             OfficeName = "SoftServe",
                             Street = "Gorodoc'kogo"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.RDBMS.Entities.LocationHome", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LocationHome");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            City = "Lviv",
+                            IsActive = true,
+                            Latitude = 49.826371600000002,
+                            Longitude = 23.944969700000001,
+                            Street = "Gorodoc'kogo",
+                            UserId = 1
                         });
                 });
 
@@ -871,6 +907,10 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
+                    b.Property<int?>("LocationHomeId")
+                        .HasColumnName("home_location_id")
+                        .HasColumnType("int");
+
                     b.Property<string>("MiddleName")
                         .HasColumnName("middlename")
                         .HasColumnType("nvarchar(20)")
@@ -902,6 +942,10 @@ namespace BookCrossingBackEnd.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LocationHomeId")
+                        .IsUnique()
+                        .HasFilter("[home_location_id] IS NOT NULL");
+
                     b.HasIndex("RoleId");
 
                     b.HasIndex("UserRoomId");
@@ -919,7 +963,7 @@ namespace BookCrossingBackEnd.Migrations
                             IsEmailAllowed = false,
                             LastName = "Adminovich",
                             MiddleName = "Adminovski",
-                            Password = "AQAAAAEAACcQAAAAEF4qkrO2H0/sZvpx2lCnaFSQhEJZ5/vsMx4V3ZD3x8529ymU0VjTytn3HA94R/RSmw==",
+                            Password = "admin",
                             RegisteredDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 2
                         },
@@ -933,7 +977,7 @@ namespace BookCrossingBackEnd.Migrations
                             IsEmailAllowed = false,
                             LastName = "Testerovich",
                             MiddleName = "Test",
-                            Password = "AQAAAAEAACcQAAAAEF4qkrO2H0/sZvpx2lCnaFSQhEJZ5/vsMx4V3ZD3x8529ymU0VjTytn3HA94R/RSmw==",
+                            Password = "test",
                             RegisteredDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 1,
                             UserRoomId = 1
@@ -1107,6 +1151,10 @@ namespace BookCrossingBackEnd.Migrations
 
             modelBuilder.Entity("Domain.RDBMS.Entities.User", b =>
                 {
+                    b.HasOne("Domain.RDBMS.Entities.LocationHome", "LocationHome")
+                        .WithOne("User")
+                        .HasForeignKey("Domain.RDBMS.Entities.User", "LocationHomeId");
+
                     b.HasOne("Domain.RDBMS.Entities.Role", "Role")
                         .WithMany("User")
                         .HasForeignKey("RoleId")

@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.RDBMS.Configuration
 {
-    class LocationConfiguration : IEntityTypeConfiguration<Location>
+    class LocationHomeConfiguration : IEntityTypeConfiguration<LocationHome>
     {
-        public void Configure(EntityTypeBuilder<Location> builder)
+        public void Configure(EntityTypeBuilder<LocationHome> builder)
         {
-            builder.ToTable("Location");
+            builder.ToTable("LocationHome");
             builder.Property(e => e.Id)
                 .HasColumnName("id");
 
@@ -16,10 +16,6 @@ namespace Infrastructure.RDBMS.Configuration
                 .IsRequired()
                 .HasColumnName("city")
                 .HasMaxLength(30);
-
-            builder.Property(e => e.OfficeName)
-                .HasColumnName("office_name")
-                .HasMaxLength(10);
 
             builder.Property(e => e.Street)
                 .IsRequired()
@@ -37,10 +33,14 @@ namespace Infrastructure.RDBMS.Configuration
                 .IsRequired()
                 .HasColumnName("longitude");
 
-            builder.HasMany(d => d.UserRoom)
-                .WithOne(p => p.Location)
-                .HasForeignKey(d => d.LocationId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Property(e => e.UserId)
+               .IsRequired()
+               .HasColumnName("user_id");
+
+            builder.HasOne(d => d.User)
+               .WithOne(p => p.LocationHome)
+               .HasForeignKey<LocationHome>(d => d.UserId)
+               .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.HasQueryFilter(location => location.IsActive == true);
         }

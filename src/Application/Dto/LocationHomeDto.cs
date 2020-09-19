@@ -1,23 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Domain.RDBMS.Entities
+namespace Application.Dto
 {
-    public class Location : IEntityBase
+    public class LocationHomeDto
     {
         public int Id { get; set; }
-
         public string City { get; set; }
-
         public string Street { get; set; }
-
-        public string OfficeName { get; set; }
-
         public bool IsActive { get; set; }
-
         public double Latitude { get; set; }
-
         public double Longitude { get; set; }
-
-        public virtual List<UserRoom> UserRoom { get; set; } 
+        public int UserId  { get; set; }
     }
 }
