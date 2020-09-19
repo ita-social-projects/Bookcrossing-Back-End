@@ -2,15 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Dto;
-using Application.Dto.QueryParams;
 using Application.Services.Implementation;
-using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
 using FluentAssertions;
 using Infrastructure.RDBMS;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using MockQueryable.Moq;
@@ -26,7 +23,6 @@ namespace ApplicationTest.Services
         private LocationHomeService _locationService;
         private Mock<IRepository<LocationHome>> _locationRepositoryMock;
         private Mock<IRepository<User>> _usersRepositoryMock;
-        private Mock<IPaginationService> _paginationServiceMock;
         private Mock<IMapper> _mapperMock;
 
         private User _user;
@@ -42,7 +38,6 @@ namespace ApplicationTest.Services
             _locationRepositoryMock = new Mock<IRepository<LocationHome>>();
             _usersRepositoryMock = new Mock<IRepository<User>>();
             _mapperMock = new Mock<IMapper>();
-            _paginationServiceMock = new Mock<IPaginationService>();
 
             var mappingConfig = new MapperConfiguration(mc =>
             {
@@ -65,7 +60,7 @@ namespace ApplicationTest.Services
             var _mapper = mappingConfig.CreateMapper();
             var options = new DbContextOptionsBuilder<BookCrossingContext>().UseInMemoryDatabase(databaseName: "Fake DB").ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning)).Options;
             _context = new BookCrossingContext(options);
-            _locationService = new LocationHomeService(_locationRepositoryMock.Object, _mapperMock.Object, _paginationServiceMock.Object, _usersRepositoryMock.Object);
+            _locationService = new LocationHomeService(_locationRepositoryMock.Object, _mapperMock.Object, _usersRepositoryMock.Object);
                
             MockData();
         }
