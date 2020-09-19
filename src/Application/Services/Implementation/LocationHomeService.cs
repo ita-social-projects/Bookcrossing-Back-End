@@ -1,5 +1,4 @@
-﻿using Application.Services.Interfaces;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.RDBMS;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +14,11 @@ namespace Application.Services.Implementation
         private readonly IRepository<LocationHome> _locationHomeRepository;
         private readonly IRepository<User> _userRepository;
         private readonly IMapper _mapper;
-        private readonly IPaginationService _paginationService;
-        public LocationHomeService(IRepository<LocationHome> locationHomeRepository, IMapper mapper, IPaginationService paginationService,
+        public LocationHomeService(IRepository<LocationHome> locationHomeRepository, IMapper mapper,
             IRepository<User> userRepository)
         {
             _locationHomeRepository = locationHomeRepository;
             _userRepository = userRepository;
-            _paginationService = paginationService;
             _mapper = mapper;
         }
         public async Task<List<LocationHomeDto>> GetAll()
