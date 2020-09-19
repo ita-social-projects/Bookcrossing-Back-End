@@ -1,5 +1,4 @@
 ﻿using Application.Dto;
-using Application.Dto.QueryParams;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
