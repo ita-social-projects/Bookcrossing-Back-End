@@ -143,7 +143,7 @@ namespace ApplicationTest.Services
             {
                 Page = 1,
                 PageSize = 10,
-                Location = 1,
+                Locations = new [] { 1 },
                 Genres = new[] { 1 },
                 SearchTerm = "Martin",
                 ShowAvailable = true
@@ -174,7 +174,7 @@ namespace ApplicationTest.Services
 
             _bookRepositoryMock.Setup(s => s.GetAll()).Returns(booksMock.Object);
 
-            var query = new BookQueryParams { Page = 1, PageSize = 10, Location = 1 };
+            var query = new BookQueryParams { Page = 1, PageSize = 10, Locations = new int[] { 1 } };
 
             var booksResult = await _bookService.GetAllAsync(query);
 
