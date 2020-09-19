@@ -19,12 +19,6 @@ namespace Application.Services.Interfaces
         /// <returns>Colletion of home locations DTOs from db</returns>
         Task<List<LocationHomeDto>> GetAll();
         /// <summary>
-        /// Retrieve Pagination for Genre
-        /// </summary>
-        /// <param name="fullPaginationQuery">QueryParameters containing page index, pageSize, searchQuery and if it's a first Request</param>
-        /// <returns>Returns Pagination with Page result and Total amount of items</returns>
-        Task<PaginationDto<LocationHomeDto>> GetAll(FullPaginationQueryParams parameters);
-        /// <summary>
         /// Retrieve location by id
         /// </summary>
         /// <param name="locationId">integer of location id</param>

@@ -1,6 +1,4 @@
-﻿
-using System;
-using Application.Dto;
+﻿using Application.Dto;
 using AutoMapper;
 using RdbmsEntities = Domain.RDBMS.Entities;
 

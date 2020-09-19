@@ -74,7 +74,6 @@ namespace ApplicationTest.Services
         public void SetUp()
         {
             _locationRepositoryMock.Reset();
-
         }
 
         [Test]
@@ -102,28 +101,7 @@ namespace ApplicationTest.Services
 
             locationResult.Should().BeEquivalentTo(_locationsDto);
         }
-
-        [Test]
-        public async Task GetAll_PageableParamsPassed_ReturnsPaginatedLocations()
-        {
-            var pageableParams = new FullPaginationQueryParams();
-            var paginatedLocations = new PaginationDto<LocationHomeDto>
-            {
-                Page = _locationsDto,
-                TotalCount = _locationsDto.Count
-            };
-            _locationRepositoryMock.Setup(obj => obj.GetAll())
-                .Returns(_locationsQueryableMock.Object);
-            _paginationServiceMock.Setup(obj => obj.GetPageAsync<LocationHomeDto, LocationHome>(
-                    _locationsQueryableMock.Object,
-                    pageableParams))
-                .ReturnsAsync(paginatedLocations);
-
-            var locationResult = await _locationService.GetAll(pageableParams);
-
-            locationResult.Should().Be(paginatedLocations);
-        }
-
+       
         [Test]
         public async Task RemoveLocation_LocationExists_ReturnsLocationDtoRemoved()
         {
@@ -174,7 +152,9 @@ namespace ApplicationTest.Services
             await _locationService.Add(_locationDto);
 
             _locationRepositoryMock.Verify(obj => obj.Add(_location), Times.Once);
-            _locationRepositoryMock.Verify(obj => obj.SaveChangesAsync(), Times.Exactly(2));
+            _locationRepositoryMock.Verify(obj => obj.SaveChangesAsync(), Times.Once);
+            _usersRepositoryMock.Verify(obj => obj.Update(_user), Times.Once);
+            _usersRepositoryMock.Verify(obj => obj.SaveChangesAsync(), Times.Once);
         }
 
         private void MockData()

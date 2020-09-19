@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Dto;
-using Application.Dto.QueryParams;
 using Domain.RDBMS.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,18 +24,20 @@ namespace Application.Services.Implementation
             _paginationService = paginationService;
             _mapper = mapper;
         }
-
-        public async Task<LocationHomeDto> GetById(int locationId)
-        {
-            return _mapper.Map<LocationHomeDto>(await _locationHomeRepository.GetAll().Include(p => p.User).FirstOrDefaultAsync(p => p.Id == locationId));
-        }
-
         public async Task<List<LocationHomeDto>> GetAll()
         {
             return _mapper.Map<List<LocationHomeDto>>(await _locationHomeRepository.GetAll()
                                                                    .Include(p => p.User)
                                                                    .OrderBy(x => x.City)
                                                                    .ToListAsync());
+        }
+
+        public async Task<LocationHomeDto> GetById(int locationId)
+        {
+            return _mapper.Map<LocationHomeDto>(
+                await _locationHomeRepository.GetAll()
+                                            .Include(p => p.User)
+                                            .FirstOrDefaultAsync(p => p.Id == locationId));
         }
 
         public async Task Update(LocationHomeDto locationHomeDto)
@@ -66,13 +67,8 @@ namespace Application.Services.Implementation
             var user = await _userRepository.FindByIdAsync(location.UserId);
             user.LocationHomeId = location.Id;
             _userRepository.Update(user);
-            await _locationHomeRepository.SaveChangesAsync();
+            await _userRepository.SaveChangesAsync();
             return location.Id;
-        }
-        public async Task<PaginationDto<LocationHomeDto>> GetAll(FullPaginationQueryParams parameters)
-        {
-            var query = _locationHomeRepository.GetAll().IgnoreQueryFilters();
-            return await _paginationService.GetPageAsync<LocationHomeDto, LocationHome>(query, parameters);
         }
     }
 }

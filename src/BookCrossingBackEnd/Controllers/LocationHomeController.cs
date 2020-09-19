@@ -12,15 +12,13 @@ namespace BookCrossingBackEnd.Controllers
     public class LocationHomeController : ControllerBase
     {
         private readonly ILocationHomeService _locationService;
-        private readonly IUserService _userService;
 
-        public LocationHomeController(ILocationHomeService locationService, IUserService userService)
+        public LocationHomeController(ILocationHomeService locationService)
         {
             _locationService = locationService;
-            _userService = userService;
         }
 
-        // GET: api/Locations/5
+        // GET: api/LocationsHome/5
         [HttpGet("{id}")]
         public async Task<ActionResult<LocationHomeDto>> GetLocation([FromRoute] int id)
         {
@@ -30,14 +28,14 @@ namespace BookCrossingBackEnd.Controllers
             return Ok(location);
         }
 
-        // GET: api/HomeLocations
+        // GET: api/HomeLocation
         [HttpGet]
         public async Task<ActionResult<List<LocationHomeDto>>> GetAllLocations()
         {
             return Ok(await _locationService.GetAll());
         }
 
-        // PUT: api/HomeLocations
+        // PUT: api/LocationHome
         [HttpPut]
         public async Task<IActionResult> PutLocation([FromBody] LocationHomeDto locationDto)
         {
@@ -45,7 +43,7 @@ namespace BookCrossingBackEnd.Controllers
             return NoContent();
         }
 
-        // POST: api/HomeLocations
+        // POST: api/LocationHome
         [HttpPost]
         public async Task<ActionResult<LocationHomeDto>> PostLocation([FromBody] LocationHomeDto locationDto)
         {
@@ -54,7 +52,7 @@ namespace BookCrossingBackEnd.Controllers
             return CreatedAtAction("GetLocation", new { id = locationDto.Id }, locationDto);
         }
 
-        // DELETE: api/Locations/5
+        // DELETE: api/LocationHome/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<LocationHomeDto>> DeleteLocation([FromRoute] int id)
         {
@@ -63,11 +61,5 @@ namespace BookCrossingBackEnd.Controllers
                 return NotFound();
             return Ok(location);
         }
-        [HttpGet("paginated")]
-        public async Task<ActionResult<PaginationDto<LocationHomeDto>>> GetAllGenres([FromQuery] FullPaginationQueryParams fullPaginationQuery)
-        {
-            return Ok(await _locationService.GetAll(fullPaginationQuery));
-        }
-
     }
 }

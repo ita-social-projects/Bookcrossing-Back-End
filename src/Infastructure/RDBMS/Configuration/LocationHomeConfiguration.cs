@@ -41,8 +41,6 @@ namespace Infrastructure.RDBMS.Configuration
                .WithOne(p => p.LocationHome)
                .HasForeignKey<LocationHome>(d => d.UserId)
                .OnDelete(DeleteBehavior.ClientSetNull);
-
-            builder.HasQueryFilter(location => location.IsActive == true);
         }
     }
 }
