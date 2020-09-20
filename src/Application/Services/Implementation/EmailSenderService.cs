@@ -198,5 +198,34 @@ namespace Application.Services.Implementation
                 null,
                 SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(email)).Select(x => x.ToString("x2")));
         }
+
+        public async Task SendTheUserWasDeleted(RequestMessage requestMessage, string emailMessage)
+        {
+               var body = await GetMessageTemplateFromFile("UserDeleted.html");
+
+               body = body.Replace("{USER.NAME}", requestMessage.UserName);
+               body = body.Replace("{MESSAGE}", emailMessage);
+
+
+               var messageTitle = new Message(new List<string>() { requestMessage.UserAddress.ToString() },
+                                   $"The profile was deactivated!", body);
+               await _smtpClient.SendAsync(CreateEmailMessage(messageTitle), _emailConfig);
+
+        }
+
+        public async Task SendTheUserWasRecovered(RequestMessage requestMessage, string emailMessage)
+        {
+            var body = await GetMessageTemplateFromFile("UserDeleted.html");
+
+            body = body.Replace("{USER.NAME}", requestMessage.UserName);
+            body = body.Replace("{MESSAGE}", emailMessage);
+
+            var messageTitle = new Message(new List<string>() { requestMessage.UserAddress.ToString() },
+                                  $"The profile was activated!", body);
+            await _smtpClient.SendAsync(CreateEmailMessage(messageTitle), _emailConfig);
+        }
+
+
+
     }
 }

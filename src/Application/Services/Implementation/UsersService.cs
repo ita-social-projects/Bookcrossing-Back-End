@@ -8,15 +8,18 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Application.Dto;
+using Application.Dto.Email;
 using Application.Dto.Password;
 using Application.Dto.QueryParams;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 using Infrastructure.RDBMS;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 
 namespace Application.Services.Implementation
 {
@@ -33,10 +36,15 @@ namespace Application.Services.Implementation
         private readonly IPaginationService _paginationService;
         private readonly PasswordHasher<User> _passwordHasher;
         private readonly BookCrossingContext _context;
+        private readonly IUserResolverService _userResolverService;
+        private readonly IRepository<User> _userLocationRepository;
+        private readonly INotificationsService _notificationsService;
+
 
         public UsersService(IRepository<User> userRepository, IMapper mapper, IEmailSenderService emailSenderService,
             IRepository<ResetPassword> resetPasswordRepository, IRepository<UserRoom> userRoomRepository, IBookService bookService,
-            BookCrossingContext context, IPaginationService paginationService, IRequestService requestService)
+            BookCrossingContext context, IPaginationService paginationService, IRequestService requestService,
+            IUserResolverService userResolverService, IRepository<User> userLocationRepository, INotificationsService notificationsService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
@@ -48,6 +56,9 @@ namespace Application.Services.Implementation
             _passwordHasher = new PasswordHasher<User>();
             _paginationService = paginationService;
             _requestService = requestService;
+            _userResolverService = userResolverService;
+            _userLocationRepository = userLocationRepository;
+            _notificationsService = notificationsService;
         }
         ///<inheritdoc/>
         public async Task<UserDto> GetById(Expression<Func<User, bool>> predicate)
@@ -154,6 +165,31 @@ namespace Application.Services.Implementation
             }
             user.IsDeleted = true;
             var affectedRows = await _userRepository.SaveChangesAsync();
+
+            var emailMessageForDeletedUser = new RequestMessage()
+            {
+                UserName = user.FirstName + " " + user.LastName,
+                UserAddress = new MailboxAddress($"{user.Email}"),
+            };
+            await _emailSenderService.SendTheUserWasDeleted(emailMessageForDeletedUser, " Your account was deleted from Bookcrossing app.");
+
+            var userIdAdmin = _userResolverService.GetUserId();
+            var userAdmin = await _userLocationRepository.FindByIdAsync(userIdAdmin);
+
+            var emailMessageForAdmin = new RequestMessage()
+            {
+                UserName = userAdmin.FirstName + " " + userAdmin.LastName,
+                UserAddress = new MailboxAddress($"{userAdmin.Email}"),
+            };
+            
+            await _emailSenderService.SendTheUserWasDeleted(emailMessageForAdmin, $"The user '{user.FirstName}' was successfully deleted from the user's list");
+
+            await _notificationsService.NotifyAsync(
+                userIdAdmin,
+                $"The user {user.FirstName} was successfully deleted from the user's list",
+                null,
+                NotificationAction.None);
+
             if (affectedRows == 0)
             {
                 throw new DbUpdateException();
@@ -173,6 +209,35 @@ namespace Application.Services.Implementation
             {
                 user.IsDeleted = false;
             }
+
+            var emailMessageForRecoveredUser = new RequestMessage()
+            {
+                UserName = user.FirstName + " " + user.LastName,
+                UserAddress = new MailboxAddress($"{user.Email}"),
+            };
+            await _emailSenderService.SendTheUserWasRecovered(emailMessageForRecoveredUser, " 'Your account was recovered in Bookcrossing app'");
+
+            await _notificationsService.NotifyAsync(
+               userId,
+               $"Your account {user.FirstName}  was recovered in Bookcrossing app",
+               null,
+               NotificationAction.None);
+
+            var userIdAdmin = _userResolverService.GetUserId();
+            var userAdmin = await _userLocationRepository.FindByIdAsync(userIdAdmin);
+
+            var emailMessageForAdmin = new RequestMessage()
+            {
+                UserName = userAdmin.FirstName + " " + userAdmin.LastName,
+                UserAddress = new MailboxAddress($"{userAdmin.Email}"),
+            };
+            await _emailSenderService.SendTheUserWasRecovered(emailMessageForAdmin, $"The user {user.FirstName} was successfully recovered in the user's list");
+
+            await _notificationsService.NotifyAsync(
+                userIdAdmin,
+                $"The user {user.FirstName} was successfully recovered in the user's list",
+                null,
+                NotificationAction.None);
 
             var affectedRows = await _userRepository.SaveChangesAsync();
             if (affectedRows == 0)

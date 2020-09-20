@@ -10,6 +10,7 @@
     <None Remove="Settings.StyleCop" />
     <None Remove="StyleCop.Cache" />
     <None Remove="Templates\BookReceived.html" />
+    <None Remove="Templates\UserDeleted.html" />
     <None Remove="Templates\WishBecameAvailable.html" />
     <None Remove="Validators\BookCommentInsertValidator.cs~RF310e123.TMP" />
   </ItemGroup>

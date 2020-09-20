@@ -67,5 +67,11 @@ namespace Application.Services.Interfaces
         Task SendForPasswordResetAsync(string userName, string confirmNumber, string email);
 
         Task SendForWishBecameAvailable(string userName, int bookId, string bookName, string email);
+
+        Task SendTheUserWasDeleted(RequestMessage message, string emailMessage);
+
+        Task SendTheUserWasRecovered(RequestMessage message, string emailMessage);
+
+
     }
 }

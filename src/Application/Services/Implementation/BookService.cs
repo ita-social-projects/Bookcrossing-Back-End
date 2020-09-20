@@ -12,6 +12,7 @@ using Domain.NoSQL;
 using Domain.NoSQL.Entities;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using MimeKit;
@@ -35,11 +36,14 @@ namespace Application.Services.Implementation
         private readonly IHangfireJobScheduleService _hangfireJobScheduleService;
         private readonly IEmailSenderService _emailSenderService;
         private readonly IWishListService _wishListService;
+        private readonly INotificationsService _notificationsService;
+
+
 
         public BookService(IRepository<Book> bookRepository, IMapper mapper, IRepository<BookAuthor> bookAuthorRepository, IRepository<BookGenre> bookGenreRepository,
             IRepository<Language> bookLanguageRepository, IRepository<User> userLocationRepository, IPaginationService paginationService, IRepository<Request> requestRepository,
-            IUserResolverService userResolverService, IImageService imageService, IHangfireJobScheduleService hangfireJobScheduleService, IEmailSenderService emailSenderService, 
-            IRootRepository<BookRootComment> rootCommentRepository, IWishListService wishListService, IRepository<BookRating> bookRatingRepository)
+            IUserResolverService userResolverService, IImageService imageService, IHangfireJobScheduleService hangfireJobScheduleService, IEmailSenderService emailSenderService,
+            IRootRepository<BookRootComment> rootCommentRepository, IWishListService wishListService, IRepository<BookRating> bookRatingRepository, INotificationsService notificationsService)
         {
             _bookRepository = bookRepository;
             _bookAuthorRepository = bookAuthorRepository;
@@ -56,6 +60,7 @@ namespace Application.Services.Implementation
             _emailSenderService = emailSenderService;
             _rootCommentRepository = rootCommentRepository;
             _wishListService = wishListService;
+            _notificationsService = notificationsService;
         }
 
         public async Task<BookGetDto> GetByIdAsync(int bookId)
@@ -131,8 +136,8 @@ namespace Application.Services.Implementation
             await _bookRepository.Update(book, bookDto.FieldMasks);
             var affectedRows = await _bookRepository.SaveChangesAsync();
             var isDatabaseUpdated = affectedRows > 0;
-            if (isDatabaseUpdated && 
-                bookDto.FieldMasks.Contains("State") && 
+            if (isDatabaseUpdated &&
+                bookDto.FieldMasks.Contains("State") &&
                 bookDto.State == BookState.Available)
             {
                 await _wishListService.NotifyAboutAvailableBookAsync(book.Id);
@@ -141,7 +146,7 @@ namespace Application.Services.Implementation
         }
 
         public async Task<PaginationDto<BookGetDto>> GetAllAsync(BookQueryParams parameters)
-        {  
+        {
             var query = GetFilteredQuery(_bookRepository.GetAll(), parameters);
             if (parameters.SortableParams != null)
             {
@@ -271,7 +276,7 @@ namespace Application.Services.Implementation
             {
                 return false;
             }
-            
+
             book.State = BookState.Available;
             await _bookRepository.Update(book, new List<string>() { "State" });
             var isDatabaseUpdated = await _bookRepository.SaveChangesAsync() > 0;
@@ -288,9 +293,35 @@ namespace Application.Services.Implementation
                         UserAddress = new MailboxAddress($"{book.User.Email}"),
                     };
                     await _emailSenderService.SendForBookActivatedAsync(emailMessageForBookActivated);
+
+                    await _notificationsService.NotifyAsync(
+                       book.User.Id,
+                       $"The status of your book '{book.Name}' have successfully changed to 'Active'",
+                       book.Id,
+                       NotificationAction.Open);
+
+                    var userId = _userResolverService.GetUserId();
+                    var user = await _userLocationRepository.FindByIdAsync(userId);
+
+
+                    var emailMessageForBookActivatedForAdministrator = new RequestMessage()
+                    {
+                        UserName = user.FirstName + " " + user.LastName,
+                        BookName = book.Name,
+                        BookId = book.Id,
+                        UserAddress = new MailboxAddress($"{user.Email}"),
+                    };
+                    await _emailSenderService.SendForBookActivatedAsync(emailMessageForBookActivatedForAdministrator);
+
+                    await _notificationsService.NotifyAsync(
+                        userId,
+                        $"You have successfully change the book's status to 'Active' for '{book.Name}'",
+                        book.Id,
+                        NotificationAction.Open);
+
                 }
 
-                _wishListService.NotifyAboutAvailableBookAsync(book.Id);
+                await _wishListService.NotifyAboutAvailableBookAsync(book.Id);
             }
 
             return true;
@@ -311,7 +342,7 @@ namespace Application.Services.Implementation
                 var request = _requestRepository.GetAll()
                     .Include(i => i.Book)
                     .Include(i => i.Book)
-                    .Include(i => i.User).Where(x=>x.BookId == bookId).ToList()
+                    .Include(i => i.User).Where(x => x.BookId == bookId).ToList()
                     .Last();
                 if (_userLocationRepository.FindByCondition(u => u.Email == book.User.Email).Result.IsEmailAllowed)
                 {
@@ -338,6 +369,30 @@ namespace Application.Services.Implementation
                     UserAddress = new MailboxAddress($"{book.User.Email}"),
                 };
                 await _emailSenderService.SendForBookDeactivatedAsync(emailMessageForBookDeactivatedForOwner);
+
+                await _notificationsService.NotifyAsync(
+                       book.User.Id,
+                       $"The status of your book '{book.Name}' have successfully changed to Inactive",
+                       book.Id,
+                       NotificationAction.Open);
+
+                var userId = _userResolverService.GetUserId();
+                var user = await _userLocationRepository.FindByIdAsync(userId);
+
+                var emailMessageForBookDeactivatedForAdministrator = new RequestMessage()
+                {
+                    UserName = user.FirstName + " " + user.LastName,
+                    BookName = book.Name,
+                    BookId = book.Id,
+                    UserAddress = new MailboxAddress($"{user.Email}"),
+                };
+                await _emailSenderService.SendForBookDeactivatedAsync(emailMessageForBookDeactivatedForAdministrator);
+
+                await _notificationsService.NotifyAsync(
+                    userId,
+                    $"You have successfully change the book's status to Inactive for '{book.Name}'",
+                    book.Id,
+                    NotificationAction.Open);
             }
             book.State = BookState.InActive;
             await _bookRepository.Update(book, new List<string>() { "State" });
@@ -350,7 +405,7 @@ namespace Application.Services.Implementation
         {
             var currentlyOwnedBooks = _bookRepository.GetAll()
                 .Where(a => a.UserId == userId && a.State == BookState.Reading);
-            
+
             return await currentlyOwnedBooks.CountAsync();
         }
 
