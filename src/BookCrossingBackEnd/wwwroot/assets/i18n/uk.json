@@ -280,7 +280,24 @@
       "timespans": {
         "timespan": "Таймспан",
         "timespans": "Таймспани"
+      },
+
+      "suggestion-message": {
+        "messages": "Повідомлення",
+        "selectAll": "Вибрати всі",
+        "deselectAll": "Скасувати вибір",
+        "delete": "Видалити",
+        "reply": "Відповісти",
+        "read": "Прочитане",
+        "unread": "Непрочитане",
+        "decline": "Відхилено",
+        "user": "Користувач",
+        "summary": "Тема",
+        "status": "Статус",
+        "delete-success": "Успішно видалено",
+        "status-changed": "Статус змінено успішно"
       }
+
     },
     "comment": {
       "commentplaceholder": "Напишіть коментар до 500 символів",
