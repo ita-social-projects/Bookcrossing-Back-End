@@ -44,7 +44,7 @@ namespace ApplicationTest.Controllers
             var result = await _controller.GetBooks(It.IsAny<OuterSourceQueryParameters>());
 
             _outerBookSourceServiceMock.Verify(
-                obj => obj.SearchBooks(It.IsAny<OuterSourceQueryParameters>()), 
+                obj => obj.SearchBooks(It.IsAny<OuterSourceQueryParameters>()),
                 Times.Once);
 
             result.Should().NotBeNull();

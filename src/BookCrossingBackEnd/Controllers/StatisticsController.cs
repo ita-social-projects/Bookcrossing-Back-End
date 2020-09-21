@@ -53,6 +53,18 @@ namespace BookCrossingBackEnd.Controllers
             return countersDto;
         }
 
+        [HttpGet("reading")]
+        public async Task<ActionResult<StatisticsChartData>> GetReadingStatistics([FromQuery] StatisticsQueryParams query)
+        {
+            return await _statisticsService.GetReadingStatisticsData(query);
+        }
+
+        [HttpGet("donation")]
+        public async Task<ActionResult<StatisticsChartData>> GetDonationStatisticsAsync([FromQuery] StatisticsQueryParams query)
+        {
+            return await _statisticsService.GetDonationStatisticsData(query);
+        }
+
         [HttpGet("userDonations")]
         public async Task<ActionResult<PieChartData>> GetUserDonationsData([FromQuery] int? amountOfDays)
         {

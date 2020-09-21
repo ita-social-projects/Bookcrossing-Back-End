@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.RDBMS.Configuration
 {
-    class NotificationConfiguration: IEntityTypeConfiguration<Notification>
+    class NotificationConfiguration : IEntityTypeConfiguration<Notification>
     {
         public void Configure(EntityTypeBuilder<Notification> builder)
         {
@@ -25,6 +25,10 @@ namespace Infrastructure.RDBMS.Configuration
             builder.HasOne<User>()
                 .WithMany()
                 .HasForeignKey(notification => notification.UserId);
+
+            builder.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(notification => notification.ReceiverUserId);
 
             builder.HasOne<Book>()
                 .WithMany()

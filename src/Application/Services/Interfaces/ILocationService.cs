@@ -1,6 +1,6 @@
-﻿using Application.Dto;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Dto;
 using Application.Dto.QueryParams;
 
 namespace Application.Services.Interfaces

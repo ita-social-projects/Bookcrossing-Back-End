@@ -11,7 +11,7 @@ namespace Application.QueryableExtension
     {
         private static readonly Type StringType = typeof(string);
         private static readonly Type QueryableType = typeof(Queryable);
-        private static readonly MethodInfo ContainsMethod = StringType.GetMethod("Contains", new[] {StringType});
+        private static readonly MethodInfo ContainsMethod = StringType.GetMethod("Contains", new[] { StringType });
 
         #region Where
 
@@ -106,11 +106,11 @@ namespace Application.QueryableExtension
                 res = Activator.CreateInstance(type);
             }
 
-            var argTypes = new[] {StringType, type.MakeByRefType()};
-            object[] args = {s, res};
+            var argTypes = new[] { StringType, type.MakeByRefType() };
+            object[] args = { s, res };
             var tryParse = type.GetMethod("TryParse", argTypes);
 
-            if (!(bool) (tryParse?.Invoke(null, args) ?? false))
+            if (!(bool)(tryParse?.Invoke(null, args) ?? false))
                 throw new InvalidCastException($"Cannot convert value to type {type.Name}.");
 
             return args[1];
@@ -135,8 +135,8 @@ namespace Application.QueryableExtension
 
             var method = GetOrderByMethod(parameters.OrderByAscending);
 
-            return ((IOrderedQueryable<T>) method.MakeGenericMethod(type, propertyType)
-                .Invoke(null, new object[] {query, lambda}));
+            return ((IOrderedQueryable<T>)method.MakeGenericMethod(type, propertyType)
+                .Invoke(null, new object[] { query, lambda }));
         }
 
         private static MethodInfo GetOrderByMethod(bool isAscending)

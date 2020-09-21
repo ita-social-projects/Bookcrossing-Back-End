@@ -16,7 +16,7 @@ namespace Application.Dto
 
         public bool IsEmailAllowed { get; set; }
 
-        public virtual List<BookPutDto> Books { get; set; } 
+        public virtual List<BookPutDto> Books { get; set; }
 
     }
 }

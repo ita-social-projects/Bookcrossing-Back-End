@@ -67,6 +67,6 @@ namespace Infrastructure.RDBMS.Configuration
                 .HasForeignKey(d => d.UserRoomId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-        }       
+        }
     }
 }

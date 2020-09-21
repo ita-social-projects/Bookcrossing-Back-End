@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Domain.RDBMS.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Dto
 {
@@ -15,6 +15,7 @@ namespace Application.Dto
         public IFormFile Image { get; set; }
         public List<string> FieldMasks { get; set; }
         public int LanguageId { get; set; }
+        public string ISBN { get; set; }
         public List<AuthorDto> BookAuthor { get; set; }
         public List<GenreDto> bookGenre { get; set; }
     }

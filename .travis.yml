@@ -6,28 +6,21 @@ sudo: false
 
 git:
    depth: false
-
-env:
-    global:
-        - DOTNET_CLI_TELEMETRY_OPTOUT: 1
-        - CODECOV_TOKEN="030b932b-3989-4b6f-91ce-b70a152bb005"
-
+  
 addons:
   sonarcloud:
-    organization: "irynazavushchak"
+    organization: "ita-social-projects"
     
 before_script:
-    - ./tools/travis-ci-install-sonar.sh
-
+    - dotnet tool install --global dotnet-sonarscanner --version 4.10.0
+    - export PATH="$PATH:$HOME/.dotnet/tools"
+    
 script:
-    - dotnet tools/sonar/SonarScanner.MSBuild.dll begin /o:"irynazavushchak" /k:"ita-social-projects_Bookcrossing-Back-End" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=${SONAR_TOKEN}
-    - dotnet build src/BookCrossingBackEnd.sln -c Release
-    - dotnet test -c Release --no-build src/ApplicationTest/ApplicationTest.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-    - dotnet tools/sonar/SonarScanner.MSBuild.dll end /d:sonar.login=${SONAR_TOKEN}
-
-after_script:
-    - bash <(curl -s https://codecov.io/bash) 
-
+    - dotnet sonarscanner begin /o:ita-social-projects /k:ita-social-projects-bookcrossing-back-end /d:sonar.host.url=https://sonarcloud.io /d:sonar.exclusions=src/BookCrossingBackEnd/Migrations/**
+    - dotnet build src/BookCrossingBackEnd.sln -c Release 
+    - dotnet test src/ApplicationTest/ApplicationTest.csproj --no-build -c Release 
+    - dotnet sonarscanner end
+ 
 deploy:
     provider: azure_web_apps
     verbose: true

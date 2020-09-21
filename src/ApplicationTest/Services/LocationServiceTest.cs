@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Application.Dto;
 using Application.Dto.QueryParams;
@@ -13,7 +12,6 @@ using FluentAssertions;
 using Infrastructure.RDBMS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using MimeKit.Cryptography;
 using MockQueryable.Moq;
 using Moq;
 using NUnit.Framework;
@@ -99,7 +97,7 @@ namespace ApplicationTest.Services
             _locationRepositoryMock.Setup(obj => obj.GetAll())
                 .Returns(_locationsQueryableMock.Object);
             _paginationServiceMock.Setup(obj => obj.GetPageAsync<LocationDto, Location>(
-                    _locationsQueryableMock.Object, 
+                    _locationsQueryableMock.Object,
                     pageableParams))
                 .ReturnsAsync(paginatedLocations);
 
@@ -120,7 +118,7 @@ namespace ApplicationTest.Services
 
             _locationRepositoryMock.Verify(obj => obj.Remove(_location), Times.Once);
             _locationRepositoryMock.Verify(obj => obj.SaveChangesAsync(), Times.Once);
-            
+
             locationResult.Should().Be(_locationDto);
         }
 
@@ -170,6 +168,8 @@ namespace ApplicationTest.Services
                     IsActive = true,
                     Street = "Panasa Myrnogo",
                     OfficeName = "HQ",
+                    Latitude = 49.8263716,
+                    Longitude = 23.9449697,
                     UserRoom = new List<UserRoom> { new UserRoom { Id = 1, LocationId = 1, RoomNumber = "33" } }
                 },
                 new Location()
@@ -179,6 +179,8 @@ namespace ApplicationTest.Services
                     IsActive = true,
                     Street = "Gorodotska",
                     OfficeName = "1",
+                    Latitude = 49.8263716,
+                    Longitude = 23.9449697,
                     UserRoom = new List<UserRoom> { new UserRoom { Id = 2, LocationId = 2, RoomNumber = "1" } }
                 }
             };
