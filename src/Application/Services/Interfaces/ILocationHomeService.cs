@@ -11,7 +11,7 @@ namespace Application.Services.Interfaces
         /// </summary>
         /// <param name="locationHomeDto">LocationHomeDto instance</param>
         /// <returns>resurn id of inserted location</returns>
-        Task<int> Add(LocationHomeDto locationHomeDto);
+        Task<int> Add(LocationHomePostDto locationHomeDto);
         /// <summary>
         /// Retrive all locations in db
         /// </summary>

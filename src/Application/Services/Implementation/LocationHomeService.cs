@@ -24,7 +24,6 @@ namespace Application.Services.Implementation
         public async Task<List<LocationHomeDto>> GetAll()
         {
             return _mapper.Map<List<LocationHomeDto>>(await _locationHomeRepository.GetAll()
-                                                                   .Include(p => p.User)
                                                                    .OrderBy(x => x.City)
                                                                    .ToListAsync());
         }
@@ -33,7 +32,6 @@ namespace Application.Services.Implementation
         {
             return _mapper.Map<LocationHomeDto>(
                 await _locationHomeRepository.GetAll()
-                                            .Include(p => p.User)
                                             .FirstOrDefaultAsync(p => p.Id == locationId));
         }
 
@@ -56,12 +54,13 @@ namespace Application.Services.Implementation
             return _mapper.Map<LocationHomeDto>(location);
         }
 
-        public async Task<int> Add(LocationHomeDto locationHomeDto)
+        public async Task<int> Add(LocationHomePostDto locationHomeDto)
         {
+            var UserId = locationHomeDto.UserId;
             var location = _mapper.Map<LocationHome>(locationHomeDto);
             _locationHomeRepository.Add(location);
             await _locationHomeRepository.SaveChangesAsync();
-            var user = await _userRepository.FindByIdAsync(location.UserId);
+            var user = await _userRepository.FindByIdAsync(UserId);
             user.LocationHomeId = location.Id;
             _userRepository.Update(user);
             await _userRepository.SaveChangesAsync();

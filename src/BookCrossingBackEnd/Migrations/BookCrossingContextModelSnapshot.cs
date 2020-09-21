@@ -432,7 +432,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            DateAdded = new DateTime(2020, 9, 19, 16, 31, 42, 880, DateTimeKind.Local).AddTicks(7662),
+                            DateAdded = new DateTime(2020, 9, 21, 17, 28, 47, 41, DateTimeKind.Local).AddTicks(7498),
                             LanguageId = 1,
                             Name = "Adventures of Junior",
                             Rating = 0.0,
@@ -630,7 +630,7 @@ namespace BookCrossingBackEnd.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -642,10 +642,7 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Street")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
@@ -659,8 +656,7 @@ namespace BookCrossingBackEnd.Migrations
                             IsActive = true,
                             Latitude = 49.826371600000002,
                             Longitude = 23.944969700000001,
-                            Street = "Gorodoc'kogo",
-                            UserId = 1
+                            Street = "Gorodoc'kogo"
                         });
                 });
 
@@ -963,7 +959,7 @@ namespace BookCrossingBackEnd.Migrations
                             IsEmailAllowed = false,
                             LastName = "Adminovich",
                             MiddleName = "Adminovski",
-                            Password = "admin",
+                            Password = "AQAAAAEAACcQAAAAEF4qkrO2H0/sZvpx2lCnaFSQhEJZ5/vsMx4V3ZD3x8529ymU0VjTytn3HA94R/RSmw==",
                             RegisteredDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 2
                         },
@@ -977,7 +973,7 @@ namespace BookCrossingBackEnd.Migrations
                             IsEmailAllowed = false,
                             LastName = "Testerovich",
                             MiddleName = "Test",
-                            Password = "test",
+                            Password = "AQAAAAEAACcQAAAAEF4qkrO2H0/sZvpx2lCnaFSQhEJZ5/vsMx4V3ZD3x8529ymU0VjTytn3HA94R/RSmw==",
                             RegisteredDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 1,
                             UserRoomId = 1

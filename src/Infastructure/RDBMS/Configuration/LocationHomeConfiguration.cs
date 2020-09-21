@@ -15,12 +15,14 @@ namespace Infrastructure.RDBMS.Configuration
             builder.Property(e => e.City)
                 .IsRequired()
                 .HasColumnName("city")
-                .HasMaxLength(30);
+                .HasMaxLength(30)
+                .HasColumnType("nvarchar");
 
             builder.Property(e => e.Street)
                 .IsRequired()
                 .HasColumnName("street")
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .HasColumnType("nvarchar");
 
             builder.Property(e => e.IsActive)
                 .HasColumnName("is_active");
@@ -32,15 +34,6 @@ namespace Infrastructure.RDBMS.Configuration
             builder.Property(e => e.Longitude)
                 .IsRequired()
                 .HasColumnName("longitude");
-
-            builder.Property(e => e.UserId)
-               .IsRequired()
-               .HasColumnName("user_id");
-
-            builder.HasOne(d => d.User)
-               .WithOne(p => p.LocationHome)
-               .HasForeignKey<LocationHome>(d => d.UserId)
-               .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

@@ -31,6 +31,7 @@ namespace ApplicationTest.Services
         private List<LocationHomeDto> _locationsDto;
         private LocationHome _location;
         private LocationHomeDto _locationDto;
+        private LocationHomePostDto _locationPostDto;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -139,12 +140,12 @@ namespace ApplicationTest.Services
         [Test]
         public async Task Add_ShouldAddLocationToDatabase()
         {
-            _mapperMock.Setup(obj => obj.Map<LocationHome>(_locationDto))
+            _mapperMock.Setup(obj => obj.Map<LocationHome>(_locationPostDto))
                 .Returns(_location);
 
             _usersRepositoryMock.Setup(obj => obj.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(_user);
 
-            await _locationService.Add(_locationDto);
+            await _locationService.Add(_locationPostDto);
 
             _locationRepositoryMock.Verify(obj => obj.Add(_location), Times.Once);
             _locationRepositoryMock.Verify(obj => obj.SaveChangesAsync(), Times.Once);
@@ -163,8 +164,7 @@ namespace ApplicationTest.Services
                     IsActive = true,
                     Street = "Panasa Myrnogo",
                     Latitude = 49.8263716,
-                    Longitude = 23.9449697,
-                    UserId = 1
+                    Longitude = 23.9449697
                 },
                 new LocationHome()
                 {
@@ -173,8 +173,7 @@ namespace ApplicationTest.Services
                     IsActive = true,
                     Street = "Gorodotska",
                     Latitude = 49.8263716,
-                    Longitude = 23.9449697,
-                    UserId = 2
+                    Longitude = 23.9449697
                 }
             };
 
@@ -183,9 +182,17 @@ namespace ApplicationTest.Services
                 Id = location.Id,
                 City = location.City,
                 IsActive = location.IsActive,
-                Street = location.Street,
-                UserId = (int)location.UserId
+                Street = location.Street
             }).ToList();
+
+            _locationPostDto = _locations.Select(location => new LocationHomePostDto
+            {
+                Id = location.Id,
+                City = location.City,
+                IsActive = location.IsActive,
+                Street = location.Street,
+                UserId = 1
+            }).ToList().FirstOrDefault();
 
             _locationsQueryableMock = _locations.AsQueryable().BuildMock();
             _location = _locations.FirstOrDefault();

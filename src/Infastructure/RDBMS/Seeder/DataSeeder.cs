@@ -335,8 +335,7 @@ namespace Infrastructure.RDBMS.Seeder
                     Street = "Gorodoc'kogo",
                     Latitude = 49.8263716,
                     Longitude = 23.9449697,
-                    IsActive = true,
-                    UserId = 1
+                    IsActive = true
                 }
             );
         }

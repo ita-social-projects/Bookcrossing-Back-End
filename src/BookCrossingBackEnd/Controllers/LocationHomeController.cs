@@ -44,7 +44,7 @@ namespace BookCrossingBackEnd.Controllers
 
         // POST: api/LocationHome
         [HttpPost]
-        public async Task<ActionResult<LocationHomeDto>> PostLocation([FromBody] LocationHomeDto locationDto)
+        public async Task<ActionResult<LocationHomeDto>> PostLocation([FromBody] LocationHomePostDto locationDto)
         {
             var insertedId = await _locationService.Add(locationDto);
             locationDto.Id = insertedId;
