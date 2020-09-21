@@ -1,14 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Application.Dto.Dashboard;
 using Application.QueryableExtension;
 using Application.Services.Interfaces;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using Application.Dto.Dashboard;
 using MongoDB.Driver;
-using System;
 
 namespace Application.Services.Implementation
 {
@@ -34,14 +34,14 @@ namespace Application.Services.Implementation
                 BookUserComparisonData = await GetBookUserData(city),
                 LocationData = await GetLocationData(city)
             };
-            return result;        
+            return result;
         }
         private async Task<Dictionary<string, AvailabilityDataDto>> GetAvailabilityData()
         {
             var data = _bookRepository.GetAll().IgnoreQueryFilters();
             var dataResult = await data.GroupBy(x => new { x.State, x.User.UserRoom.Location.City })
-                                        .Select(x => new { x.Key.City, x.Key.State, count = x.Count()}).ToListAsync();
-            var dictionary = dataResult.GroupBy(x => x.City).ToDictionary(x => x.Key, x => x.ToDictionary( x=> x.State, x=> x.count));
+                                        .Select(x => new { x.Key.City, x.Key.State, count = x.Count() }).ToListAsync();
+            var dictionary = dataResult.GroupBy(x => x.City).ToDictionary(x => x.Key, x => x.ToDictionary(x => x.State, x => x.count));
             var cityData = new Dictionary<string, AvailabilityDataDto>();
             foreach (var city in dictionary)
             {
@@ -63,7 +63,7 @@ namespace Application.Services.Implementation
             {
                 data = data.Where(x => x.User.UserRoom.Location.City == city);
             }
-            var dataResult = await data.GroupBy(x => x.State).Select(x => new { State = x.Key, total = x.Count()}).ToDictionaryAsync(data => data.State, data => data.total);
+            var dataResult = await data.GroupBy(x => x.State).Select(x => new { State = x.Key, total = x.Count() }).ToDictionaryAsync(data => data.State, data => data.total);
             var result = new AvailabilityDataDto()
             {
                 Available = dataResult.ContainsKey(BookState.Available) ? dataResult[BookState.Available] : 0,
@@ -90,7 +90,7 @@ namespace Application.Services.Implementation
                 result = new BookUserDataDto()
                 {
                     BooksRegistered = await data
-                                            .GroupBy(x => new { x.DateAdded.Date.Year, x.DateAdded.Date.Month})
+                                            .GroupBy(x => new { x.DateAdded.Date.Year, x.DateAdded.Date.Month })
                                             .Select(x => new { x.Key, total = x.Count() })
                                             .ToDictionaryAsync(data => "01." + data.Key.Month + "." + data.Key.Year, data => data.total),
                     UsersRegistered = await userData

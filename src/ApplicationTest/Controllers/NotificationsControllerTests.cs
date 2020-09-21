@@ -50,6 +50,18 @@ namespace ApplicationTest.Controllers
         }
 
         [Test]
+        public async Task AddNotification_ReturnsOkObjectResult()
+        {
+            var result = await _controller.Add(It.IsAny<MessageDto>());
+
+            _notificationsServiceMock.Verify(obj => obj.AddAsync(It.IsAny<MessageDto>()));
+
+            result
+                .Should()
+                .BeOfType<OkResult>();
+        }
+
+        [Test]
         public async Task MarkAsRead_ServiceMethodThrowsInvalidOperationException_ReturnsForbiddenStatusCodeWishMessage()
         {
             var exceptionMessage = "User cannot mark as read notification that does not belong to him";
@@ -66,11 +78,11 @@ namespace ApplicationTest.Controllers
         [Test]
         public async Task MarkAsRead_NoExceptionsWereThrown_ShouldCallServiceMethodToMarkNotificationAsReadAndReturnOkResult()
         {
-            const int notificationId = 1;
+            const int NotificationId = 1;
 
-            var result = await _controller.MarkAsRead(notificationId);
+            var result = await _controller.MarkAsRead(NotificationId);
 
-            _notificationsServiceMock.Verify(obj => obj.MarkAsReadAsync(notificationId));
+            _notificationsServiceMock.Verify(obj => obj.MarkAsReadAsync(NotificationId));
 
             result
                 .Should()
@@ -106,11 +118,11 @@ namespace ApplicationTest.Controllers
         [Test]
         public async Task Remove_NoExceptionsWereThrown_ShouldCallServiceMethodToRemoveNotificationAsReadAndReturnOkResult()
         {
-            const int notificationId = 1;
+            const int NotificationId = 1;
 
-            var result = await _controller.Remove(notificationId);
+            var result = await _controller.Remove(NotificationId);
 
-            _notificationsServiceMock.Verify(obj => obj.RemoveAsync(notificationId));
+            _notificationsServiceMock.Verify(obj => obj.RemoveAsync(NotificationId));
 
             result
                 .Should()

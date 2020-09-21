@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BookCrossingBackEnd.Migrations
 {
@@ -19,7 +18,7 @@ namespace BookCrossingBackEnd.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            
+
 
             migrationBuilder.AlterColumn<string>(
                 name: "password",
@@ -30,7 +29,7 @@ namespace BookCrossingBackEnd.Migrations
                 oldClrType: typeof(string),
                 oldMaxLength: 100);
 
-          
+
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Application.Dto;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace BookCrossingBackEnd.Controllers
 {
@@ -55,7 +54,7 @@ namespace BookCrossingBackEnd.Controllers
 
         // POST: api/Aphorism
         [HttpPost]
-        public async Task<ActionResult<AphorismDto>> PostAphorismAsync([FromBody]AphorismDto aphorismDto)
+        public async Task<ActionResult<AphorismDto>> PostAphorismAsync([FromBody] AphorismDto aphorismDto)
         {
             var insertedAphorism = await _aphorismService.AddAphorismAsync(aphorismDto);
             return Created("GetAphorism", insertedAphorism);

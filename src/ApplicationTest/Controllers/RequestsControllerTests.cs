@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net;
 using System.Threading.Tasks;
 using Application.Dto;
 using Application.Dto.QueryParams;
@@ -8,7 +9,6 @@ using Application.Services.Interfaces;
 using BookCrossingBackEnd.Controllers;
 using Domain.RDBMS.Entities;
 using FluentAssertions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -63,9 +63,9 @@ namespace ApplicationTest.Controllers
             {
                 Id = 1,
                 RequestDate = new DateTime(1999, 05, 28),
-                User = new UserDto() {Id = 1},
-                Book = new BookGetDto() {Id = 1},
-                Owner = new UserDto() {Id = 1},
+                User = new UserDto() { Id = 1 },
+                Book = new BookGetDto() { Id = 1 },
+                Owner = new UserDto() { Id = 1 },
                 ReceiveDate = null
             };
 
@@ -74,7 +74,7 @@ namespace ApplicationTest.Controllers
                 First = true,
                 Last = false
             };
-            _requestServiceMock.Setup(s => s.GetByBookAsync(It.IsAny<Expression<Func<Request,bool>>>(), queryParameter))
+            _requestServiceMock.Setup(s => s.GetByBookAsync(It.IsAny<Expression<Func<Request, bool>>>(), queryParameter))
                 .ReturnsAsync(expectedRequest);
 
             var result = await _requestController.GetByBook(It.IsAny<int>(), queryParameter);
@@ -123,7 +123,6 @@ namespace ApplicationTest.Controllers
         #endregion Remove
 
         #region Make
-
         [Test]
         public async Task MakeRequest_BookIsNotAvailableForRequest_Returns_OkResult()
         {
@@ -133,6 +132,25 @@ namespace ApplicationTest.Controllers
             var result = await _requestController.Make(It.IsAny<int>());
             result.Result.Should().BeOfType<NotFoundResult>();
         }
+
+        [Test]
+        public async Task MakeRequest_ServiceThrownInvalidOperationException_ReturnsForbiddenResult()
+        {
+            var userId = 1;
+            var bookId = 1;
+            var exceptionMessage = "message";
+            _userResolverServiceMock.Setup(obj => obj.GetUserId())
+                .Returns(userId);
+            _requestServiceMock.Setup(obj => obj.MakeAsync(userId, bookId))
+                .ThrowsAsync(new InvalidOperationException(exceptionMessage));
+
+            var result = await _requestController.Make(bookId);
+
+            var objectResult = result.Result.Should().BeOfType<ObjectResult>().Subject;
+            objectResult.StatusCode.Should().Be((int) HttpStatusCode.Forbidden);
+            objectResult.Value.Should().Be(exceptionMessage);
+        }
+
         [Test]
         public async Task MakeRequest_BookIsAvailableForRequest_Return_NoFound()
         {
@@ -211,20 +229,6 @@ namespace ApplicationTest.Controllers
             result.Should().NotBeNull();
             result.Should().BeOfType<ActionResult<PaginationDto<RequestDto>>>();
             result.Value.Page.Should().NotBeNull().And.NotContainNulls();
-        }
-
-        [Test]
-        public async Task GetByUser_RequestsWereNotFound_ReturnsPaginatedDtoListOfRequestDto()
-        {
-            _requestServiceMock.Setup(m => m.GetAsync(
-                    It.IsAny<Expression<Func<Request, bool>>>(),
-                    It.IsAny<BookQueryParams>()))
-                .ReturnsAsync(value: null);
-
-            var result = await _requestController.GetByUser(It.IsAny<BookQueryParams>());
-
-            result.Result.Should().BeOfType<NotFoundResult>();
-            result.Value.Should().BeNull();
         }
     }
 }

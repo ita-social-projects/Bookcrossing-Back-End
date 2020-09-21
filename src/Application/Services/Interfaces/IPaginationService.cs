@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using Application.Dto;
 using Application.Dto.QueryParams;
-using Application.QueryableExtension;
-using Domain.RDBMS.Entities;
 
 namespace Application.Services.Interfaces
 {
@@ -29,6 +27,6 @@ namespace Application.Services.Interfaces
         /// <returns>Returns single page encapsulated in PaginationDto</returns>
         Task<PaginationDto<TDto>> GetPageAsync<TDto, TEntity>(IQueryable<TEntity> query, PageableParams parameters)
             where TDto : class where TEntity : class;
-        
+
     }
 }

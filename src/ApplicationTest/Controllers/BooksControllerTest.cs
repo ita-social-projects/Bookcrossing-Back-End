@@ -131,7 +131,7 @@ namespace ApplicationTest.Controllers
         [Test]
         public async Task PostBookAsync_Success_ReturnsCreatedAtActionResult()
         {
-            var testBook = new BookGetDto() { Id = 1};
+            var testBook = new BookGetDto() { Id = 1 };
             _bookService.Setup(m => m.AddAsync(It.IsAny<BookPostDto>())).ReturnsAsync(testBook);
 
             var createdAtActionResult = await _booksController.PostBookAsync(It.IsAny<BookPostDto>());
@@ -186,7 +186,7 @@ namespace ApplicationTest.Controllers
         [Test]
         public async Task GetRegisteredBooksAsync_AnyBookQueryParams_ReturnsPaginatedDtoListOfBookGetDto()
         {
-            _bookService.Setup(m => m.GetRegistered(It.IsAny<BookQueryParams>()))
+            _bookService.Setup(m => m.GetRegisteredAsync(It.IsAny<BookQueryParams>()))
                 .ReturnsAsync(new PaginationDto<BookGetDto>
                 {
                     Page = new List<BookGetDto>(),

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 
@@ -17,7 +15,7 @@ namespace Application.Services.Implementation
 
         public IEnumerable<Claim> GetClaims()
         {
-            return _context.HttpContext.User.Claims; 
+            return _context.HttpContext.User.Claims;
         }
 
         public int GetUserId()

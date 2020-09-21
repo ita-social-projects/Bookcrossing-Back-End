@@ -13,6 +13,7 @@ using Domain.NoSQL;
 using Domain.NoSQL.Entities;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
+using Domain.RDBMS.Enums;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using MimeKit;
@@ -73,10 +74,20 @@ namespace Application.Services.Implementation
         {
             var book = await _bookRepository.GetAll().Include(x => x.User).FirstOrDefaultAsync(x => x.Id == bookId);
             var isNotAvailableForRequest = book == null || book.State != BookState.Available;
-            var user = _userRepository.FindByIdAsync(userId).Result;
             if (isNotAvailableForRequest)
             {
                 return null;
+            }
+
+            if (userId == book.UserId)
+            {
+                throw new InvalidOperationException("You cannot request your book");
+            }
+
+            var user = await _userRepository.FindByIdAsync(userId);
+            if (user.IsDeleted)
+            {
+                throw new InvalidOperationException("As deleted user you cannot request books");
             }
 
             var request = new Request()
@@ -86,10 +97,6 @@ namespace Application.Services.Implementation
                 UserId = userId,
                 RequestDate = DateTime.UtcNow
             };
-            if (user.IsDeleted)
-            {
-                throw new InvalidOperationException();
-            }
             _requestRepository.Add(request);
             await _requestRepository.SaveChangesAsync();
             book.State = BookState.Requested;
@@ -236,9 +243,16 @@ namespace Application.Services.Implementation
             }
 
             var location = _userLocationRepository.GetAll();
-            if (parameters.Location != null)
+            if (parameters.Locations != null)
             {
-                location = location.Where(l => l.Location.Id == parameters.Location);
+                var wherePredicate = PredicateBuilder.New<UserRoom>();
+                foreach (var id in parameters.Locations)
+                {
+                    var tempId = id;
+                    wherePredicate = wherePredicate.Or(r => r.LocationId == tempId);
+                }
+
+                location = location.Where(wherePredicate);
             }
 
             var bookIds =
@@ -246,7 +260,7 @@ namespace Application.Services.Implementation
                 join g in genre on b.Id equals g.BookId
                 join la in lang on b.Language.Id equals la.Id
                 join a in author on b.Id equals a.BookId
-                join l in location on b.UserId equals l.Id
+                join l in location on b.User.UserRoomId equals l.Id
                 select b.Id;
             var query = _requestRepository.GetAll()
                 .Include(i => i.Book).ThenInclude(i => i.BookAuthor).ThenInclude(i => i.Author)
@@ -256,9 +270,7 @@ namespace Application.Services.Implementation
                 .Include(i => i.User).ThenInclude(i => i.UserRoom).ThenInclude(i => i.Location)
                 .Where(predicate).Where(x => bookIds.Contains(x.BookId));
 
-            var requests = await _paginationService.GetPageAsync<RequestDto, Request>(query, parameters);
-            var isEmpty = !requests.Page.Any();
-            return isEmpty ? null : requests;
+            return await _paginationService.GetPageAsync<RequestDto, Request>(query, parameters);
         }
 
         /// <inheritdoc />
@@ -306,7 +318,7 @@ namespace Application.Services.Implementation
 
                 await _emailSenderService.SendThatBookWasReceivedToNewOwnerAsync(emailMessage);
             }
-            
+
             await _notificationsService.NotifyAsync(
                 request.Owner.Id,
                 $"{request.User.FirstName} {request.User.LastName} has successfully received and started reading '{book.Name}'.",
@@ -318,7 +330,7 @@ namespace Application.Services.Implementation
                 book.Id,
                 NotificationAction.Open);
 
-                await _hangfireJobScheduleService.DeleteRequestScheduleJob(requestId);
+            await _hangfireJobScheduleService.DeleteRequestScheduleJob(requestId);
             return affectedRows > 0;
         }
 

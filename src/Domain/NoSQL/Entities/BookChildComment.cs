@@ -24,9 +24,9 @@ namespace Domain.NoSQL.Entities
         public bool IsDeleted { get; set; } = false;
 
         public IEnumerable<BookChildComment> Comments { get; set; }
-        
-        public BookChildComment() {}
-        
+
+        public BookChildComment() { }
+
         public BookChildComment(bool IsForInserting)
         {
             if (IsForInserting)

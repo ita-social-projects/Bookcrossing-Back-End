@@ -21,7 +21,7 @@ namespace BookCrossingBackEnd.Controllers
 
         // GET: api/RootBookCommants/5
         [HttpGet("{bookId}")]
-        public async Task<ActionResult<List<RootDto>>> GetByBookId([FromRoute]int bookId)
+        public async Task<ActionResult<List<RootDto>>> GetByBookId([FromRoute] int bookId)
         {
             var comments = await _rootBookCommentService.GetByBookId(bookId);
             return Ok(comments);
@@ -72,7 +72,7 @@ namespace BookCrossingBackEnd.Controllers
         // DELETE: api/RootBookCommants/5
         [HttpDelete]
         [Authorize]
-        public async Task<ActionResult<int>> Delete([FromBody]RootDeleteDto deleteDto)
+        public async Task<ActionResult<int>> Delete([FromBody] RootDeleteDto deleteDto)
         {
             if (deleteDto.OwnerId != _userResolverService.GetUserId() && !_userResolverService.IsUserAdmin())
             {

@@ -44,11 +44,53 @@
     "searchBar": {
       "searchPlaceholder": "Enter Book Title or Author"
     },
+    "book-edit": {
+      "editbook": "Edit book",
+      "booktitle": "Book title:",
+      "fieldrequaired": "This field is required.",
+      "withoutauthor": "Without author",
+      "author": "Author",
+      "lastnamerequaired": "Lastname is required.",
+      "notconfirmedsave": "Entered author is saved as 'not confirmed'",
+      "category": "Category",
+      "language": "Language",
+      "publishinghouse": "Publishing house",
+      "notice": "Notice",
+      "inactive": "Inactive",
+      "editimage": "Edit image",
+      "image": "Image",
+      "newimage": "New image",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
     "books": {
+      "authors": "Authors",
+      "author": "Author",
+      "status": "Status",
+      "language": "Language",
+      "location": "Location",
+      "category": "Category",
       "languages": "Languages",
       "locations": "Locations",
       "categories": "Categories",
-      "availableOnly": "Available Only"
+      "availableOnly": "Available Only",
+      "requestfromcompany": "Request from company",
+      "nobooksfound": "No books found",
+      "statuses": {
+        "available": "Available",
+        "request": "Request",
+        "requested": "Requested",
+        "cancelrequest": "Cancel request",
+        "reading": "Reading",
+        "inactive": "Inactive",
+        "unavailable": "Unavailable"
+      }
+    },
+    "booksfilter": {
+      "rating": "Rating",
+      "dateadded": "Date added",
+      "bookstitle": "Book's title",
+      "sortby": "Sort by"
     },
     "requests": {
       "requests": "All requests",
@@ -78,7 +120,30 @@
       "available": "Available",
       "notAvailable": "Not Available",
       "request": "Request",
-      "reviews": "Book Reviews"
+      "reviews": "Book Reviews",
+      "startreading": "Start reading",
+      "cancelrequest": "Cancel request",
+      "makeavailable": "Make available",
+      "readby": "Read by",
+      "author": "Author",
+      "category": "Category",
+      "categories": "Categories",
+      "language": "Language",
+      "location": "Location",
+      "currentowner": "Current owner",
+      "registeredby": "Registered by",
+      "requestedby": "Requested by",
+      "status": "Status",
+      "statuses": {
+        "available": "Available",
+        "request": "Request",
+        "requested": "Requested",
+        "cancelrequest": "Cancel request",
+        "reading": "Reading",
+        "inactive": "Inactive",
+        "unavailable": "Unavailable"
+      },
+      "notice": "Notice"
     },
     "password": {
       "reset-error": "An error occurred while changing the password!",
@@ -142,7 +207,8 @@
       },
       "genres": {
         "genre": "Category",
-        "genres": "Categories"
+        "genres": "Categories in English",
+        "genresUk": "Category in Ukrainian"
       },
       "dashboard": {
         "data-range": "Data range",
@@ -215,6 +281,19 @@
         "timespan": "Timespan",
         "timespans": "Timespans"
       }
+    },
+    "comment": {
+      "commentplaceholder": "Write a comment up to 500 characters",
+      "post": "Post",
+      "logintocommentmessage": "login to comment",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deletemessage": "[The comment was deleted]",
+      "reply": "Reply",
+      "replymessage": "Please, log in to reply to comments/sub-comments",
+      "editplaceholder": "Edit your comment...",
+      "viewall": "View all replies",
+      "hideall": "Hide all replies"
     }
   }
 }

@@ -377,6 +377,9 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
+                    b.Property<string>("ISBN")
+                        .HasColumnType("nvarchar(17)");
+
                     b.Property<string>("ImagePath")
                         .HasColumnName("imagepath")
                         .HasColumnType("nvarchar(260)")
@@ -429,7 +432,10 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            DateAdded = new DateTime(2020, 9, 20, 20, 26, 40, 856, DateTimeKind.Local).AddTicks(2859),
+
+
+                            DateAdded = new DateTime(2020, 9, 17, 20, 20, 48, 146, DateTimeKind.Local).AddTicks(9679),
+
                             LanguageId = 1,
                             Name = "Adventures of Junior",
                             Rating = 0.0,
@@ -486,6 +492,26 @@ namespace BookCrossingBackEnd.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.RDBMS.Entities.BookRating", b =>
+                {
+                    b.Property<int>("BookId")
+                        .HasColumnName("book_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnName("user_id")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
+
+                    b.HasKey("BookId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BookRating");
+                });
+
             modelBuilder.Entity("Domain.RDBMS.Entities.Genre", b =>
                 {
                     b.Property<int>("Id")
@@ -500,6 +526,12 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
+                    b.Property<string>("NameUk")
+                        .IsRequired()
+                        .HasColumnName("nameuk")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
                     b.HasKey("Id");
 
                     b.ToTable("Genre");
@@ -508,7 +540,8 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Fantasy"
+                            Name = "Unknown",
+                            NameUk = "Невідомий"
                         });
                 });
 
@@ -534,7 +567,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Ukrainian"
+                            Name = "Unknown"
                         });
                 });
 
@@ -552,9 +585,20 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
+                    b.Property<string>("HomeAdress")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnName("is_active")
                         .HasColumnType("bit");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnName("latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnName("longitude")
+                        .HasColumnType("float");
 
                     b.Property<string>("OfficeName")
                         .HasColumnName("office_name")
@@ -577,6 +621,8 @@ namespace BookCrossingBackEnd.Migrations
                             Id = 1,
                             City = "Lviv",
                             IsActive = true,
+                            Latitude = 49.826371600000002,
+                            Longitude = 23.944969700000001,
                             OfficeName = "SoftServe",
                             Street = "Gorodoc'kogo"
                         });
@@ -609,12 +655,17 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("nvarchar(512)")
                         .HasMaxLength(512);
 
+                    b.Property<int?>("ReceiverUserId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
+
+                    b.HasIndex("ReceiverUserId");
 
                     b.HasIndex("UserId");
 
@@ -756,6 +807,27 @@ namespace BookCrossingBackEnd.Migrations
                     b.ToTable("ScheduleJob");
                 });
 
+            modelBuilder.Entity("Domain.RDBMS.Entities.Setting", b =>
+                {
+                    b.Property<string>("Namespace")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValue("Global");
+
+                    b.Property<string>("Key")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Namespace", "Key");
+
+                    b.ToTable("Setting");
+                });
+
             modelBuilder.Entity("Domain.RDBMS.Entities.SuggestionMessage", b =>
                 {
                     b.Property<int>("Id")
@@ -894,7 +966,7 @@ namespace BookCrossingBackEnd.Migrations
                             IsEmailAllowed = false,
                             LastName = "Adminovich",
                             MiddleName = "Adminovski",
-                            Password = "admin",
+                            Password = "AQAAAAEAACcQAAAAEF4qkrO2H0/sZvpx2lCnaFSQhEJZ5/vsMx4V3ZD3x8529ymU0VjTytn3HA94R/RSmw==",
                             RegisteredDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 2
                         },
@@ -908,9 +980,23 @@ namespace BookCrossingBackEnd.Migrations
                             IsEmailAllowed = false,
                             LastName = "Testerovich",
                             MiddleName = "Test",
-                            Password = "test",
+                            Password = "AQAAAAEAACcQAAAAEF4qkrO2H0/sZvpx2lCnaFSQhEJZ5/vsMx4V3ZD3x8529ymU0VjTytn3HA94R/RSmw==",
                             RegisteredDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 1,
+                            UserRoomId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "unavailable@gmail.com",
+                            FirstName = "Unavailable",
+                            IsDeleted = false,
+                            IsEmailAllowed = false,
+                            LastName = "Unavailbale",
+                            Password = "unavailablepassword",
+                            RegisteredDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RoleId = 2,
                             UserRoomId = 1
                         });
                 });
@@ -1008,11 +1094,30 @@ namespace BookCrossingBackEnd.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.RDBMS.Entities.BookRating", b =>
+                {
+                    b.HasOne("Domain.RDBMS.Entities.Book", "Book")
+                        .WithMany("BookRating")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.RDBMS.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.RDBMS.Entities.Notification", b =>
                 {
                     b.HasOne("Domain.RDBMS.Entities.Book", null)
                         .WithMany()
                         .HasForeignKey("BookId");
+
+                    b.HasOne("Domain.RDBMS.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("ReceiverUserId");
 
                     b.HasOne("Domain.RDBMS.Entities.User", null)
                         .WithMany()

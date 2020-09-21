@@ -50,6 +50,8 @@ namespace BookCrossingBackEnd.ServiceExtension
             services.AddScoped<IWishListService, WishListService>();
             services.AddScoped<IAphorismService, AphorismService>();
             services.AddScoped<ISuggestionMessageService, SuggestionMessageService>();
+            services.AddScoped<ISettingsService, SettingsService>();
+            services.AddScoped<IStatisticsService, StatisticsService>();
         }
 
         public static void AddNotifications(this IServiceCollection services)
@@ -81,7 +83,7 @@ namespace BookCrossingBackEnd.ServiceExtension
             services.AddScoped(typeof(Domain.RDBMS.IRepository<>), typeof(Infrastructure.RDBMS.BaseRepository<>));
         }
 
-        public static void AddJWTAuthenticatoin(this IServiceCollection services,IConfiguration configuration)
+        public static void AddJWTAuthenticatoin(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -102,7 +104,7 @@ namespace BookCrossingBackEnd.ServiceExtension
                         OnMessageReceived = context =>
                         {
                             var accessToken = context.Request.Query["access_token"];
-                            if (string.IsNullOrEmpty(accessToken) == false && 
+                            if (string.IsNullOrEmpty(accessToken) == false &&
                                 context.Request.Path.StartsWithSegments(NotificationsHub.URL))
                             {
                                 context.Token = accessToken;
@@ -123,7 +125,7 @@ namespace BookCrossingBackEnd.ServiceExtension
                 });
         }
 
-        public static void AddDbContext(this IServiceCollection services,IConfiguration configuration, IWebHostEnvironment env)
+        public static void AddDbContext(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
         {
             string connectionString;
 
@@ -168,6 +170,7 @@ namespace BookCrossingBackEnd.ServiceExtension
                 mc.AddProfile(new Application.MapperProfilers.AphorismProfile());
                 mc.AddProfile(new NotificationProfile());
                 mc.AddProfile(new Application.MapperProfilers.SuggestionMessageProfile());
+                mc.AddProfile(new SettingProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

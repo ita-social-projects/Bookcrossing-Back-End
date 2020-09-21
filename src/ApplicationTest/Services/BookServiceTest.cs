@@ -23,6 +23,7 @@ namespace ApplicationTest.Services
     internal class BookServiceTest
     {
         private IBookService _bookService;
+        private Mock<IRepository<BookRating>> _bookRatingRepositoryMock;
         private Mock<IRepository<Book>> _bookRepositoryMock;
         private Mock<IRepository<BookAuthor>> _bookAuthorRepositoryMock;
         private Mock<IRepository<BookGenre>> _bookGenreRepositoryMock;
@@ -53,6 +54,8 @@ namespace ApplicationTest.Services
             _imageServiceMock = new Mock<IImageService>();
             _rootCommentRepository = new Mock<IRootRepository<BookRootComment>>();
             _wishListServiceMock = new Mock<IWishListService>();
+            _bookRatingRepositoryMock = new Mock<IRepository<BookRating>>();
+
 
             var mappingConfig = new MapperConfiguration(mc =>
             {
@@ -82,7 +85,8 @@ namespace ApplicationTest.Services
                 _hangfireJobScheduleService.Object,
                 _emailSenderServiceMock.Object,
                 _rootCommentRepository.Object,
-                _wishListServiceMock.Object);
+                _wishListServiceMock.Object,
+                _bookRatingRepositoryMock.Object);
 
             var authorMock = GetBookAuthor().AsQueryable();
             var genreMock = GetBookGenre().AsQueryable();
@@ -139,7 +143,7 @@ namespace ApplicationTest.Services
             {
                 Page = 1,
                 PageSize = 10,
-                Location = 1,
+                Locations = new [] { 1 },
                 Genres = new[] { 1 },
                 SearchTerm = "Martin",
                 ShowAvailable = true
@@ -170,7 +174,7 @@ namespace ApplicationTest.Services
 
             _bookRepositoryMock.Setup(s => s.GetAll()).Returns(booksMock.Object);
 
-            var query = new BookQueryParams { Page = 1, PageSize = 10, Location = 1 };
+            var query = new BookQueryParams { Page = 1, PageSize = 10, Locations = new int[] { 1 } };
 
             var booksResult = await _bookService.GetAllAsync(query);
 
@@ -366,7 +370,7 @@ namespace ApplicationTest.Services
 
             var result = await _bookService.GetNumberOfBooksInReadStatusAsync(userId);
 
-            result.Should().Be(GetPopulatedBooks().Count(b => b.UserId == userId));
+            result.Should().Be(GetPopulatedBooks().Count(b => b.UserId == userId && b.State == BookState.Reading));
         }
 
         private List<Book> GetPopulatedBooks()

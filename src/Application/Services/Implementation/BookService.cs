@@ -23,6 +23,7 @@ namespace Application.Services.Implementation
         private readonly IRepository<Book> _bookRepository;
         private readonly IRepository<BookAuthor> _bookAuthorRepository;
         private readonly IRepository<BookGenre> _bookGenreRepository;
+        private readonly IRepository<BookRating> _bookRatingRepository;
         private readonly IRepository<Language> _bookLanguageRepository;
         private readonly IRepository<User> _userLocationRepository;
         private readonly IRepository<Request> _requestRepository;
@@ -38,11 +39,12 @@ namespace Application.Services.Implementation
         public BookService(IRepository<Book> bookRepository, IMapper mapper, IRepository<BookAuthor> bookAuthorRepository, IRepository<BookGenre> bookGenreRepository,
             IRepository<Language> bookLanguageRepository, IRepository<User> userLocationRepository, IPaginationService paginationService, IRepository<Request> requestRepository,
             IUserResolverService userResolverService, IImageService imageService, IHangfireJobScheduleService hangfireJobScheduleService, IEmailSenderService emailSenderService, 
-            IRootRepository<BookRootComment> rootCommentRepository, IWishListService wishListService)
+            IRootRepository<BookRootComment> rootCommentRepository, IWishListService wishListService, IRepository<BookRating> bookRatingRepository)
         {
             _bookRepository = bookRepository;
             _bookAuthorRepository = bookAuthorRepository;
             _bookGenreRepository = bookGenreRepository;
+            _bookRatingRepository = bookRatingRepository;
             _bookLanguageRepository = bookLanguageRepository;
             _userLocationRepository = userLocationRepository;
             _requestRepository = requestRepository;
@@ -148,6 +150,12 @@ namespace Application.Services.Implementation
             return await _paginationService.GetPageAsync<BookGetDto, Book>(query, parameters);
         }
 
+        public IQueryable<Book> GetBooksInReadStatus()
+        {
+            var userId = _userResolverService.GetUserId();
+            return _bookRepository.GetAll().Where(b => b.UserId == userId && b.State == BookState.Reading);
+        }
+
         private async Task<IEnumerable<int>> FindRegisteredBooksAsync(int userId)
         {
             //registered books            
@@ -178,7 +186,7 @@ namespace Application.Services.Implementation
             return allBooks;
         }
 
-        public async Task<PaginationDto<BookGetDto>> GetRegistered(BookQueryParams parameters)
+        public async Task<PaginationDto<BookGetDto>> GetRegisteredAsync(BookQueryParams parameters)
         {
             var userId = _userResolverService.GetUserId();
             var registeredBooks = await FindRegisteredBooksAsync(userId);
@@ -186,6 +194,14 @@ namespace Application.Services.Implementation
             query = GetFilteredQuery(query, parameters);
 
             return await _paginationService.GetPageAsync<BookGetDto, Book>(query, parameters);
+        }
+
+        public async Task<IQueryable<Book>> GetRegisteredAsync()
+        {
+            var userId = _userResolverService.GetUserId();
+            var registeredBooks = await FindRegisteredBooksAsync(userId);
+
+            return _bookRepository.GetAll().Where(x => registeredBooks.Contains(x.Id));
         }
 
         public async Task<int> GetNumberOfTimesRegisteredBooksWereReadAsync(int userId)
@@ -224,7 +240,6 @@ namespace Application.Services.Implementation
             return books.Count();
         }
 
-
         public async Task<PaginationDto<BookGetDto>> GetReadBooksAsync(BookQueryParams parameters)
         {
             var userId = _userResolverService.GetUserId();
@@ -233,6 +248,18 @@ namespace Application.Services.Implementation
             var readBooks = ownedBooks.Union(currentlyOwnedBooks);
             var query = GetFilteredQuery(readBooks, parameters);
             return await _paginationService.GetPageAsync<BookGetDto, Book>(query, parameters);
+        }
+
+        public IQueryable<Book> GetAlreadyReadBooks()
+        {
+            var userId = _userResolverService.GetUserId();
+            var ownedBooks = _requestRepository.GetAll()
+                .Where(a => a.OwnerId == userId && a.ReceiveDate != null && a.OwnerId != a.UserId)
+                .Select(a => a.Book);
+            var currentlyOwnedReadBooks = _bookRepository.GetAll()
+                .Where(b => b.UserId == userId && b.State == BookState.Available);
+
+            return ownedBooks.Union(currentlyOwnedReadBooks);
         }
 
         public async Task<bool> ActivateAsync(int bookId)
@@ -321,10 +348,50 @@ namespace Application.Services.Implementation
 
         public async Task<int> GetNumberOfBooksInReadStatusAsync(int userId)
         {
-            var ownedBooks = _requestRepository.GetAll().Where(a => a.OwnerId == userId).Select(a => a.Book);
-            var currentlyOwnedBooks = _bookRepository.GetAll().Where(a => a.UserId == userId);
+            var currentlyOwnedBooks = _bookRepository.GetAll()
+                .Where(a => a.UserId == userId && a.State == BookState.Reading);
             
-            return await ownedBooks.Union(currentlyOwnedBooks).CountAsync();
+            return await currentlyOwnedBooks.CountAsync();
+        }
+
+        public async Task<bool> SetRating(BookRatingQueryParams ratingQueryParams)
+        {
+            var book = await _bookRepository.FindByIdAsync(ratingQueryParams.BookId);
+            if (book == null)
+            {
+                return false;
+            }
+
+            var bookRating = new BookRating(ratingQueryParams.BookId, ratingQueryParams.UserId, ratingQueryParams.Rating);
+            _bookRatingRepository.Add(bookRating);
+            await _bookRatingRepository.SaveChangesAsync();
+            var avgRating = _bookRatingRepository.GetAll()
+                .Where(b => b.BookId == ratingQueryParams.BookId)
+                .Average(b => b.Rating);
+            book.Rating = avgRating;
+            _bookRepository.Update(book);
+            await _bookRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<double> GetRating(int bookId, int userId)
+        {
+            var rating = await _bookRatingRepository.FindByIdAsync(bookId, userId);
+
+            return rating != null ? rating.Rating : 0;
+        }
+
+        public IEnumerable<Request> GetBooksTransitions()
+        {
+            return _requestRepository.GetAll()
+                .Where(r => r.ReceiveDate != null && r.OwnerId != r.UserId)
+                .Include(r => r.User)
+                .ThenInclude(u => u.UserRoom)
+                .ThenInclude(r => r.Location)
+                .Include(r => r.Book)
+                .ThenInclude(b => b.BookGenre)
+                .ThenInclude(g => g.Genre);
         }
 
         private IQueryable<Book> GetFilteredQuery(IQueryable<Book> query, BookQueryParams parameters)
@@ -333,9 +400,15 @@ namespace Application.Services.Implementation
             {
                 query = query.Where(b => b.State == BookState.Available);
             }
-            if (parameters.Location != null)
+            if (parameters.Locations != null)
             {
-                query = query.Where(x => x.User.UserRoom.LocationId == parameters.Location);
+                var predicate = PredicateBuilder.New<Book>();
+                foreach (var id in parameters.Locations)
+                {
+                    var tempId = id;
+                    predicate = predicate.Or(b => b.User.UserRoom.LocationId == id);
+                }
+                query = query.Where(predicate);
             }
             if (parameters.SearchTerm != null)
             {

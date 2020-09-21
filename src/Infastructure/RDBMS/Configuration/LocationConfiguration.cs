@@ -34,6 +34,14 @@ namespace Infrastructure.RDBMS.Configuration
             builder.Property(e => e.IsActive)
                 .HasColumnName("is_active");
 
+            builder.Property(e => e.Latitude)
+                .IsRequired()
+                .HasColumnName("latitude");
+
+            builder.Property(e => e.Longitude)
+                .IsRequired()
+                .HasColumnName("longitude");
+
             builder.HasMany(d => d.UserRoom)
                 .WithOne(p => p.Location)
                 .HasForeignKey(d => d.LocationId)

@@ -46,7 +46,7 @@ namespace ApplicationTest.Controllers
         public async Task GetAllGenres_AnyFullPaginationQueryParams_ReturnsPaginatedDtoListOfGenreGetDto()
         {
             var testGenres = GetTestGenres();
-            
+
             _genreService.Setup(s => s.GetAll(It.IsAny<FullPaginationQueryParams>()))
                 .ReturnsAsync(new PaginationDto<GenreDto>()
                 {

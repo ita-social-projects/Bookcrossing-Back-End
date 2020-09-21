@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-
-namespace Application.Dto.QueryParams
+﻿namespace Application.Dto.QueryParams
 {
     public class BookQueryParams : PageableParams
     {
@@ -11,9 +8,9 @@ namespace Application.Dto.QueryParams
 
         public int[] Languages { get; set; }
 
-        public int? Location { get; set; }
+        public int[] Locations { get; set; }
 
-        public bool? ShowAvailable { get; set; }  
+        public bool? ShowAvailable { get; set; }
 
         public SortableParams SortableParams { get; set; }
     }

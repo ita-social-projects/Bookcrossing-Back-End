@@ -28,5 +28,7 @@ namespace Application.Dto
         public RoomLocationDto UserLocation { get; set; }
 
         public int? NumberOfBooksOwned { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }
