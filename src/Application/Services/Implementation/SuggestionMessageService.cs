@@ -5,9 +5,7 @@ using AutoMapper;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Services.Implementation
