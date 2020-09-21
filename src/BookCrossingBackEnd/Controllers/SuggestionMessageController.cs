@@ -37,7 +37,7 @@ namespace BookCrossingBackEnd.Controllers
             return Ok(message);
         }
 
-        // GET: api/Messages
+        // GET: api/SuggestionMessage
         [HttpGet]
         public async Task<ActionResult<List<SuggestionMessageDto>>> GetAllMessages()
         {
@@ -45,7 +45,7 @@ namespace BookCrossingBackEnd.Controllers
             return Ok(await _messageService.GetAll());
         }
 
-        // PUT: api/Message
+        // PUT: api/SuggestionMessage
         [HttpPut]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutMessage(SuggestionMessageDto messageDto)
@@ -60,7 +60,7 @@ namespace BookCrossingBackEnd.Controllers
             return NoContent();
         }
 
-        // POST: api/Message
+        // POST: api/SuggestionMessage
         [HttpPost]
         public async Task<ActionResult<SuggestionMessageDto>> PostMessage([FromBody] SuggestionMessageDto messageDto)
         {
@@ -69,7 +69,7 @@ namespace BookCrossingBackEnd.Controllers
             return Created("GetMessage", insertedMessage);
         }
 
-        // DELETE: api/Message/id
+        // DELETE: api/SuggestionMessage/id
         [HttpDelete("{id:min(1)}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteMessage(int id)
