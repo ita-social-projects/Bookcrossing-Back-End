@@ -429,7 +429,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            DateAdded = new DateTime(2020, 8, 27, 11, 58, 34, 359, DateTimeKind.Local).AddTicks(3564),
+                            DateAdded = new DateTime(2020, 9, 20, 20, 26, 40, 856, DateTimeKind.Local).AddTicks(2859),
                             LanguageId = 1,
                             Name = "Adventures of Junior",
                             Rating = 0.0,
@@ -756,6 +756,53 @@ namespace BookCrossingBackEnd.Migrations
                     b.ToTable("ScheduleJob");
                 });
 
+            modelBuilder.Entity("Domain.RDBMS.Entities.SuggestionMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50)
+                        .HasDefaultValue("Unread");
+
+                    b.Property<string>("Summary")
+                        .HasColumnName("summary")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnName("text")
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
+                    b.Property<int>("UserId")
+                        .HasColumnName("user_id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SuggestionMessage");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            State = "Unread",
+                            Summary = "fix problem",
+                            Text = "There is problem with translation",
+                            UserId = 1
+                        });
+                });
+
             modelBuilder.Entity("Domain.RDBMS.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -997,6 +1044,15 @@ namespace BookCrossingBackEnd.Migrations
                     b.HasOne("Domain.RDBMS.Entities.User", "User")
                         .WithMany("RequestUser")
                         .HasForeignKey("UserId")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.RDBMS.Entities.SuggestionMessage", b =>
+                {
+                    b.HasOne("Domain.RDBMS.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
