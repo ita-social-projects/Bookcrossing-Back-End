@@ -23,11 +23,15 @@ namespace BookCrossingBackEnd.Controllers
         {
             var location = await _locationService.GetById(id);
             if (location == null)
+            {
                 return NotFound();
+            }
+
             return Ok(location);
         }
 
         // GET: api/HomeLocation
+        //IEnum
         [HttpGet]
         public async Task<ActionResult<List<LocationHomeDto>>> GetAllLocations()
         {
@@ -39,6 +43,7 @@ namespace BookCrossingBackEnd.Controllers
         public async Task<IActionResult> PutLocation([FromBody] LocationHomeDto locationDto)
         {
             await _locationService.Update(locationDto);
+
             return NoContent();
         }
 
@@ -48,6 +53,7 @@ namespace BookCrossingBackEnd.Controllers
         {
             var insertedId = await _locationService.Add(locationDto);
             locationDto.Id = insertedId;
+
             return CreatedAtAction("GetLocation", new { id = locationDto.Id }, locationDto);
         }
 
@@ -57,7 +63,10 @@ namespace BookCrossingBackEnd.Controllers
         {
             var location = await _locationService.Remove(id);
             if (location == null)
+            {
                 return NotFound();
+            }
+
             return Ok(location);
         }
     }

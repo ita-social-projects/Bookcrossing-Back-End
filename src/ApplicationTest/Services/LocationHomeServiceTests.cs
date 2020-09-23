@@ -19,51 +19,122 @@ namespace ApplicationTest.Services
     [TestFixture]
     public class LocationHomeServiceTests
     {
+        #region Fields
         private BookCrossingContext _context;
         private LocationHomeService _locationService;
+
         private Mock<IRepository<LocationHome>> _locationRepositoryMock;
         private Mock<IRepository<User>> _usersRepositoryMock;
-        private Mock<IMapper> _mapperMock;
-
-        private User _user;
-        private List<LocationHome> _locations;
         private Mock<IQueryable<LocationHome>> _locationsQueryableMock;
-        private List<LocationHomeDto> _locationsDto;
+
+        private IMapper _mapper;
+        private IEnumerable<LocationHome> _locations;
+        private IEnumerable<User> _users;
         private LocationHome _location;
         private LocationHomeDto _locationDto;
         private LocationHomePostDto _locationPostDto;
+        #endregion
 
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
+        #region SetupFunctions
+        public void SetupMapper()
         {
-            _locationRepositoryMock = new Mock<IRepository<LocationHome>>();
-            _usersRepositoryMock = new Mock<IRepository<User>>();
-            _mapperMock = new Mock<IMapper>();
-
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new Application.MapperProfilers.LocationHomeProfile());
                 mc.AddProfile(new Application.MapperProfilers.UserProfile());
             });
-            _user = new User()
-            {
-                Id = 0,
-                AzureId = "",
-                BirthDate = new System.DateTime(2000, 10, 10),
-                Book = new List<Book>(),
-                Email = "",
-                FirstName = "User",
-                IsDeleted = false,
-                IsEmailAllowed = true,
-                LastName = "Lastname",
-                LocationHomeId = 1
-            };
-            var _mapper = mappingConfig.CreateMapper();
-            var options = new DbContextOptionsBuilder<BookCrossingContext>().UseInMemoryDatabase(databaseName: "Fake DB").ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning)).Options;
+            _mapper = mappingConfig.CreateMapper();
+        }
+        public void SetupRepositories()
+        {
+            _locationRepositoryMock = new Mock<IRepository<LocationHome>>();
+            _usersRepositoryMock = new Mock<IRepository<User>>();
+            _locationsQueryableMock = new Mock<IQueryable<LocationHome>>();
+        }
+        private void SetupData()
+        {
+            _locations = SetupLocations;
+
+            _users = SetupUsers;
+
+            _location = _locations.First();
+
+            _locationDto = _mapper.Map<LocationHomeDto>(_location);
+
+            _locationPostDto = _mapper.Map<LocationHomePostDto>(_location);
+            _locationPostDto.UserId = 1;
+        }
+        private void SetupContext()
+        {
+            var options = new DbContextOptionsBuilder<BookCrossingContext>()
+                .UseInMemoryDatabase(databaseName: "Fake DB")
+                .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning))
+                .Options;
+
             _context = new BookCrossingContext(options);
-            _locationService = new LocationHomeService(_locationRepositoryMock.Object, _mapperMock.Object, _usersRepositoryMock.Object);
-               
-            MockData();
+
+            _locationService = new LocationHomeService(
+                _locationRepositoryMock.Object,
+                _mapper,
+                _usersRepositoryMock.Object);
+        }
+        #endregion
+
+        private IEnumerable<LocationHome> SetupLocations
+        {
+            get
+            {
+                yield return new LocationHome()
+                {
+                    Id = 1,
+                    City = "Lviv",
+                    IsActive = true,
+                    Street = "Panasa Myrnogo",
+                    Latitude = 1,
+                    Longitude = 0
+                };
+                yield return new LocationHome()
+                {
+                    Id = 2,
+                    City = "Lviv",
+                    IsActive = true,
+                    Street = "Gorodotska",
+                    Latitude = 0,
+                    Longitude = 1
+                };
+            }
+        }
+        private IEnumerable<User> SetupUsers
+        {
+            get
+            {
+                yield return new User
+                {
+                    Id = 1,
+                    LocationHomeId = 1,
+                    FirstName = "Volodymyr",
+                    LastName = "Zelenskiy"
+                };
+                yield return new User
+                {
+                    Id = 2,
+                    LocationHomeId = 2,
+                    FirstName = "Donald",
+                    LastName = "Trump"
+                };
+            }
+        }
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            SetupMapper();
+
+            SetupRepositories();
+
+            SetupData();
+
+            SetupContext();
         }
 
         [SetUp]
@@ -75,134 +146,159 @@ namespace ApplicationTest.Services
         [Test]
         public async Task GetLocationById_LocationExists_ReturnsLocationDto()
         {
-            _locationRepositoryMock.Setup(obj => obj.GetAll())
-                .Returns(_locationsQueryableMock.Object);
-            _mapperMock.Setup(obj => obj.Map<LocationHomeDto>(_location))
-                .Returns(_locationDto);
+            _locationRepositoryMock.Setup(m => m.FindByIdAsync(_location.Id)).ReturnsAsync(_location);
 
             var locationResult = await _locationService.GetById(_location.Id);
 
-            locationResult.Should().Be(_locationDto);
+            locationResult.Should().BeEquivalentTo(_mapper.Map<LocationHomeDto>(_location));
         }
 
         [Test]
-        public async Task GetAll_NoParametersPassed_ReturnsListOfLocationDtos()
+        public async Task GetAll_NoParametersPassed_ReturnssIEnumerableOfLocationHomeDtos()
         {
-            _locationRepositoryMock.Setup(s => s.GetAll()).Returns(_locationsQueryableMock.Object);
-            _mapperMock.Setup(obj => obj.Map<List<LocationHomeDto>>(
-                    It.Is<List<LocationHome>>(x => ListsHasSameElements(x, _locations))))
-                .Returns(_locationsDto);
+            _locationsQueryableMock = _locations.AsQueryable().BuildMock();
+            _locationRepositoryMock.Setup(m => m.GetAll()).Returns(_locationsQueryableMock.Object);
 
             var locationResult = await _locationService.GetAll();
 
-            locationResult.Should().BeEquivalentTo(_locationsDto);
+            locationResult.Should().BeEquivalentTo(_mapper.Map<IEnumerable<LocationHomeDto>>(_locations));
         }
-       
+
+        #region Remove
         [Test]
-        public async Task RemoveLocation_LocationExists_ReturnsLocationDtoRemoved()
+        public async Task RemoveLocation_LocationExists_VerifyRemoval()
         {
-            _locationRepositoryMock.Setup(s => s.FindByIdAsync(_location.Id))
-                .ReturnsAsync(_location);
-            _mapperMock.Setup(obj => obj.Map<LocationHomeDto>(_location))
-                .Returns(_locationDto);
+            var location = _locations.Last();
+            _locationRepositoryMock.Setup(m => m.FindByIdAsync(location.Id)).ReturnsAsync(location);
+            _locationRepositoryMock.Setup(m => m.Remove(location));
 
-            var locationResult = await _locationService.Remove(_location.Id);
+            var result = await _locationService.Remove(location.Id);
 
-            _locationRepositoryMock.Verify(obj => obj.Remove(_location), Times.Once);
+            _locationRepositoryMock.Verify(obj => obj.Remove(location), Times.Once);
+        }
+
+        [Test]
+        public async Task RemoveLocation_LocationExists_VerifySaveChanges()
+        {
+            var location = _locations.Last();
+            _locationRepositoryMock.Setup(m => m.FindByIdAsync(location.Id)).ReturnsAsync(location);
+            _locationRepositoryMock.Setup(m => m.Remove(location));
+
+            var result = await _locationService.Remove(location.Id);
+
             _locationRepositoryMock.Verify(obj => obj.SaveChangesAsync(), Times.Once);
+        }
 
-            locationResult.Should().Be(_locationDto);
+        [Test]
+        public async Task RemoveLocation_LocationExists_ReturnsDto()
+        {
+            var location = _locations.Last();
+            _locationRepositoryMock.Setup(m => m.FindByIdAsync(location.Id)).ReturnsAsync(location);
+            _locationRepositoryMock.Setup(m => m.Remove(location));
+
+            var result = await _locationService.Remove(location.Id);
+
+            result.Should().BeEquivalentTo(_mapper.Map<LocationHomeDto>(location));
         }
 
         [Test]
         public async Task RemoveLocation_LocationNotExist_ReturnsNull()
         {
-            _locationRepositoryMock.Setup(s => s.FindByIdAsync(_location.Id))
+            _locationRepositoryMock.Setup(s => s.FindByIdAsync(_locations.First().Id))
                 .ReturnsAsync(value: null);
 
-            var locationResult = await _locationService.Remove(_location.Id);
+            var locationResult = await _locationService.Remove(_locations.First().Id);
 
             locationResult.Should().BeNull();
         }
+        #endregion
 
+        #region Update
         [Test]
-        public async Task Update_ShouldUpdateLocationInDatabase()
+        public async Task Update_ShouldUpdate_VerifySaveChangesAsync()
         {
-            _mapperMock.Setup(obj => obj.Map<LocationHome>(_locationDto))
-                .Returns(_location);
+            _locationRepositoryMock.Setup(m => m.Update(_locations.First()));
 
             await _locationService.Update(_locationDto);
 
-            _locationRepositoryMock.Verify(obj => obj.Update(_location), Times.Once);
             _locationRepositoryMock.Verify(obj => obj.SaveChangesAsync(), Times.Once);
         }
+        #endregion
 
-        [Test]
-        public async Task Add_ShouldAddLocationToDatabase()
+        [TestFixture]
+        public class LocationHomeServiceAddTests: LocationHomeServiceTests
         {
-            _mapperMock.Setup(obj => obj.Map<LocationHome>(_locationPostDto))
-                .Returns(_location);
+            [SetUp]
+            public void SetUpAdd()
+            {
+                _usersRepositoryMock.Reset();
+            }
+            [Test]
+            public async Task Add_UserExists_VerifyAdd()
+            {
+                _usersRepositoryMock.Setup(m => m.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(_users.First());
 
-            _usersRepositoryMock.Setup(obj => obj.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(_user);
+                await _locationService.Add(_locationPostDto);
 
-            await _locationService.Add(_locationPostDto);
+                _locationRepositoryMock.Verify(obj => obj.Add(It.IsAny<LocationHome>()), Times.Once);
+            }
 
-            _locationRepositoryMock.Verify(obj => obj.Add(_location), Times.Once);
-            _locationRepositoryMock.Verify(obj => obj.SaveChangesAsync(), Times.Once);
-            _usersRepositoryMock.Verify(obj => obj.Update(_user), Times.Once);
-            _usersRepositoryMock.Verify(obj => obj.SaveChangesAsync(), Times.Once);
+            [Test]
+            public async Task Add_UserExists_VerifySaveChangesAsync()
+            {
+                _usersRepositoryMock.Setup(m => m.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(_users.First());
+
+                await _locationService.Add(_locationPostDto);
+
+                _locationRepositoryMock.Verify(obj => obj.SaveChangesAsync(), Times.Once);
+            }
+
+            [Test]
+            public async Task Add_UserExists_Update()
+            {
+                _usersRepositoryMock.Setup(m => m.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(_users.First());
+                _usersRepositoryMock.Setup(m => m.Update(It.IsAny<User>()));
+
+                await _locationService.Add(_locationPostDto);
+
+                _usersRepositoryMock.Verify(obj => obj.Update(It.IsAny<User>()), Times.Once);
+            }
+
+            [Test]
+            public async Task Add_UserExists_ReturnsZero()
+            {
+                _usersRepositoryMock.Setup(m => m.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(_users.First());
+                var result = await _locationService.Add(_locationPostDto);
+
+                result.Should().Be(1);
+            }
+
+            [Test]
+            public async Task Add_UserDoesNotExists_VerifySaveChanges()
+            {
+                _usersRepositoryMock.Setup(m => m.FindByIdAsync(_locationPostDto.UserId)).ReturnsAsync(value: null);
+
+                await _locationService.Add(_locationPostDto);
+
+                _usersRepositoryMock.Verify(obj => obj.SaveChangesAsync(), Times.Never);
+            }
+
+            [Test]
+            public async Task Add_UserDoesNotExists_ReturnsZero()
+            {
+                _usersRepositoryMock.Setup(m => m.FindByIdAsync(_locationPostDto.UserId)).ReturnsAsync(value: null);
+
+                var result = await _locationService.Add(_locationPostDto);
+
+                result.Should().Be(0);
+            }
         }
+        
 
-        private void MockData()
+        private bool ListsHasSameElements(IEnumerable<LocationHome> obj1, IEnumerable<LocationHome> obj2)
         {
-            _locations = new List<LocationHome>
-            {
-                new LocationHome()
-                {
-                    Id = 1,
-                    City = "Lviv",
-                    IsActive = true,
-                    Street = "Panasa Myrnogo",
-                    Latitude = 49.8263716,
-                    Longitude = 23.9449697
-                },
-                new LocationHome()
-                {
-                    Id = 2,
-                    City = "Lviv",
-                    IsActive = true,
-                    Street = "Gorodotska",
-                    Latitude = 49.8263716,
-                    Longitude = 23.9449697
-                }
-            };
-
-            _locationsDto = _locations.Select(location => new LocationHomeDto
-            {
-                Id = location.Id,
-                City = location.City,
-                IsActive = location.IsActive,
-                Street = location.Street
-            }).ToList();
-
-            _locationPostDto = _locations.Select(location => new LocationHomePostDto
-            {
-                Id = location.Id,
-                City = location.City,
-                IsActive = location.IsActive,
-                Street = location.Street,
-                UserId = 1
-            }).ToList().FirstOrDefault();
-
-            _locationsQueryableMock = _locations.AsQueryable().BuildMock();
-            _location = _locations.FirstOrDefault();
-            _locationDto = _locationsDto.FirstOrDefault();
-        }
-
-        private bool ListsHasSameElements(List<LocationHome> obj1, List<LocationHome> obj2)
-        {
-            var tempList1 = obj1.Except(obj2).ToList();
-            var tempList2 = obj2.Except(obj1).ToList();
+            var tempList1 = obj1.Except(obj2);
+            var tempList2 = obj2.Except(obj1);
 
             return !(tempList1.Any() || tempList2.Any());
         }

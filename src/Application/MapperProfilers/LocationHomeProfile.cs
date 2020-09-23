@@ -8,8 +8,7 @@ namespace Application.MapperProfilers
     {
         public LocationHomeProfile()
         {
-            CreateMap<LocationHomeDto, RdbmsEntities.LocationHome>().ReverseMap()
-               .ForMember(a => a.Id, opt => opt.Condition(a => a.Id != 0));
+            CreateMap<LocationHomeDto, RdbmsEntities.LocationHome>().ReverseMap();
 
             CreateMap<LocationHomePostDto, RdbmsEntities.LocationHome>().ReverseMap();
         }
