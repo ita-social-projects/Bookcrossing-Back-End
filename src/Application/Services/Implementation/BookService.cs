@@ -128,6 +128,11 @@ namespace Application.Services.Implementation
                 }
                 book.ImagePath = imagePath;
             }
+            if (bookDto.UserId != 0 && bookDto.UserId != oldBook.UserId ) 
+            {
+                oldBook.UserId = bookDto.UserId;
+                _bookRepository.Update(oldBook);
+            }
             await _bookRepository.Update(book, bookDto.FieldMasks);
             var affectedRows = await _bookRepository.SaveChangesAsync();
             var isDatabaseUpdated = affectedRows > 0;
