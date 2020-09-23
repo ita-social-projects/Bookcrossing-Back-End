@@ -432,10 +432,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-
-
-                            DateAdded = new DateTime(2020, 9, 17, 20, 20, 48, 146, DateTimeKind.Local).AddTicks(9679),
-
+                            DateAdded = new DateTime(2020, 9, 21, 17, 28, 47, 41, DateTimeKind.Local).AddTicks(7498),
                             LanguageId = 1,
                             Name = "Adventures of Junior",
                             Rating = 0.0,
@@ -585,9 +582,6 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.Property<string>("HomeAdress")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsActive")
                         .HasColumnName("is_active")
                         .HasColumnType("bit");
@@ -624,6 +618,44 @@ namespace BookCrossingBackEnd.Migrations
                             Latitude = 49.826371600000002,
                             Longitude = 23.944969700000001,
                             OfficeName = "SoftServe",
+                            Street = "Gorodoc'kogo"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.RDBMS.Entities.LocationHome", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LocationHome");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            City = "Lviv",
+                            IsActive = true,
+                            Latitude = 49.826371600000002,
+                            Longitude = 23.944969700000001,
                             Street = "Gorodoc'kogo"
                         });
                 });
@@ -918,6 +950,10 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
+                    b.Property<int?>("LocationHomeId")
+                        .HasColumnName("home_location_id")
+                        .HasColumnType("int");
+
                     b.Property<string>("MiddleName")
                         .HasColumnName("middlename")
                         .HasColumnType("nvarchar(20)")
@@ -948,6 +984,10 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationHomeId")
+                        .IsUnique()
+                        .HasFilter("[home_location_id] IS NOT NULL");
 
                     b.HasIndex("RoleId");
 
@@ -1163,6 +1203,10 @@ namespace BookCrossingBackEnd.Migrations
 
             modelBuilder.Entity("Domain.RDBMS.Entities.User", b =>
                 {
+                    b.HasOne("Domain.RDBMS.Entities.LocationHome", "LocationHome")
+                        .WithOne("User")
+                        .HasForeignKey("Domain.RDBMS.Entities.User", "LocationHomeId");
+
                     b.HasOne("Domain.RDBMS.Entities.Role", "Role")
                         .WithMany("User")
                         .HasForeignKey("RoleId")

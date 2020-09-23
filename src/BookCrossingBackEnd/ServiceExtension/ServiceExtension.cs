@@ -34,6 +34,7 @@ namespace BookCrossingBackEnd.ServiceExtension
             services.AddScoped<IBookRootCommentService, BookRootCommentService>();
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<ILocationService, LocationService>();
+            services.AddScoped<ILocationHomeService, LocationHomeService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UsersService>();
             services.AddScoped<IEmailSenderService, EmailSenderService>();
@@ -163,6 +164,7 @@ namespace BookCrossingBackEnd.ServiceExtension
                 mc.AddProfile(new Application.MapperProfilers.BookRootCommentProfile());
                 mc.AddProfile(new Application.MapperProfilers.GenreProfile());
                 mc.AddProfile(new Application.MapperProfilers.LocationProfile());
+                mc.AddProfile(new Application.MapperProfilers.LocationHomeProfile());
                 mc.AddProfile(new Application.MapperProfilers.RequestProfile());
                 mc.AddProfile(new Application.MapperProfilers.UserProfile());
                 mc.AddProfile(new Application.MapperProfilers.BookProfile());
