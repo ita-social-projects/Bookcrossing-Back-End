@@ -1,4 +1,9 @@
-﻿using Application.Dto;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Application.Dto;
 using Application.Dto.QueryParams;
 using Application.Services.Interfaces;
 using BookCrossingBackEnd.Controllers;
@@ -9,11 +14,7 @@ using Microsoft.Extensions.Logging;
 using MockQueryable.Moq;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ApplicationTest.Controllers
 {
@@ -22,9 +23,8 @@ namespace ApplicationTest.Controllers
         private Mock<ISuggestionMessageService> _messageService;
         private SuggestionMessageController _messageController;
         private Mock<ILogger<SuggestionMessageController>> _logger;
-
-        private List<SuggestionMessage> _messages;
-        private List<SuggestionMessageDto> _messagesDto;
+        private IEnumerable<SuggestionMessage> _messages;
+        private IEnumerable<SuggestionMessageDto> _messagesDto;
         private SuggestionMessage _message;
         private SuggestionMessageDto _messageDto;
         [OneTimeSetUp]
@@ -36,17 +36,49 @@ namespace ApplicationTest.Controllers
             MockData();
         }
 
+        private void MockData()
+        {
+            _messages = new List<SuggestionMessage>
+            {
+                new SuggestionMessage()
+                {
+                    Id = 1,
+                    Summary = "Error",
+                    Text = "Some text",
+                    UserId = 1,
+                    State = MessageState.Read,
+                },
+                new SuggestionMessage()
+                {
+                    Id = 2,
+                    Summary = "Suggest",
+                    Text = "Some text 2",
+                    UserId = 2,
+                    State = MessageState.Unread,
+                },
+            };
+
+            _messagesDto = _messages.Select(message => new SuggestionMessageDto
+            {
+                Id = message.Id,
+                Summary = message.Summary,
+                Text = message.Text,
+                State = message.State
+            });
+
+            _message = _messages.FirstOrDefault();
+            _messageDto = _messagesDto.FirstOrDefault();
+        }
+
         [Test]
-        public async Task GetAllMessagesAsync_Success_ReturnsOkObjectResultWithRequestedCount()
+        public async Task GetAllMessagesAsync_Success_ReturnsOkObject()
         {
             _messageService.Setup(s => s.GetAll()).ReturnsAsync(_messagesDto);
 
             var result = await _messageController.GetAllMessages();
 
-            var okResult = result.Result as OkObjectResult;
+            var okResult = result.Result;
             okResult.Should().BeOfType<OkObjectResult>();
-            var messages = okResult.Value as List<SuggestionMessageDto>;
-            messages.Count().Should().Be(_messagesDto.Count);
         }
 
         [Test]
@@ -55,27 +87,24 @@ namespace ApplicationTest.Controllers
             _messageService.Setup(s => s.GetAll(It.IsAny<FullPaginationQueryParams>()))
                 .ReturnsAsync(new PaginationDto<SuggestionMessageDto>()
                 {
-                    Page = _messagesDto,
+                    Page = _messagesDto.ToList(),
                     TotalCount = 1
                 });
 
             var result = await _messageController.GetAllMessages(It.IsAny<FullPaginationQueryParams>());
 
-            result.Should().NotBeNull();
             result.Should().BeOfType<ActionResult<PaginationDto<SuggestionMessageDto>>>();
         }
 
         [Test]
-        public async Task GetMessageAsync_MessageExists_Returns_OkObjectResultWithRequestedId()
+        public async Task GetMessageAsync_MessageExists_ReturnsOkObjectResult()
         {
             _messageService.Setup(s => s.GetById(It.IsAny<int>())).ReturnsAsync(_messageDto);
 
             var messageResult = await _messageController.GetMessage(It.IsAny<int>());
 
-            var okResult = messageResult.Result as OkObjectResult;
+            var okResult = messageResult.Result;
             okResult.Should().BeOfType<OkObjectResult>();
-            var resultMessage = okResult.Value as SuggestionMessageDto;
-            resultMessage.Id.Should().Be(_messageDto.Id);
         }
 
         [Test]
@@ -106,56 +135,6 @@ namespace ApplicationTest.Controllers
             var result = await _messageController.PutMessage(It.IsAny<SuggestionMessageDto>());
 
             result.Should().BeOfType<NotFoundResult>();
-        }
-
-        private void MockData()
-        {
-            List<User> users = GetUsers();
-            _messages = new List<SuggestionMessage>
-            {
-                new SuggestionMessage()
-                {
-                    Id = 1,
-                    Summary = "Error",
-                    Text = "Some text",
-                    UserId = 1,
-                    State = MessageState.Read,
-                },
-                new SuggestionMessage()
-                {
-                    Id = 2,
-                    Summary = "Suggest",
-                    Text = "Some text 2",
-                    UserId = 2,
-                    State = MessageState.Unread,
-                },
-            };
-
-            _messagesDto = _messages.Select(message => new SuggestionMessageDto
-            {
-                Id = message.Id,
-                Summary = message.Summary,
-                Text = message.Text,
-                State = message.State
-            }).ToList();
-
-            _message = _messages.FirstOrDefault();
-            _messageDto = _messagesDto.FirstOrDefault();
-        }
-
-        private List<User> GetUsers()
-        {
-            return new List<User>
-            {
-                new User
-                {
-                    Id = 1, UserRoom = new UserRoom { Location = new Location { Id = 1 }, RoomNumber = "1", LocationId = 1 }
-                },
-                new User
-                {
-                    Id = 2, UserRoom = new UserRoom { Location = new Location { Id = 2 }, RoomNumber = "2", LocationId = 2 }
-                }
-            };
         }
 
         [Test]

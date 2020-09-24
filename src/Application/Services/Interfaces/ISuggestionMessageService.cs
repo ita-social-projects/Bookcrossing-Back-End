@@ -18,7 +18,7 @@ namespace Application.Services.Interfaces
         /// Retrieve all messages
         /// </summary>
         /// <returns>returns list of Message DTOs</returns>
-        Task<List<SuggestionMessageDto>> GetAll();
+        Task<IEnumerable<SuggestionMessageDto>> GetAll();
         /// <summary>
         /// Retrieve Pagination for Message
         /// </summary>

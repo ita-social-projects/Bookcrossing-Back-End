@@ -25,13 +25,15 @@ namespace BookCrossingBackEnd.Controllers
         [HttpGet("{id:min(1)}")]
         public async Task<ActionResult<SuggestionMessageDto>> GetMessage(int id)
         {
-            _logger.LogInformation("Getting message {Id}", id);
+            _logger.LogInformation($"Getting message {id}", id);
             var message = await _messageService.GetById(id);
             if (message == null)
             {
-                _logger.LogWarning("GetMessage({Id}) NOT FOUND", id);
+                _logger.LogWarning($"GetMessage({id}) NOT FOUND", id);
+
                 return NotFound();
             }
+
             return Ok(message);
         }
 
@@ -40,6 +42,7 @@ namespace BookCrossingBackEnd.Controllers
         public async Task<ActionResult<List<SuggestionMessageDto>>> GetAllMessages()
         {
             _logger.LogInformation("Getting all messages");
+
             return Ok(await _messageService.GetAll());
         }
 
@@ -48,13 +51,15 @@ namespace BookCrossingBackEnd.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutMessage(SuggestionMessageDto messageDto)
         {
-            _logger.LogInformation("Update message {MessageDto}", messageDto);
+            _logger.LogInformation($"Update message {messageDto}", messageDto);
             var updated = await _messageService.Update(messageDto);
             if (!updated)
             {
-                _logger.LogWarning("Update message ({MessageDto}) NOT FOUND", messageDto);
+                _logger.LogWarning($"Update message ({messageDto}) NOT FOUND", messageDto);
+
                 return NotFound();
             }
+
             return NoContent();
         }
 
@@ -62,8 +67,9 @@ namespace BookCrossingBackEnd.Controllers
         [HttpPost]
         public async Task<ActionResult<SuggestionMessageDto>> PostMessage([FromBody] SuggestionMessageDto messageDto)
         {
-            _logger.LogInformation("Post message {MessagePostDto}", messageDto);
+            _logger.LogInformation($"Post message {messageDto}", messageDto);
             var insertedMessage = await _messageService.Add(messageDto);
+
             return Created("GetMessage", insertedMessage);
         }
 
@@ -72,13 +78,15 @@ namespace BookCrossingBackEnd.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteMessage(int id)
         {
-            _logger.LogInformation("Delete message {Id}", id);
+            _logger.LogInformation($"Delete message {id}", id);
             var message = await _messageService.Remove(id);
             if (message == null)
             {
-                _logger.LogWarning("Delete message ({Id}) NOT FOUND", id);
+                _logger.LogWarning($"Delete message ({id}) NOT FOUND", id);
+
                 return NotFound();
             }
+
             return Ok();
         }
 
@@ -86,6 +94,7 @@ namespace BookCrossingBackEnd.Controllers
         public async Task<ActionResult<PaginationDto<SuggestionMessageDto>>> GetAllMessages([FromQuery] FullPaginationQueryParams fullPaginationQuery)
         {
             _logger.LogInformation("Getting all paginated messages");
+
             return Ok(await _messageService.GetAll(fullPaginationQuery));
         }
     }
