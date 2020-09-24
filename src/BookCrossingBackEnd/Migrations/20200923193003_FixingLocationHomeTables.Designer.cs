@@ -4,14 +4,16 @@ using Infrastructure.RDBMS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookCrossingBackEnd.Migrations
 {
     [DbContext(typeof(BookCrossingContext))]
-    partial class BookCrossingContextModelSnapshot : ModelSnapshot
+    [Migration("20200923193003_FixingLocationHomeTables")]
+    partial class FixingLocationHomeTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -860,53 +862,6 @@ namespace BookCrossingBackEnd.Migrations
                     b.ToTable("Setting");
                 });
 
-            modelBuilder.Entity("Domain.RDBMS.Entities.SuggestionMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50)
-                        .HasDefaultValue("Unread");
-
-                    b.Property<string>("Summary")
-                        .HasColumnName("summary")
-                        .HasColumnType("nvarchar(150)")
-                        .HasMaxLength(150);
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnName("text")
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
-
-                    b.Property<int>("UserId")
-                        .HasColumnName("user_id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SuggestionMessage");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            State = "Unread",
-                            Summary = "fix problem",
-                            Text = "There is problem with translation",
-                            UserId = 1
-                        });
-                });
-
             modelBuilder.Entity("Domain.RDBMS.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -1189,15 +1144,6 @@ namespace BookCrossingBackEnd.Migrations
                     b.HasOne("Domain.RDBMS.Entities.User", "User")
                         .WithMany("RequestUser")
                         .HasForeignKey("UserId")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.RDBMS.Entities.SuggestionMessage", b =>
-                {
-                    b.HasOne("Domain.RDBMS.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

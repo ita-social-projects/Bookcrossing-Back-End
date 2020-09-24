@@ -15,6 +15,7 @@ namespace Application.Dto
         public string Notice { get; set; }
         public string ImagePath { get; set; }
         public double Rating { get; set; }
+        public string ISBN { get; set; }
         public int LanguageId { get; set; }
         public LanguageDto Language { get; set; }
         public List<AuthorDto> Authors { get; set; }
