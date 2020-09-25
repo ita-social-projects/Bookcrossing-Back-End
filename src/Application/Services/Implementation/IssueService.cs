@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using Application.Dto;
 using Application.Dto.QueryParams;
@@ -21,40 +23,31 @@ namespace Application.Services.Implementation
             _paginationService = paginationService;
             _mapper = mapper;
         }
+            
+        public async Task<IssueDto> GetById(int Id)
+        {
+            return _mapper.Map<IssueDto>(await _issueRepository.FindByIdAsync(Id));
+        }
 
         public async Task<IssueDto> Add(IssueDto issueDto)
         {
             var issue = _mapper.Map<Issue>(issueDto);
             _issueRepository.Add(issue);
             await _issueRepository.SaveChangesAsync();
+
             return _mapper.Map<IssueDto>(issue);
         }
 
-        public async Task<List<IssueDto>> GetAll()
+        public async Task<bool> Remove(int Id)
         {
-            return _mapper.Map<List<IssueDto>>(await _issueRepository.GetAll().ToListAsync());
-        }
-
-        public async Task<PaginationDto<IssueDto>> GetAll(FullPaginationQueryParams parameters)
-        {
-            var query = _issueRepository.GetAll();
-            return await _paginationService.GetPageAsync<IssueDto, Issue>(query, parameters);
-        }
-
-        public async Task<IssueDto> GetById(int issueId)
-        {
-            return _mapper.Map<IssueDto>(await _issueRepository.FindByIdAsync(issueId));
-        }
-
-        public async Task<bool> Remove(int issueId)
-        {
-            var issue = await _issueRepository.FindByIdAsync(issueId);
+            var issue = await _issueRepository.FindByIdAsync(Id);
             if (issue == null)
             {
-            return false;
+                return false;
             }
             _issueRepository.Remove(issue);
             await _issueRepository.SaveChangesAsync();
+
             return true;
         }
 
@@ -63,8 +56,22 @@ namespace Application.Services.Implementation
             var issue = _mapper.Map<Issue>(issueDto);
             _issueRepository.Update(issue);
             var affectedRows = await _issueRepository.SaveChangesAsync();
+
             return affectedRows > 0;
         }
+
+        public async Task<IEnumerable<IssueDto>> GetAll()
+        {
+            return _mapper.Map<IEnumerable<IssueDto>>(_issueRepository.GetAll());
+        }
+
+        public async Task<PaginationDto<IssueDto>> GetAll(FullPaginationQueryParams parameters)
+        {
+            var query = _issueRepository.GetAll();
+                
+            return await _paginationService.GetPageAsync<IssueDto, Issue>(query, parameters);
+        }
+
     }
 
 }

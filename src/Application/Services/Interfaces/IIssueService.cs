@@ -20,7 +20,7 @@ namespace Application.Services.Interfaces
         /// Retrieve all Issues
         /// </summary>
         /// <returns>returns list of Issues DTOs</returns>
-        Task<List<IssueDto>> GetAll();
+        Task<IEnumerable<IssueDto>> GetAll();
 
         /// <summary>
         /// Retrieve Pagination for Issue

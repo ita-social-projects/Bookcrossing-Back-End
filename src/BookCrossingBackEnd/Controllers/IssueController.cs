@@ -25,11 +25,11 @@ namespace BookCrossingBackEnd.Controllers
         [HttpGet("{id:min(1)}")]
         public async Task<ActionResult<IssueDto>> GetIssue(int id)
         {
-            _logger.LogInformation("Getting issue {id}", id);
+            _logger.LogInformation($"Getting issue {id}", id);
             var issue = await _issueService.GetById(id);
             if (issue == null)
             {
-                _logger.LogWarning("GetIssue({Id}) NOT FOUND", id);
+                _logger.LogWarning($"GetIssue({id}) NOT FOUND", id);
                 return NotFound();
             }
             return Ok(issue);
@@ -37,7 +37,7 @@ namespace BookCrossingBackEnd.Controllers
 
         // GET: api/Issues
         [HttpGet]
-        public async Task<ActionResult<List<IssueDto>>> GetAllIssues()
+        public async Task<ActionResult<IEnumerable<IssueDto>>> GetAllIssues()
         {
             _logger.LogInformation("Getting all issues");
             return Ok(await _issueService.GetAll());
@@ -48,11 +48,11 @@ namespace BookCrossingBackEnd.Controllers
         [HttpPut]
         public async Task<IActionResult> PutIssue(IssueDto issueDto)
         {
-            _logger.LogInformation("Update issue {IssueDto}", issueDto);
+            _logger.LogInformation($"Update issue {issueDto}", issueDto);
             var updated = await _issueService.Update(issueDto);
             if (!updated)
             {
-                _logger.LogWarning("Update issue ({IssueDto}) NOT FOUND", issueDto);
+                _logger.LogWarning($"Update issue ({issueDto}) NOT FOUND", issueDto);
                 return NotFound();
             }
             return NoContent();
@@ -62,7 +62,7 @@ namespace BookCrossingBackEnd.Controllers
         [HttpPost]
         public async Task<ActionResult<IssueDto>> PostIssue([FromBody] IssueDto issueDto)
         {
-            _logger.LogInformation("Post issue {IssueDto}", issueDto);
+            _logger.LogInformation($"Post issue {issueDto}", issueDto);
             var insertedIssue = await _issueService.Add(issueDto);
             return CreatedAtAction("GetIssue", new { id = insertedIssue.Id }, insertedIssue);
         }
@@ -71,11 +71,11 @@ namespace BookCrossingBackEnd.Controllers
         [HttpDelete("{id:min(1)}")]
         public async Task<IActionResult> DeleteIssue(int id)
         {
-            _logger.LogInformation("Delete issue {Id}", id);
+            _logger.LogInformation($"Delete issue {id}", id);
             var issue = await _issueService.Remove(id);
             if (issue == false)
             {
-                _logger.LogWarning("Delete issue ({Id}) NOT FOUND", id);
+                _logger.LogWarning($"Delete issue ({id}) NOT FOUND", id);
                 return NotFound();
             }
             return Ok();

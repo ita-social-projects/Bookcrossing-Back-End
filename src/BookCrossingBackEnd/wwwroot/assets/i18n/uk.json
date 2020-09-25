@@ -281,6 +281,20 @@
         "timespan": "Таймспан",
         "timespans": "Таймспани"
       },
+      "issues": {
+        "issue": "Проблема",
+        "issues": "Проблеми",
+        "name": "Назва",
+        "add-success": "Новий тип проблеми успішно створений!",
+        "update-success": "Проблема успішно відредагована!",
+        "delete-success": "Проблема успішно видалена!"
+      },
+      "issues-form": {
+        "edit-title": "Редагування проблеми",
+        "edit-button": "Відредагувати",
+        "add-title": "Додати тип проблеми",
+        "add-button": "Додати"
+      },
       "suggestion-message": {
         "messages": "Повідомлення",
         "selectAll": "Вибрати всі",
