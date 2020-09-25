@@ -28,8 +28,7 @@ namespace BookCrossingBackEnd.Migrations
                 {
                     table.PrimaryKey("PK_LocationHome", x => x.Id);
                 });
-
-
+                
             migrationBuilder.AddForeignKey(
                 name: "FK_User_LocationHome_home_location_id",
                 table: "User",
