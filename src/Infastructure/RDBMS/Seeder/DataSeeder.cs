@@ -26,6 +26,7 @@ namespace Infrastructure.RDBMS.Seeder
             Seed(builder.Entity<BookGenre>());
             Seed(builder.Entity<BookAuthor>());
             Seed(builder.Entity<Aphorism>());
+            Seed(builder.Entity<SuggestionMessage>());
         }
 
         private static void Seed(EntityTypeBuilder<Aphorism> builder)
@@ -438,6 +439,19 @@ namespace Infrastructure.RDBMS.Seeder
                 {
                     BookId = 1,
                     AuthorId = 1
+                }
+            );
+        }
+
+        private static void Seed(EntityTypeBuilder<SuggestionMessage> builder)
+        {
+            builder.HasData(
+                new SuggestionMessage
+                {
+                    Id = 1,
+                    Summary = "fix problem",
+                    Text = "There is problem with translation",
+                    UserId = 1
                 }
             );
         }

@@ -50,6 +50,7 @@ namespace BookCrossingBackEnd.ServiceExtension
             services.AddScoped<ILanguageService, LanguageService>();
             services.AddScoped<IWishListService, WishListService>();
             services.AddScoped<IAphorismService, AphorismService>();
+            services.AddScoped<ISuggestionMessageService, SuggestionMessageService>();
             services.AddScoped<ISettingsService, SettingsService>();
             services.AddScoped<IStatisticsService, StatisticsService>();
         }
@@ -170,6 +171,7 @@ namespace BookCrossingBackEnd.ServiceExtension
                 mc.AddProfile(new Application.MapperProfilers.LanguageProfile());
                 mc.AddProfile(new Application.MapperProfilers.AphorismProfile());
                 mc.AddProfile(new NotificationProfile());
+                mc.AddProfile(new Application.MapperProfilers.SuggestionMessageProfile());
                 mc.AddProfile(new SettingProfile());
             });
 
