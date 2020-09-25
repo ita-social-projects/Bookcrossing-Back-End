@@ -66,7 +66,7 @@ namespace Application.Services.Implementation
             var userId = locationHomeDto.UserId;
 
             var location = _mapper.Map<LocationHome>(locationHomeDto);
-            _locationHomeRepository.Add(location);
+            _locationHomeRepository.Update(location);
 
             var user = await _userRepository.FindByIdAsync(userId);
             if(user == null)
