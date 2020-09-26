@@ -1,8 +1,6 @@
 ﻿using Application.Dto;
 using Application.Dto.QueryParams;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Services.Interfaces
@@ -48,6 +46,6 @@ namespace Application.Services.Interfaces
         /// </summary>
         /// <param name="issue">New Issue DTO instance</param>
         /// <returns>Returns created Issue's DTO </returns>
-        Task<IssueDto> Add(IssueDto genre);
+        Task<IssueDto> Add(IssueDto issueDto);
     }
 }

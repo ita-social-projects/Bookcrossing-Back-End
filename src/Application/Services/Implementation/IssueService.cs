@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Threading.Tasks;
 using Application.Dto;
 using Application.Dto.QueryParams;
@@ -8,7 +6,6 @@ using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.Implementation
 {
@@ -24,9 +21,9 @@ namespace Application.Services.Implementation
             _mapper = mapper;
         }
             
-        public async Task<IssueDto> GetById(int Id)
+        public async Task<IssueDto> GetById(int issueId)
         {
-            return _mapper.Map<IssueDto>(await _issueRepository.FindByIdAsync(Id));
+            return _mapper.Map<IssueDto>(await _issueRepository.FindByIdAsync(issueId));
         }
 
         public async Task<IssueDto> Add(IssueDto issueDto)
@@ -38,9 +35,9 @@ namespace Application.Services.Implementation
             return _mapper.Map<IssueDto>(issue);
         }
 
-        public async Task<bool> Remove(int Id)
+        public async Task<bool> Remove(int issueId)
         {
-            var issue = await _issueRepository.FindByIdAsync(Id);
+            var issue = await _issueRepository.FindByIdAsync(issueId);
             if (issue == null)
             {
                 return false;
@@ -65,11 +62,11 @@ namespace Application.Services.Implementation
             return _mapper.Map<IEnumerable<IssueDto>>(_issueRepository.GetAll());
         }
 
-        public async Task<PaginationDto<IssueDto>> GetAll(FullPaginationQueryParams parameters)
+        public async Task<PaginationDto<IssueDto>> GetAll(FullPaginationQueryParams fullPaginationQuery)
         {
             var query = _issueRepository.GetAll();
                 
-            return await _paginationService.GetPageAsync<IssueDto, Issue>(query, parameters);
+            return await _paginationService.GetPageAsync<IssueDto, Issue>(query, fullPaginationQuery);
         }
 
     }
