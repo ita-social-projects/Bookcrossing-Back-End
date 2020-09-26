@@ -8,7 +8,7 @@
 
         public int[] Languages { get; set; }
 
-        public int? Location { get; set; }
+        public int[] Locations { get; set; }
 
         public bool? ShowAvailable { get; set; }
 

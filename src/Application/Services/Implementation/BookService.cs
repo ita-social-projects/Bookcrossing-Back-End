@@ -400,9 +400,15 @@ namespace Application.Services.Implementation
             {
                 query = query.Where(b => b.State == BookState.Available);
             }
-            if (parameters.Location != null)
+            if (parameters.Locations != null)
             {
-                query = query.Where(x => x.User.UserRoom.LocationId == parameters.Location);
+                var predicate = PredicateBuilder.New<Book>();
+                foreach (var id in parameters.Locations)
+                {
+                    var tempId = id;
+                    predicate = predicate.Or(b => b.User.UserRoom.LocationId == id);
+                }
+                query = query.Where(predicate);
             }
             if (parameters.SearchTerm != null)
             {

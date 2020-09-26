@@ -280,6 +280,22 @@
       "timespans": {
         "timespan": "Timespan",
         "timespans": "Timespans"
+      },
+      "suggestion-message": {
+        "messages": "Messages",
+        "selectAll": "Select All",
+        "deselectAll": "Deselect All",
+        "delete": "Delete",
+        "reply": "Reply",
+        "read": "Read",
+        "unread": "Unread",
+        "decline": "Decline",
+        "user": "User",
+        "summary": "Summary",
+        "status": "Status",
+        "delete-success": "Messages have been deleted successfully",
+        "status-changed": "Status has been changed successfully",
+        "message-sent-success": "Message has been sent successfully"
       }
     },
     "comment": {

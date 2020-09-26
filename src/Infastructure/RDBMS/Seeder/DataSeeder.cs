@@ -18,6 +18,7 @@ namespace Infrastructure.RDBMS.Seeder
             Seed(builder.Entity<Genre>());
             Seed(builder.Entity<Language>());
             Seed(builder.Entity<Location>());
+            Seed(builder.Entity<LocationHome>());
             Seed(builder.Entity<UserRoom>());
             Seed(builder.Entity<Role>());
             Seed(builder.Entity<User>());
@@ -361,6 +362,20 @@ namespace Infrastructure.RDBMS.Seeder
                 }
             );
         }
+        private static void Seed(EntityTypeBuilder<LocationHome> builder)
+        {
+            builder.HasData(
+                new LocationHome
+                {
+                    Id = 1,
+                    City = "Lviv",
+                    Street = "Gorodoc'kogo",
+                    Latitude = 49.8263716,
+                    Longitude = 23.9449697,
+                    IsActive = true
+                }
+            );
+        }
 
         private static void Seed(EntityTypeBuilder<UserRoom> builder)
         {
@@ -460,6 +475,19 @@ namespace Infrastructure.RDBMS.Seeder
                 {
                     BookId = 1,
                     AuthorId = 1
+                }
+            );
+        }
+
+        private static void Seed(EntityTypeBuilder<SuggestionMessage> builder)
+        {
+            builder.HasData(
+                new SuggestionMessage
+                {
+                    Id = 1,
+                    Summary = "fix problem",
+                    Text = "There is problem with translation",
+                    UserId = 1
                 }
             );
         }

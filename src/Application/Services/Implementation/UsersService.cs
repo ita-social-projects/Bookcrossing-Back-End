@@ -97,7 +97,8 @@ namespace Application.Services.Implementation
                 BirthDate = userUpdateDto.BirthDate,
                 UserRoomId = newRoomId.Id,
                 IsEmailAllowed = userUpdateDto.IsEmailAllowed,
-                FieldMasks = userUpdateDto.FieldMasks
+                FieldMasks = userUpdateDto.FieldMasks,
+                LocationHomeId = userUpdateDto.LocationHomeId
             };
 
             var user = _mapper.Map<User>(newUser);

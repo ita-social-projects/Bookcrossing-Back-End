@@ -34,6 +34,7 @@ namespace BookCrossingBackEnd.ServiceExtension
             services.AddScoped<IBookRootCommentService, BookRootCommentService>();
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<ILocationService, LocationService>();
+            services.AddScoped<ILocationHomeService, LocationHomeService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UsersService>();
             services.AddScoped<IEmailSenderService, EmailSenderService>();
@@ -49,6 +50,7 @@ namespace BookCrossingBackEnd.ServiceExtension
             services.AddScoped<ILanguageService, LanguageService>();
             services.AddScoped<IWishListService, WishListService>();
             services.AddScoped<IAphorismService, AphorismService>();
+            services.AddScoped<ISuggestionMessageService, SuggestionMessageService>();
             services.AddScoped<ISettingsService, SettingsService>();
             services.AddScoped<IStatisticsService, StatisticsService>();
             services.AddScoped<IIssueService, IssueService>();
@@ -163,12 +165,14 @@ namespace BookCrossingBackEnd.ServiceExtension
                 mc.AddProfile(new Application.MapperProfilers.BookRootCommentProfile());
                 mc.AddProfile(new Application.MapperProfilers.GenreProfile());
                 mc.AddProfile(new Application.MapperProfilers.LocationProfile());
+                mc.AddProfile(new Application.MapperProfilers.LocationHomeProfile());
                 mc.AddProfile(new Application.MapperProfilers.RequestProfile());
                 mc.AddProfile(new Application.MapperProfilers.UserProfile());
                 mc.AddProfile(new Application.MapperProfilers.BookProfile());
                 mc.AddProfile(new Application.MapperProfilers.LanguageProfile());
                 mc.AddProfile(new Application.MapperProfilers.AphorismProfile());
                 mc.AddProfile(new NotificationProfile());
+                mc.AddProfile(new Application.MapperProfilers.SuggestionMessageProfile());
                 mc.AddProfile(new SettingProfile());
                 mc.AddProfile(new IssueProfile());
             });
