@@ -234,13 +234,13 @@ namespace ApplicationTest.Services
                 _usersRepositoryMock.Reset();
             }
             [Test]
-            public async Task Add_UserExists_VerifyAdd()
+            public async Task Add_UserExists_VerifyLocationUpdate()
             {
                 _usersRepositoryMock.Setup(m => m.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(_users.First());
 
-                await _locationService.Add(_locationPostDto);
+                await _locationService.Update(_locationPostDto);
 
-                _locationRepositoryMock.Verify(obj => obj.Add(It.IsAny<LocationHome>()), Times.Once);
+                _locationRepositoryMock.Verify(obj => obj.Update(It.IsAny<LocationHome>()), Times.Once);
             }
 
             [Test]
@@ -254,7 +254,7 @@ namespace ApplicationTest.Services
             }
 
             [Test]
-            public async Task Add_UserExists_Update()
+            public async Task Add_UserExists_VerifyUserUpdate()
             {
                 _usersRepositoryMock.Setup(m => m.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(_users.First());
                 _usersRepositoryMock.Setup(m => m.Update(It.IsAny<User>()));
