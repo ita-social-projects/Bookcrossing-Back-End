@@ -41,6 +41,34 @@
     "database-links": "На цей запис є посилання з інших таблиць"
   },
   "components": {
+    "profile": {
+      "home": {
+        "firstName": "Ім'я",
+        "lastName": "Прізвище",
+        "email": "Електронна скринька",
+        "bithdate": "День народження",
+        "location": "Локація офісу",
+        "homeLocation": "Домашня локація",
+        "reEmail": "Отримувати листи",
+        "noHomeLocationMessage": "Немає домашньої локації. Перейдіть до редагування профілю, щоб її додати."
+      },
+      "edit": {
+        "pickBirthdate": "Виберіть дату народження",
+        "noHomeLocationEditMessage": "Виберіть домашню локацію",
+        "roomNumber": "Номер кімнати",
+        "activeLocation": "Активна локація",
+        "usehomelocation": "Дім",
+        "useofficelocation": "Офіс",
+        "locationUpdate": "Домашня адреса успішно оновлена.",
+        "homeLocationUpdate": "Тепер дім - це ваша активна локація.",
+        "officeLocationUpdate": "Тепер офіс - це ваша активна локація.",
+        "cancelDialog": "Ви впевнені, що хочете вийти із редагування?"
+      },
+      "picker": {
+        "pick": "Обрати",
+        "close": "Закрити"
+      }
+    },
     "searchBar": {
       "searchPlaceholder": "Введіть назву книги або автора"
     },

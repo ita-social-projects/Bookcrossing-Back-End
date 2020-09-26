@@ -41,6 +41,34 @@
     "database-links": "Other tables have links to this record"
   },
   "components": {
+    "profile": {
+      "home": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "bithdate": "Birthday",
+        "location": "Office location",
+        "homeLocation": "Home location",
+        "reEmail": "Receive emails",
+        "noHomeLocationMessage": "No home location set. Go to edit to set your home location."
+      },
+      "edit": {
+        "pickBirthdate": "Pick birthday",
+        "noHomeLocationEditMessage": "Choose a home location.",
+        "roomNumber": "Room number",
+        "activeLocation": "Active location",
+        "usehomelocation": "Home",
+        "useofficelocation": "Office",
+        "locationUpdate": "Home location succesfuly updated.",
+        "homeLocationUpdate": "Congrats! Now your location is set to home.",
+        "officeLocationUpdate": "Congrats! Now your location is set to office.",
+        "cancelDialog": "Are yo sure want to cancel?"
+      },
+      "picker": {
+        "pick": "Pick",
+        "close": "Close"
+      }
+    },
     "searchBar": {
       "searchPlaceholder": "Enter Book Title or Author"
     },
