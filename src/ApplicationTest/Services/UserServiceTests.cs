@@ -35,6 +35,9 @@ namespace ApplicationTest.Services
         private Mock<IRepository<ResetPassword>> _resetPasswordRepositoryMock;
         private Mock<IBookService> _bookServiceMock;
         private Mock<IRequestService> _requestServiceMock;
+        private Mock<IUserResolverService> _userResolverService;
+        private Mock<INotificationsService> _notificationsService;
+
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -47,6 +50,8 @@ namespace ApplicationTest.Services
             _bookServiceMock = new Mock<IBookService>();
             _paginationServiceMock = new Mock<IPaginationService>();
             _requestServiceMock = new Mock<IRequestService>();
+            _userResolverService = new Mock<IUserResolverService>();
+            _notificationsService = new Mock<INotificationsService>();
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new Application.MapperProfilers.AuthorProfile());
@@ -63,7 +68,7 @@ namespace ApplicationTest.Services
             _context = new BookCrossingContext(options);
             _usersService = new UsersService(_userRepositoryMock.Object, _mapper, _emailSenderServiceMock.Object,
                                                 _resetPasswordRepositoryMock.Object, _userRoomRepositoryMock.Object, _bookServiceMock.Object,
-                                                    _context, _paginationServiceMock.Object, _requestServiceMock.Object);
+                                                    _context, _paginationServiceMock.Object, _requestServiceMock.Object,_userResolverService.Object, _notificationsService.Object);
         }
         [SetUp]
         public void SetUp()

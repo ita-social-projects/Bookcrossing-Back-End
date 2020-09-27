@@ -37,14 +37,13 @@ namespace Application.Services.Implementation
         private readonly PasswordHasher<User> _passwordHasher;
         private readonly BookCrossingContext _context;
         private readonly IUserResolverService _userResolverService;
-        private readonly IRepository<User> _userLocationRepository;
         private readonly INotificationsService _notificationsService;
 
 
         public UsersService(IRepository<User> userRepository, IMapper mapper, IEmailSenderService emailSenderService,
             IRepository<ResetPassword> resetPasswordRepository, IRepository<UserRoom> userRoomRepository, IBookService bookService,
             BookCrossingContext context, IPaginationService paginationService, IRequestService requestService,
-            IUserResolverService userResolverService, IRepository<User> userLocationRepository, INotificationsService notificationsService)
+            IUserResolverService userResolverService, INotificationsService notificationsService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
@@ -57,7 +56,6 @@ namespace Application.Services.Implementation
             _paginationService = paginationService;
             _requestService = requestService;
             _userResolverService = userResolverService;
-            _userLocationRepository = userLocationRepository;
             _notificationsService = notificationsService;
         }
         ///<inheritdoc/>
@@ -174,7 +172,7 @@ namespace Application.Services.Implementation
             await _emailSenderService.SendTheUserWasDeleted(emailMessageForDeletedUser, " Your account was deleted from Bookcrossing app.");
 
             var userIdAdmin = _userResolverService.GetUserId();
-            var userAdmin = await _userLocationRepository.FindByIdAsync(userIdAdmin);
+            var userAdmin = await _userRepository.FindByIdAsync(userIdAdmin);
 
             var emailMessageForAdmin = new RequestMessage()
             {
@@ -224,7 +222,7 @@ namespace Application.Services.Implementation
                NotificationAction.None);
 
             var userIdAdmin = _userResolverService.GetUserId();
-            var userAdmin = await _userLocationRepository.FindByIdAsync(userIdAdmin);
+            var userAdmin = await _userRepository.FindByIdAsync(userIdAdmin);
 
             var emailMessageForAdmin = new RequestMessage()
             {
