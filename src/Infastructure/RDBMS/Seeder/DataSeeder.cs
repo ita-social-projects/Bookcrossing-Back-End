@@ -26,7 +26,43 @@ namespace Infrastructure.RDBMS.Seeder
             Seed(builder.Entity<BookGenre>());
             Seed(builder.Entity<BookAuthor>());
             Seed(builder.Entity<Aphorism>());
-            Seed(builder.Entity<SuggestionMessage>());
+            Seed(builder.Entity<Issue>());
+        }
+
+        private static void Seed(EntityTypeBuilder<Issue> entityTypeBuilder)
+        {
+            entityTypeBuilder.HasData(
+                new Genre
+                {
+                    Id = 1,
+                    Name = "General"
+                },
+                new Genre
+                {
+                    Id = 2,
+                    Name = "Improvement suggestion"
+                },
+                new Genre
+                {
+                    Id = 3,
+                    Name = "Support needed"
+                },
+                new Genre
+                {
+                    Id = 4,
+                    Name = "Error found"
+                },
+                new Genre
+                {
+                    Id = 5,
+                    Name = "Book Exchange"
+                },
+                new Genre
+                {
+                    Id = 6,
+                    Name = "Others"
+                }
+            );
         }
 
         private static void Seed(EntityTypeBuilder<Aphorism> builder)

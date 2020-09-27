@@ -338,6 +338,20 @@
         "timespan": "Timespan",
         "timespans": "Timespans"
       },
+      "issues": {
+        "issue": "Issue",
+        "issues": "Issues",
+        "name": "Name",
+        "add-success": "New issue was created successfully!",
+        "update-success": "Issue was edited successfully!",
+        "delete-success": "Issue was deleted successfully!"
+      },
+      "issues-form": {
+        "edit-title": "Edit Issue",
+        "edit-button": "Update",
+        "add-title": "Add Issue",
+        "add-button": "Add"
+      },
       "suggestion-message": {
         "messages": "Messages",
         "selectAll": "Select All",
@@ -351,7 +365,8 @@
         "summary": "Summary",
         "status": "Status",
         "delete-success": "Messages have been deleted successfully",
-        "status-changed": "Status have been changed successfully"
+        "status-changed": "Status has been changed successfully",
+        "message-sent-success": "Message has been sent successfully"
       }
     },
     "comment": {
