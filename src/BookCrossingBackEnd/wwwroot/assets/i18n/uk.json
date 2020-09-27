@@ -303,7 +303,36 @@
         "found-number": "Кількість знайдених користувачів: {{value}}",
         "first-name": "Ім'я",
         "last-name": "Прізвище",
-        "register-date": "Дата реєстрації"
+        "register-date": "Дата реєстрації",
+        "is-active": "Є активний",
+        "show-deleted": "З видаленими"
+      },
+      "user-view": {
+        "user-details": "Інформація про користувача",
+        "user-deleted": "Користувача видалено!",
+        "first-name": "Ім'я",
+        "last-name": "Прізвище",
+        "email": "Електронна пошта",
+        "birthday": "День народження",
+        "location": "Локація",
+        "room-number": "Номер кімнати",
+        "user-books": "Книги користувача",
+        "name": "Назва",
+        "state": "Стан",
+        "actions": "Дії",
+        "take-ownership": "Присвоїти",
+        "deactivate": "Деактивувати",
+        "activate": "Активувати",
+        "cannot-delete": "Ви не можете видалити користувача з активними книгами!",
+        "delete-user": "Видалити користувача",
+        "recover": "Відновити",
+        "confirmation": {
+          "delete": "Ви хочете видалити {{firstName}} {{lastName}} зі списку користувачів?",
+          "recover": "Ви хочете відновити {{firstName}} {{lastName}}?",
+          "take-ownership": "Ви хочете отримати право власності на цю книгу?",
+          "activate": "Ви хочете активувати книгу?",
+          "deactivate": "Ви хочете деактивувати книгу?"
+        }
       },
       "timespans": {
         "timespan": "Таймспан",

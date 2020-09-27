@@ -303,7 +303,36 @@
         "found-number": "Number of found users: {{value}}",
         "first-name": "First name",
         "last-name": "Last name",
-        "register-date": "Register date"
+        "register-date": "Register date",
+        "is-active": "Is active",
+        "show-deleted": "Show deleted"
+      },
+      "user-view": {
+        "user-details": "User's details",
+        "user-deleted": "User is deleted!",
+        "first-name": "First name",
+        "last-name": "Last name",
+        "email": "Email",
+        "birthday": "Birthday",
+        "location": "Location",
+        "room-number": "Room number",
+        "user-books": "User's books",
+        "name": "Name",
+        "state": "State",
+        "actions": "Actions",
+        "take-ownership": "Take ownership",
+        "deactivate": "Deactivate",
+        "activate": "Activate",
+        "cannot-delete": "You cannot delete user with active books!",
+        "delete-user": "Delete user",
+        "recover": "Recover",
+        "confirmation": {
+          "delete": "Do you want to delete the {{firstName}} {{lastName}} from the list of users?",
+          "recover": "Do you want to recover the {{firstName}} {{lastName}}?",
+          "take-ownership": "Do you want to take ownership of this book?",
+          "activate": "Do you want to activate the book?",
+          "deactivate": "Do you want to deactivate the book?"
+        }
       },
       "timespans": {
         "timespan": "Timespan",
