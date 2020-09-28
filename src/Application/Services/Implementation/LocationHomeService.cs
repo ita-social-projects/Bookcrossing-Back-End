@@ -91,7 +91,7 @@ namespace Application.Services.Implementation
                 .Include(b => b.User)
                 .ThenInclude(r => r.LocationHome)
                 .Where(b => b.User.LocationHomeId.HasValue)
-                .ToList()
+                .AsEnumerable()
                 .GroupBy(b => b.User.LocationHome)
                 .Select(l => new MapHomeLocationDto(_mapper.Map<LocationHomeDto>(l.Key), l.Count()));
         }

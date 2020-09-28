@@ -142,17 +142,15 @@ namespace Application.Services.Implementation
 
         public async Task<PaginationDto<BookGetDto>> GetAllAsync(BookQueryParams parameters)
         {
-            if (parameters.LocationFilterOn.HasValue && parameters.LocationFilterOn == true)
+            if (parameters.LocationFilterOn == true && 
+                (parameters.HomeLocations == null || parameters.HomeLocations.Length == 0) &&
+                (parameters.Locations == null || parameters.Locations.Length == 0))
             {
-                if ((parameters.HomeLocations == null || parameters.HomeLocations.Length == 0) &&
-                    (parameters.Locations == null || parameters.Locations.Length == 0))
+                return new PaginationDto<BookGetDto>()
                 {
-                    return new PaginationDto<BookGetDto>()
-                    {
-                        TotalCount = 0,
-                        Page = new List<BookGetDto>()
-                    };
-                }
+                    TotalCount = 0,
+                    Page = new List<BookGetDto>()
+                };
             }
 
             var query = GetFilteredQuery(_bookRepository.GetAll(), parameters);
@@ -426,7 +424,7 @@ namespace Application.Services.Implementation
                     var tempId = id;
                     predicate = predicate.Or(b => 
                         b.User.UserRoom.LocationId == id && 
-                        (b.User.LocationHomeId == null || b.User.LocationHome.IsActive == false)
+                        (b.User.LocationHomeId == null || !b.User.LocationHome.IsActive)
                     );
                 }
                 query = query.Where(predicate);
@@ -439,7 +437,7 @@ namespace Application.Services.Implementation
                     var tempId = id;
                     predicate = predicate.Or(b => 
                         b.User.LocationHomeId == id &&
-                        b.User.LocationHome.IsActive == true
+                        b.User.LocationHome.IsActive
                     );
                 }
                 query = query.Where(predicate);
@@ -494,8 +492,8 @@ namespace Application.Services.Implementation
                 .Include(b => b.User)
                 .ThenInclude(u => u.UserRoom)
                 .ThenInclude(r => r.Location)
-                .Where(b => b.User.UserRoom.Location.IsActive == true && b.User.LocationHomeId == null)
-                .ToList()
+                .Where(b => b.User.UserRoom.Location.IsActive && b.User.LocationHomeId == null)
+                .AsEnumerable()
                 .GroupBy(b => b.User.UserRoom.Location)
                 .Select(l => new MapLocationDto(_mapper.Map<Location, LocationDto>(l.Key), l.Count()));
         }
