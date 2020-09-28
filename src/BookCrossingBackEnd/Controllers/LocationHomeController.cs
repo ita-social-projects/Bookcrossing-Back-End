@@ -69,5 +69,11 @@ namespace BookCrossingBackEnd.Controllers
 
             return Ok(location);
         }
+
+        [HttpGet("locations")]
+        public ActionResult<IEnumerable<MapHomeLocationDto>> GetBooksQuantityOnHomeLocations()
+        {
+            return Ok(_locationService.GetBooksQuantityOnHomeLocations());
+        }
     }
 }
