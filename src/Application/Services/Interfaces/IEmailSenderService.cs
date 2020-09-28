@@ -72,6 +72,10 @@ namespace Application.Services.Interfaces
 
         Task SendTheUserWasRecovered(RequestMessage message, string emailMessage);
 
+        Task SendForOwnershipAsync(RequestMessage message, string emailMessage);
+
+        
+
 
     }
 }

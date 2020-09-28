@@ -9,6 +9,7 @@
     <None Remove="Controllers\AController.cs~RF3109555.TMP" />
     <None Remove="Settings.StyleCop" />
     <None Remove="StyleCop.Cache" />
+    <None Remove="Templates\BookOwnership.html" />
     <None Remove="Templates\BookReceived.html" />
     <None Remove="Templates\UserDeleted.html" />
     <None Remove="Templates\WishBecameAvailable.html" />

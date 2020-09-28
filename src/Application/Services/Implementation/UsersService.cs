@@ -156,7 +156,7 @@ namespace Application.Services.Implementation
             {
                 throw new InvalidOperationException();
             }
-            var requestsIds = user.RequestUser.Where(request => request.ReceiveDate == null).Select(request => request.Id).ToList();
+            var requestsIds = user.RequestUser.Where(request => request.ReceiveDate == null).Select(request => request.Id);
             foreach (var requestId in requestsIds)
             {
                 await _requestService.RemoveAsync(requestId);
@@ -164,35 +164,40 @@ namespace Application.Services.Implementation
             user.IsDeleted = true;
             var affectedRows = await _userRepository.SaveChangesAsync();
 
+            if (affectedRows == 0)
+            {
+                throw new DbUpdateException();
+            }
+
+            await transaction.CommitAsync();
+
+            SendMail(user, " Your account was deleted from Bookcrossing app.");
+
+            var userIdAdmin = _userResolverService.GetUserId();
+            var userAdmin = await _userRepository.FindByIdAsync(userIdAdmin);
+
+            SendMail(userAdmin, $"The user '{user.FirstName}' was successfully deleted from the user's list");
+           
+            SendNotificationToUser(userIdAdmin, $"The user {user.FirstName} was successfully deleted from the user's list");
+        }
+
+        public async void SendMail( User user, string message)
+        {
             var emailMessageForDeletedUser = new RequestMessage()
             {
                 UserName = user.FirstName + " " + user.LastName,
                 UserAddress = new MailboxAddress($"{user.Email}"),
             };
-            await _emailSenderService.SendTheUserWasDeleted(emailMessageForDeletedUser, " Your account was deleted from Bookcrossing app.");
+            await _emailSenderService.SendTheUserWasDeleted(emailMessageForDeletedUser, message );
+        }
 
-            var userIdAdmin = _userResolverService.GetUserId();
-            var userAdmin = await _userRepository.FindByIdAsync(userIdAdmin);
-
-            var emailMessageForAdmin = new RequestMessage()
-            {
-                UserName = userAdmin.FirstName + " " + userAdmin.LastName,
-                UserAddress = new MailboxAddress($"{userAdmin.Email}"),
-            };
-            
-            await _emailSenderService.SendTheUserWasDeleted(emailMessageForAdmin, $"The user '{user.FirstName}' was successfully deleted from the user's list");
-
+        public async void SendNotificationToUser(int userIdAdmin, string message)
+        {
             await _notificationsService.NotifyAsync(
-                userIdAdmin,
-                $"The user {user.FirstName} was successfully deleted from the user's list",
-                null,
-                NotificationAction.None);
-
-            if (affectedRows == 0)
-            {
-                throw new DbUpdateException();
-            }
-            await transaction.CommitAsync();
+              userIdAdmin,
+              message,
+              null,
+              NotificationAction.None);
         }
 
         public async Task RecoverDeletedUser(int userId)
@@ -208,40 +213,23 @@ namespace Application.Services.Implementation
                 user.IsDeleted = false;
             }
 
-            var emailMessageForRecoveredUser = new RequestMessage()
-            {
-                UserName = user.FirstName + " " + user.LastName,
-                UserAddress = new MailboxAddress($"{user.Email}"),
-            };
-            await _emailSenderService.SendTheUserWasRecovered(emailMessageForRecoveredUser, " 'Your account was recovered in Bookcrossing app'");
-
-            await _notificationsService.NotifyAsync(
-               userId,
-               $"Your account {user.FirstName}  was recovered in Bookcrossing app",
-               null,
-               NotificationAction.None);
-
-            var userIdAdmin = _userResolverService.GetUserId();
-            var userAdmin = await _userRepository.FindByIdAsync(userIdAdmin);
-
-            var emailMessageForAdmin = new RequestMessage()
-            {
-                UserName = userAdmin.FirstName + " " + userAdmin.LastName,
-                UserAddress = new MailboxAddress($"{userAdmin.Email}"),
-            };
-            await _emailSenderService.SendTheUserWasRecovered(emailMessageForAdmin, $"The user {user.FirstName} was successfully recovered in the user's list");
-
-            await _notificationsService.NotifyAsync(
-                userIdAdmin,
-                $"The user {user.FirstName} was successfully recovered in the user's list",
-                null,
-                NotificationAction.None);
-
             var affectedRows = await _userRepository.SaveChangesAsync();
             if (affectedRows == 0)
             {
                 throw new DbUpdateException();
             }
+
+            SendMail(user, "Your account was recovered in Bookcrossing app");
+
+            SendNotificationToUser(userId, $"Your account {user.FirstName}  was recovered in Bookcrossing app");
+
+            var userIdAdmin = _userResolverService.GetUserId();
+            var userAdmin = await _userRepository.FindByIdAsync(userIdAdmin);
+
+            SendMail(userAdmin, $"The user {user.FirstName} was successfully recovered in the user's list");
+
+            SendNotificationToUser(userIdAdmin, $"The user {user.FirstName} was successfully recovered in the user's list");
+
         }
 
         /// <inheritdoc />

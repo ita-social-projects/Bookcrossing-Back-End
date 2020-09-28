@@ -109,7 +109,7 @@ namespace Application.Services.Implementation
         /// <inheritdoc />
         public async Task SendForBookActivatedAsync(RequestMessage requestMessage)
         {
-            var body = await GetMessageTemplateFromFile("BookDeactivated.html");
+            var body = await GetMessageTemplateFromFile("BookActivated.html");
 
             body = body.Replace("{USER.NAME}", requestMessage.UserName);
             body = body.Replace("{BOOK.ID}", Convert.ToString(requestMessage.BookId));
@@ -225,6 +225,18 @@ namespace Application.Services.Implementation
             await _smtpClient.SendAsync(CreateEmailMessage(messageTitle), _emailConfig);
         }
 
+        public async Task SendForOwnershipAsync(RequestMessage requestMessage, string emailMessage)
+        {
+            var body = await GetMessageTemplateFromFile("BookOwnership.html");
+
+            body = body.Replace("{USER.NAME}", requestMessage.UserName);
+            body = body.Replace("{MESSAGE}", emailMessage);
+
+            var message = new Message(new List<string>() { requestMessage.UserAddress.ToString() },
+                emailMessage, body);
+
+            await _smtpClient.SendAsync(CreateEmailMessage(message), _emailConfig);
+        }
 
 
     }

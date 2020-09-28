@@ -134,6 +134,20 @@ namespace Application.Services.Implementation
                 book.ImagePath = imagePath;
             }
             await _bookRepository.Update(book, bookDto.FieldMasks);
+            if (bookDto.UserId != oldBook.UserId)
+            {
+                var user = await _userLocationRepository.FindByIdAsync(oldBook.UserId.Value);
+                string emailMessageForUser = $" Administrator has successfully received your book '{oldBook.Name}'";
+                SendMailForOwnership(book, user, emailMessageForUser );
+                SendNotificationToUser(oldBook.UserId.Value, book.Id, emailMessageForUser);
+
+                var userId = _userResolverService.GetUserId();
+                var admin = await _userLocationRepository.FindByIdAsync(userId);
+
+                string emailMessageForAdmin = $"You became the current owner of the book '{oldBook.Name}'";
+                SendMailForOwnership(book, admin, emailMessageForAdmin );
+                SendNotificationToUser(userId, book.Id, emailMessageForAdmin );
+            }
             var affectedRows = await _bookRepository.SaveChangesAsync();
             var isDatabaseUpdated = affectedRows > 0;
             if (isDatabaseUpdated &&
@@ -285,45 +299,19 @@ namespace Application.Services.Implementation
             {
                 if (_userLocationRepository.FindByCondition(u => u.Email == book.User.Email).Result.IsEmailAllowed)
                 {
-                    var emailMessageForBookActivated = new RequestMessage()
-                    {
-                        UserName = book.User.FirstName + " " + book.User.LastName,
-                        BookName = book.Name,
-                        BookId = book.Id,
-                        UserAddress = new MailboxAddress($"{book.User.Email}"),
-                    };
-                    await _emailSenderService.SendForBookActivatedAsync(emailMessageForBookActivated);
+                    SendMailForActivated(book, book.User);
 
-                    await _notificationsService.NotifyAsync(
-                       book.User.Id,
-                       $"The status of your book '{book.Name}' have successfully changed to 'Active'",
-                       book.Id,
-                       NotificationAction.Open);
+                    SendNotificationToUser(book.User.Id, book.Id, $"The status of your book '{book.Name}' have successfully changed to 'Active'");
 
                     var userId = _userResolverService.GetUserId();
                     var user = await _userLocationRepository.FindByIdAsync(userId);
 
+                    SendMailForActivated(book, user);
 
-                    var emailMessageForBookActivatedForAdministrator = new RequestMessage()
-                    {
-                        UserName = user.FirstName + " " + user.LastName,
-                        BookName = book.Name,
-                        BookId = book.Id,
-                        UserAddress = new MailboxAddress($"{user.Email}"),
-                    };
-                    await _emailSenderService.SendForBookActivatedAsync(emailMessageForBookActivatedForAdministrator);
-
-                    await _notificationsService.NotifyAsync(
-                        userId,
-                        $"You have successfully change the book's status to 'Active' for '{book.Name}'",
-                        book.Id,
-                        NotificationAction.Open);
-
+                    SendNotificationToUser(userId, book.Id, $"You have successfully change the book's status to 'Active' for '{book.Name}'");
                 }
-
                 await _wishListService.NotifyAboutAvailableBookAsync(book.Id);
             }
-
             return true;
         }
 
@@ -346,14 +334,7 @@ namespace Application.Services.Implementation
                     .Last();
                 if (_userLocationRepository.FindByCondition(u => u.Email == book.User.Email).Result.IsEmailAllowed)
                 {
-                    var emailMessageForBookDeactivatedForRequester = new RequestMessage()
-                    {
-                        UserName = request.User.FirstName + " " + request.User.LastName,
-                        BookName = book.Name,
-                        BookId = book.Id,
-                        UserAddress = new MailboxAddress($"{request.User.Email}"),
-                    };
-                    await _emailSenderService.SendForBookDeactivatedAsync(emailMessageForBookDeactivatedForRequester);
+                    SendMailForActivated(book, request.User);
                 }
                 await _hangfireJobScheduleService.DeleteRequestScheduleJob(request.Id);
                 _requestRepository.Remove(request);
@@ -361,44 +342,69 @@ namespace Application.Services.Implementation
             }
             if (_userLocationRepository.FindByCondition(u => u.Email == book.User.Email).Result.IsEmailAllowed)
             {
-                var emailMessageForBookDeactivatedForOwner = new RequestMessage()
-                {
-                    UserName = book.User.FirstName + " " + book.User.LastName,
-                    BookName = book.Name,
-                    BookId = book.Id,
-                    UserAddress = new MailboxAddress($"{book.User.Email}"),
-                };
-                await _emailSenderService.SendForBookDeactivatedAsync(emailMessageForBookDeactivatedForOwner);
+                SendMailForDeactivated(book,book.User);
 
-                await _notificationsService.NotifyAsync(
-                       book.User.Id,
-                       $"The status of your book '{book.Name}' have successfully changed to Inactive",
-                       book.Id,
-                       NotificationAction.Open);
+                SendNotificationToUser(book.User.Id,book.Id, $"The status of your book '{book.Name}' have successfully changed to Inactive");
 
                 var userId = _userResolverService.GetUserId();
                 var user = await _userLocationRepository.FindByIdAsync(userId);
 
-                var emailMessageForBookDeactivatedForAdministrator = new RequestMessage()
-                {
-                    UserName = user.FirstName + " " + user.LastName,
-                    BookName = book.Name,
-                    BookId = book.Id,
-                    UserAddress = new MailboxAddress($"{user.Email}"),
-                };
-                await _emailSenderService.SendForBookDeactivatedAsync(emailMessageForBookDeactivatedForAdministrator);
+                SendMailForDeactivated(book, user);
 
-                await _notificationsService.NotifyAsync(
-                    userId,
-                    $"You have successfully change the book's status to Inactive for '{book.Name}'",
-                    book.Id,
-                    NotificationAction.Open);
+                SendNotificationToUser(userId, book.Id, $"You have successfully change the book's status to Inactive for '{book.Name}'");
+;
             }
             book.State = BookState.InActive;
             await _bookRepository.Update(book, new List<string>() { "State" });
             await _bookRepository.SaveChangesAsync();
 
             return true;
+        }
+
+
+        public async void SendMailForActivated(Book book, User user)
+        {
+            var emailMessageForBookActivated = new RequestMessage()
+            {
+                UserName = user.FirstName + " " + user.LastName,
+                BookName = book.Name,
+                BookId = book.Id,
+                UserAddress = new MailboxAddress($"{user.Email}"),
+            };
+            await _emailSenderService.SendForBookActivatedAsync(emailMessageForBookActivated);
+        }
+
+        public async void SendMailForDeactivated(Book book, User user)
+        {
+            var emailMessageForBookActivated = new RequestMessage()
+            {
+                UserName = user.FirstName + " " + user.LastName,
+                BookName = book.Name,
+                BookId = book.Id,
+                UserAddress = new MailboxAddress($"{user.Email}"),
+            };
+            await _emailSenderService.SendForBookDeactivatedAsync(emailMessageForBookActivated);
+        }
+
+        public async void SendMailForOwnership(Book book, User user, string emailMessage)
+        {
+            var emailMessageForBookActivated = new RequestMessage()
+            {
+                UserName = user.FirstName+" "+user.LastName,
+                BookName = book.Name,
+                BookId = book.Id,
+                UserAddress = new MailboxAddress($"{user.Email}"),
+            };
+            await _emailSenderService.SendForOwnershipAsync(emailMessageForBookActivated, emailMessage);
+        }
+
+        public async void SendNotificationToUser(int userId, int bookId, string message)
+        {
+            await _notificationsService.NotifyAsync(
+               userId,
+               message,
+               bookId,
+               NotificationAction.Open);
         }
 
         public async Task<int> GetNumberOfBooksInReadStatusAsync(int userId)
