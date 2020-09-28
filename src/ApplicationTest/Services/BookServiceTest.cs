@@ -36,6 +36,7 @@ namespace ApplicationTest.Services
         private Mock<IRootRepository<BookRootComment>> _rootCommentRepository;
         private Mock<IHangfireJobScheduleService> _hangfireJobScheduleService;
         private Mock<IWishListService> _wishListServiceMock;
+        private Mock<INotificationsService> _notificationsService;
         private IMapper _mapper;
 
         [OneTimeSetUp]
@@ -55,6 +56,7 @@ namespace ApplicationTest.Services
             _rootCommentRepository = new Mock<IRootRepository<BookRootComment>>();
             _wishListServiceMock = new Mock<IWishListService>();
             _bookRatingRepositoryMock = new Mock<IRepository<BookRating>>();
+            _notificationsService = new Mock<INotificationsService>();
 
 
             var mappingConfig = new MapperConfiguration(mc =>
@@ -86,7 +88,8 @@ namespace ApplicationTest.Services
                 _emailSenderServiceMock.Object,
                 _rootCommentRepository.Object,
                 _wishListServiceMock.Object,
-                _bookRatingRepositoryMock.Object);
+                _bookRatingRepositoryMock.Object,
+                _notificationsService.Object);
 
             var authorMock = GetBookAuthor().AsQueryable();
             var genreMock = GetBookGenre().AsQueryable();
