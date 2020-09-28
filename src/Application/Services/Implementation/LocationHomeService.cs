@@ -1,29 +1,32 @@
-﻿using AutoMapper;
-using Domain.RDBMS;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Dto;
+using Application.Services.Interfaces;
+using AutoMapper;
+using Domain.RDBMS;
 using Domain.RDBMS.Entities;
 using Microsoft.EntityFrameworkCore;
-using Application.QueryableExtension;
 
 namespace Application.Services.Implementation
 {
-    public class LocationHomeService : Interfaces.ILocationHomeService
+    public class LocationHomeService : ILocationHomeService
     {
         private readonly IRepository<LocationHome> _locationHomeRepository;
         private readonly IRepository<User> _userRepository;
+        private readonly IRepository<Book> _bookRepository;
         private readonly IMapper _mapper;
 
         public LocationHomeService(
             IRepository<LocationHome> locationHomeRepository, 
             IMapper mapper,
-            IRepository<User> userRepository)
+            IRepository<User> userRepository,
+            IRepository<Book> bookRepository)
         {
             _locationHomeRepository = locationHomeRepository;
             _userRepository = userRepository;
             _mapper = mapper;
+            _bookRepository = bookRepository;
         }
 
         public async Task<IEnumerable<LocationHomeDto>> GetAll()
@@ -80,6 +83,17 @@ namespace Application.Services.Implementation
             await _userRepository.SaveChangesAsync();
 
             return location.Id;
+        }
+
+        public IEnumerable<MapHomeLocationDto> GetBooksQuantityOnHomeLocations()
+        {
+            return _bookRepository.GetAll()
+                .Include(b => b.User)
+                .ThenInclude(r => r.LocationHome)
+                .Where(b => b.User.LocationHomeId.HasValue)
+                .AsEnumerable()
+                .GroupBy(b => b.User.LocationHome)
+                .Select(l => new MapHomeLocationDto(_mapper.Map<LocationHomeDto>(l.Key), l.Count()));
         }
     }
 }

@@ -137,5 +137,11 @@ namespace Application.Services.Interfaces
         /// </summary>
         /// <returns></returns>
         IEnumerable<Request> GetBooksTransitions();
+
+        /// <summary>
+        /// Get locations with books quantity
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<MapLocationDto> GetBooksQuantityOnLocations();
     }
 }

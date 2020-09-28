@@ -10,8 +10,12 @@
 
         public int[] Locations { get; set; }
 
+        public int[] HomeLocations { get; set; }
+
         public bool? ShowAvailable { get; set; }
 
         public SortableParams SortableParams { get; set; }
+
+        public bool? LocationFilterOn { get; set; }
     }
 }
