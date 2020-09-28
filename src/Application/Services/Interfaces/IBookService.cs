@@ -143,5 +143,12 @@ namespace Application.Services.Interfaces
 
 
         public void SendNotificationToUser(int userId, int bookId, string message);
+
+        /// <summary>
+        /// Get locations with books quantity
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<MapLocationDto> GetBooksQuantityOnLocations();
+
     }
 }

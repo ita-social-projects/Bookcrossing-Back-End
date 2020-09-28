@@ -8,10 +8,14 @@
 
         public int[] Languages { get; set; }
 
-        public int? Location { get; set; }
+        public int[] Locations { get; set; }
+
+        public int[] HomeLocations { get; set; }
 
         public bool? ShowAvailable { get; set; }
 
         public SortableParams SortableParams { get; set; }
+
+        public bool? LocationFilterOn { get; set; }
     }
 }

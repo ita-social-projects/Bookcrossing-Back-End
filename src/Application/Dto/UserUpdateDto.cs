@@ -25,6 +25,8 @@ namespace Application.Dto
 
         public int RoleId { get; set; }
 
+        public int LocationHomeId { get; set; }
+
         public bool IsEmailAllowed { get; set; }
 
         public List<string> FieldMasks { get; set; }

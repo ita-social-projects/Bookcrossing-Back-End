@@ -41,6 +41,34 @@
     "database-links": "Other tables have links to this record"
   },
   "components": {
+    "profile": {
+      "home": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "bithdate": "Birthday",
+        "location": "Office location",
+        "homeLocation": "Home location",
+        "reEmail": "Receive emails",
+        "noHomeLocationMessage": "No home location set. Go to edit to set your home location."
+      },
+      "edit": {
+        "pickBirthdate": "Pick birthday",
+        "noHomeLocationEditMessage": "Choose a home location.",
+        "roomNumber": "Room number",
+        "activeLocation": "Active location",
+        "usehomelocation": "Home",
+        "useofficelocation": "Office",
+        "locationUpdate": "Home location succesfuly updated.",
+        "homeLocationUpdate": "Congrats! Now your location is set to home.",
+        "officeLocationUpdate": "Congrats! Now your location is set to office.",
+        "cancelDialog": "Are yo sure want to cancel?"
+      },
+      "picker": {
+        "pick": "Pick",
+        "close": "Close"
+      }
+    },
     "searchBar": {
       "searchPlaceholder": "Enter Book Title or Author"
     },
@@ -275,11 +303,70 @@
         "found-number": "Number of found users: {{value}}",
         "first-name": "First name",
         "last-name": "Last name",
-        "register-date": "Register date"
+        "register-date": "Register date",
+        "is-active": "Is active",
+        "show-deleted": "Show deleted"
+      },
+      "user-view": {
+        "user-details": "User's details",
+        "user-deleted": "User is deleted!",
+        "first-name": "First name",
+        "last-name": "Last name",
+        "email": "Email",
+        "birthday": "Birthday",
+        "location": "Location",
+        "room-number": "Room number",
+        "user-books": "User's books",
+        "name": "Name",
+        "state": "State",
+        "actions": "Actions",
+        "take-ownership": "Take ownership",
+        "deactivate": "Deactivate",
+        "activate": "Activate",
+        "cannot-delete": "You cannot delete user with active books!",
+        "delete-user": "Delete user",
+        "recover": "Recover",
+        "confirmation": {
+          "delete": "Do you want to delete the {{firstName}} {{lastName}} from the list of users?",
+          "recover": "Do you want to recover the {{firstName}} {{lastName}}?",
+          "take-ownership": "Do you want to take ownership of this book?",
+          "activate": "Do you want to activate the book?",
+          "deactivate": "Do you want to deactivate the book?"
+        }
       },
       "timespans": {
         "timespan": "Timespan",
         "timespans": "Timespans"
+      },
+      "issues": {
+        "issue": "Issue",
+        "issues": "Issues",
+        "name": "Name",
+        "add-success": "New issue was created successfully!",
+        "update-success": "Issue was edited successfully!",
+        "delete-success": "Issue was deleted successfully!"
+      },
+      "issues-form": {
+        "edit-title": "Edit Issue",
+        "edit-button": "Update",
+        "add-title": "Add Issue",
+        "add-button": "Add"
+      },
+      "suggestion-message": {
+        "messages": "Messages",
+        "selectAll": "Select All",
+        "deselectAll": "Deselect All",
+        "delete": "Delete",
+        "reply": "Reply",
+        "read": "Read",
+        "unread": "Unread",
+        "decline": "Decline",
+        "user": "User",
+        "summary": "Summary",
+        "status": "Status",
+        "delete-success": "Messages have been deleted successfully",
+        "status-changed": "Status has been changed successfully",
+        "message-sent-success": "Message has been sent successfully"
       }
     },
     "comment": {

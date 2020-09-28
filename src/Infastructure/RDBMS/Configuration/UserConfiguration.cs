@@ -49,6 +49,8 @@ namespace Infrastructure.RDBMS.Configuration
 
             builder.Property(e => e.UserRoomId).HasColumnName("user_room_id");
 
+            builder.Property(e => e.LocationHomeId).HasColumnName("home_location_id");
+
             builder.Property(e => e.IsEmailAllowed)
                .IsRequired().HasDefaultValue(1)
                .HasColumnName("email_allowed")
@@ -66,6 +68,12 @@ namespace Infrastructure.RDBMS.Configuration
                 .WithMany(p => p.User)
                 .HasForeignKey(d => d.UserRoomId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.HasOne(d => d.LocationHome)
+               .WithOne(p => p.User)
+               .HasForeignKey<User>(d => d.LocationHomeId)
+               .OnDelete(DeleteBehavior.ClientSetNull);
+               
 
         }
     }

@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BookCrossingBackEnd.Migrations
 {
-    public partial class Add_HomeAdress_ToLocation_Entity : Migration
+    public partial class AddBookISBN : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "HomeAdress",
-                table: "Location",
+                name: "ISBN",
+                table: "Book",
                 nullable: true);
 
             migrationBuilder.UpdateData(
@@ -17,7 +17,7 @@ namespace BookCrossingBackEnd.Migrations
                 keyColumn: "id",
                 keyValue: 1,
                 columns: new[] { "DateAdded", "State" },
-                values: new object[] { new DateTime(2020, 9, 5, 23, 7, 28, 127, DateTimeKind.Local).AddTicks(7668), "Available" });
+                values: new object[] { new DateTime(2020, 9, 17, 20, 20, 48, 146, DateTimeKind.Local).AddTicks(9679), "Available" });
 
             migrationBuilder.UpdateData(
                 table: "User",
@@ -32,20 +32,27 @@ namespace BookCrossingBackEnd.Migrations
                 keyValue: 2,
                 column: "role_id",
                 value: 2);
+
+            migrationBuilder.UpdateData(
+                table: "User",
+                keyColumn: "id",
+                keyValue: 3,
+                column: "role_id",
+                value: 2);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "HomeAdress",
-                table: "Location");
+                name: "ISBN",
+                table: "Book");
 
             migrationBuilder.UpdateData(
                 table: "Book",
                 keyColumn: "id",
                 keyValue: 1,
                 columns: new[] { "DateAdded", "State" },
-                values: new object[] { new DateTime(2020, 8, 27, 11, 58, 34, 359, DateTimeKind.Local).AddTicks(3564), "Available" });
+                values: new object[] { new DateTime(2020, 9, 17, 19, 46, 3, 496, DateTimeKind.Local).AddTicks(7935), "Available" });
 
             migrationBuilder.UpdateData(
                 table: "User",
@@ -58,6 +65,13 @@ namespace BookCrossingBackEnd.Migrations
                 table: "User",
                 keyColumn: "id",
                 keyValue: 2,
+                column: "role_id",
+                value: 2);
+
+            migrationBuilder.UpdateData(
+                table: "User",
+                keyColumn: "id",
+                keyValue: 3,
                 column: "role_id",
                 value: 2);
         }
