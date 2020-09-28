@@ -131,5 +131,11 @@ namespace BookCrossingBackEnd.Controllers
         {
             return await _bookService.GetRating(bookId, userId);
         }
+
+        [HttpGet("locations")]
+        public ActionResult<IEnumerable<MapLocationDto>> GetBooksQuantityOnLocations()
+        {
+            return Ok(_bookService.GetBooksQuantityOnLocations());
+        }
     }
 }

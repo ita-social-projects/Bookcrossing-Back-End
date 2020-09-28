@@ -21,6 +21,7 @@ namespace Infrastructure.RDBMS
         public DbSet<Genre> Genre { get; set; }
         public DbSet<Language> Language { get; set; }
         public DbSet<Location> Location { get; set; }
+        public DbSet<SuggestionMessage> Message { get; set; }
         public DbSet<Request> Request { get; set; }
         public DbSet<UserRoom> UserRoom { get; set; }
         public DbSet<Role> Role { get; set; }
@@ -30,6 +31,7 @@ namespace Infrastructure.RDBMS
         public DbSet<Aphorism> Aphorisms { get; set; }
         public DbSet<Notification> Notification { get; set; }
         public DbSet<Setting> Setting { get; set; }
+        public DbSet<Issue> Issue { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -58,7 +60,9 @@ namespace Infrastructure.RDBMS
             modelBuilder.ApplyConfiguration(new WishConfiguration());
             modelBuilder.ApplyConfiguration(new AphorismConfiguration());
             modelBuilder.ApplyConfiguration(new NotificationConfiguration());
+            modelBuilder.ApplyConfiguration(new SuggestionMessageConfiguration());
             modelBuilder.ApplyConfiguration(new SettingConfiguration());
+            modelBuilder.ApplyConfiguration(new IssueConfiguration());
 
             DataSeeder.Seed(modelBuilder);
         }

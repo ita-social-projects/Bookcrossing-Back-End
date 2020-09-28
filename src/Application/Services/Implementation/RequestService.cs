@@ -243,9 +243,16 @@ namespace Application.Services.Implementation
             }
 
             var location = _userLocationRepository.GetAll();
-            if (parameters.Location != null)
+            if (parameters.Locations != null)
             {
-                location = location.Where(l => l.Location.Id == parameters.Location);
+                var wherePredicate = PredicateBuilder.New<UserRoom>();
+                foreach (var id in parameters.Locations)
+                {
+                    var tempId = id;
+                    wherePredicate = wherePredicate.Or(r => r.LocationId == tempId);
+                }
+
+                location = location.Where(wherePredicate);
             }
 
             var bookIds =
@@ -253,7 +260,7 @@ namespace Application.Services.Implementation
                 join g in genre on b.Id equals g.BookId
                 join la in lang on b.Language.Id equals la.Id
                 join a in author on b.Id equals a.BookId
-                join l in location on b.UserId equals l.Id
+                join l in location on b.User.UserRoomId equals l.Id
                 select b.Id;
             var query = _requestRepository.GetAll()
                 .Include(i => i.Book).ThenInclude(i => i.BookAuthor).ThenInclude(i => i.Author)
@@ -263,9 +270,7 @@ namespace Application.Services.Implementation
                 .Include(i => i.User).ThenInclude(i => i.UserRoom).ThenInclude(i => i.Location)
                 .Where(predicate).Where(x => bookIds.Contains(x.BookId));
 
-            var requests = await _paginationService.GetPageAsync<RequestDto, Request>(query, parameters);
-            var isEmpty = !requests.Page.Any();
-            return isEmpty ? null : requests;
+            return await _paginationService.GetPageAsync<RequestDto, Request>(query, parameters);
         }
 
         /// <inheritdoc />

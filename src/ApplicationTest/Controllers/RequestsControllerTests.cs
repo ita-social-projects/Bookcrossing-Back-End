@@ -230,19 +230,5 @@ namespace ApplicationTest.Controllers
             result.Should().BeOfType<ActionResult<PaginationDto<RequestDto>>>();
             result.Value.Page.Should().NotBeNull().And.NotContainNulls();
         }
-
-        [Test]
-        public async Task GetByUser_RequestsWereNotFound_ReturnsPaginatedDtoListOfRequestDto()
-        {
-            _requestServiceMock.Setup(m => m.GetAsync(
-                    It.IsAny<Expression<Func<Request, bool>>>(),
-                    It.IsAny<BookQueryParams>()))
-                .ReturnsAsync(value: null);
-
-            var result = await _requestController.GetByUser(It.IsAny<BookQueryParams>());
-
-            result.Result.Should().BeOfType<NotFoundResult>();
-            result.Value.Should().BeNull();
-        }
     }
 }

@@ -377,6 +377,9 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
+                    b.Property<string>("ISBN")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImagePath")
                         .HasColumnName("imagepath")
                         .HasColumnType("nvarchar(260)")
@@ -429,8 +432,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                      
-                            DateAdded = new DateTime(2020, 9, 8, 18, 30, 38, 516, DateTimeKind.Local).AddTicks(8995),
+                            DateAdded = new DateTime(2020, 9, 23, 22, 30, 2, 575, DateTimeKind.Local).AddTicks(4505),
                             LanguageId = 1,
                             Name = "Adventures of Junior",
                             Rating = 0.0,
@@ -540,6 +542,57 @@ namespace BookCrossingBackEnd.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.RDBMS.Entities.Issue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("name")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Issue");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "General"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Improvement suggestion"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Support needed"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Error found"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Book Exchange"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Others"
+                        });
+                });
+
             modelBuilder.Entity("Domain.RDBMS.Entities.Language", b =>
                 {
                     b.Property<int>("Id")
@@ -580,12 +633,17 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.Property<string>("HomeAdress")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsActive")
                         .HasColumnName("is_active")
                         .HasColumnType("bit");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnName("latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnName("longitude")
+                        .HasColumnType("float");
 
                     b.Property<string>("OfficeName")
                         .HasColumnName("office_name")
@@ -608,7 +666,47 @@ namespace BookCrossingBackEnd.Migrations
                             Id = 1,
                             City = "Lviv",
                             IsActive = true,
+                            Latitude = 49.826371600000002,
+                            Longitude = 23.944969700000001,
                             OfficeName = "SoftServe",
+                            Street = "Gorodoc'kogo"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.RDBMS.Entities.LocationHome", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LocationHome");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            City = "Lviv",
+                            IsActive = true,
+                            Latitude = 49.826371600000002,
+                            Longitude = 23.944969700000001,
                             Street = "Gorodoc'kogo"
                         });
                 });
@@ -640,12 +738,17 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("nvarchar(512)")
                         .HasMaxLength(512);
 
+                    b.Property<int?>("ReceiverUserId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
+
+                    b.HasIndex("ReceiverUserId");
 
                     b.HasIndex("UserId");
 
@@ -808,6 +911,53 @@ namespace BookCrossingBackEnd.Migrations
                     b.ToTable("Setting");
                 });
 
+            modelBuilder.Entity("Domain.RDBMS.Entities.SuggestionMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50)
+                        .HasDefaultValue("Unread");
+
+                    b.Property<string>("Summary")
+                        .HasColumnName("summary")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnName("text")
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
+                    b.Property<int>("UserId")
+                        .HasColumnName("user_id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SuggestionMessage");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            State = "Unread",
+                            Summary = "fix problem",
+                            Text = "There is problem with translation",
+                            UserId = 1
+                        });
+                });
+
             modelBuilder.Entity("Domain.RDBMS.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -851,6 +1001,10 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
+                    b.Property<int?>("LocationHomeId")
+                        .HasColumnName("home_location_id")
+                        .HasColumnType("int");
+
                     b.Property<string>("MiddleName")
                         .HasColumnName("middlename")
                         .HasColumnType("nvarchar(20)")
@@ -881,6 +1035,10 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationHomeId")
+                        .IsUnique()
+                        .HasFilter("[home_location_id] IS NOT NULL");
 
                     b.HasIndex("RoleId");
 
@@ -1050,6 +1208,10 @@ namespace BookCrossingBackEnd.Migrations
 
                     b.HasOne("Domain.RDBMS.Entities.User", null)
                         .WithMany()
+                        .HasForeignKey("ReceiverUserId");
+
+                    b.HasOne("Domain.RDBMS.Entities.User", null)
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1081,8 +1243,21 @@ namespace BookCrossingBackEnd.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.RDBMS.Entities.SuggestionMessage", b =>
+                {
+                    b.HasOne("Domain.RDBMS.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.RDBMS.Entities.User", b =>
                 {
+                    b.HasOne("Domain.RDBMS.Entities.LocationHome", "LocationHome")
+                        .WithOne("User")
+                        .HasForeignKey("Domain.RDBMS.Entities.User", "LocationHomeId");
+
                     b.HasOne("Domain.RDBMS.Entities.Role", "Role")
                         .WithMany("User")
                         .HasForeignKey("RoleId")

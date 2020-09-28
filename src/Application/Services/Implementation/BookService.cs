@@ -161,7 +161,26 @@ namespace Application.Services.Implementation
 
         public async Task<PaginationDto<BookGetDto>> GetAllAsync(BookQueryParams parameters)
         {
+
+
+            if (parameters.LocationFilterOn == true && 
+                (parameters.HomeLocations == null || parameters.HomeLocations.Length == 0) &&
+                (parameters.Locations == null || parameters.Locations.Length == 0))
+            {
+                return new PaginationDto<BookGetDto>()
+                {
+                    TotalCount = 0,
+                    Page = new List<BookGetDto>()
+                };
+            }
+
+
             var query = GetFilteredQuery(_bookRepository.GetAll(), parameters);
+            if (parameters.HomeLocations?.Length > 0)
+            {
+                var queryBooksAtHome = GetFilteredQuery(_bookRepository.GetAll(), parameters, false);
+                query = query.Union(queryBooksAtHome);
+            }
             if (parameters.SortableParams != null)
             {
                 query = query.OrderBy(parameters.SortableParams);
@@ -455,15 +474,37 @@ namespace Application.Services.Implementation
                 .ThenInclude(g => g.Genre);
         }
 
-        private IQueryable<Book> GetFilteredQuery(IQueryable<Book> query, BookQueryParams parameters)
+        private IQueryable<Book> GetFilteredQuery(IQueryable<Book> query, BookQueryParams parameters, bool byLocation = true)
         {
             if (parameters.ShowAvailable == true)
             {
                 query = query.Where(b => b.State == BookState.Available);
             }
-            if (parameters.Location != null)
+            if (byLocation && parameters.Locations != null)
             {
-                query = query.Where(x => x.User.UserRoom.LocationId == parameters.Location);
+                var predicate = PredicateBuilder.New<Book>();
+                foreach (var id in parameters.Locations)
+                {
+                    var tempId = id;
+                    predicate = predicate.Or(b => 
+                        b.User.UserRoom.LocationId == id && 
+                        (b.User.LocationHomeId == null || !b.User.LocationHome.IsActive)
+                    );
+                }
+                query = query.Where(predicate);
+            }
+            if (!byLocation && parameters.HomeLocations != null)
+            {
+                var predicate = PredicateBuilder.New<Book>();
+                foreach (var id in parameters.HomeLocations)
+                {
+                    var tempId = id;
+                    predicate = predicate.Or(b => 
+                        b.User.LocationHomeId == id &&
+                        b.User.LocationHome.IsActive
+                    );
+                }
+                query = query.Where(predicate);
             }
             if (parameters.SearchTerm != null)
             {
@@ -507,6 +548,18 @@ namespace Application.Services.Implementation
                 .ThenInclude(x => x.UserRoom)
                 .ThenInclude(x => x.Location)
                 .Include(x => x.Language);
+        }
+
+        public IEnumerable<MapLocationDto> GetBooksQuantityOnLocations()
+        {
+            return _bookRepository.GetAll()
+                .Include(b => b.User)
+                .ThenInclude(u => u.UserRoom)
+                .ThenInclude(r => r.Location)
+                .Where(b => b.User.UserRoom.Location.IsActive && b.User.LocationHomeId == null)
+                .AsEnumerable()
+                .GroupBy(b => b.User.UserRoom.Location)
+                .Select(l => new MapLocationDto(_mapper.Map<Location, LocationDto>(l.Key), l.Count()));
         }
     }
 }

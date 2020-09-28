@@ -18,6 +18,7 @@ namespace Infrastructure.RDBMS.Seeder
             Seed(builder.Entity<Genre>());
             Seed(builder.Entity<Language>());
             Seed(builder.Entity<Location>());
+            Seed(builder.Entity<LocationHome>());
             Seed(builder.Entity<UserRoom>());
             Seed(builder.Entity<Role>());
             Seed(builder.Entity<User>());
@@ -25,6 +26,43 @@ namespace Infrastructure.RDBMS.Seeder
             Seed(builder.Entity<BookGenre>());
             Seed(builder.Entity<BookAuthor>());
             Seed(builder.Entity<Aphorism>());
+            Seed(builder.Entity<Issue>());
+        }
+
+        private static void Seed(EntityTypeBuilder<Issue> entityTypeBuilder)
+        {
+            entityTypeBuilder.HasData(
+                new Genre
+                {
+                    Id = 1,
+                    Name = "General"
+                },
+                new Genre
+                {
+                    Id = 2,
+                    Name = "Improvement suggestion"
+                },
+                new Genre
+                {
+                    Id = 3,
+                    Name = "Support needed"
+                },
+                new Genre
+                {
+                    Id = 4,
+                    Name = "Error found"
+                },
+                new Genre
+                {
+                    Id = 5,
+                    Name = "Book Exchange"
+                },
+                new Genre
+                {
+                    Id = 6,
+                    Name = "Others"
+                }
+            );
         }
 
         private static void Seed(EntityTypeBuilder<Aphorism> builder)
@@ -318,6 +356,22 @@ namespace Infrastructure.RDBMS.Seeder
                     City = "Lviv",
                     Street = "Gorodoc'kogo",
                     OfficeName = "SoftServe",
+                    Latitude = 49.8263716,
+                    Longitude = 23.9449697,
+                    IsActive = true
+                }
+            );
+        }
+        private static void Seed(EntityTypeBuilder<LocationHome> builder)
+        {
+            builder.HasData(
+                new LocationHome
+                {
+                    Id = 1,
+                    City = "Lviv",
+                    Street = "Gorodoc'kogo",
+                    Latitude = 49.8263716,
+                    Longitude = 23.9449697,
                     IsActive = true
                 }
             );
@@ -421,6 +475,19 @@ namespace Infrastructure.RDBMS.Seeder
                 {
                     BookId = 1,
                     AuthorId = 1
+                }
+            );
+        }
+
+        private static void Seed(EntityTypeBuilder<SuggestionMessage> builder)
+        {
+            builder.HasData(
+                new SuggestionMessage
+                {
+                    Id = 1,
+                    Summary = "fix problem",
+                    Text = "There is problem with translation",
+                    UserId = 1
                 }
             );
         }

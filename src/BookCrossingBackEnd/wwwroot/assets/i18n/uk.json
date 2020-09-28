@@ -41,6 +41,34 @@
     "database-links": "На цей запис є посилання з інших таблиць"
   },
   "components": {
+    "profile": {
+      "home": {
+        "firstName": "Ім'я",
+        "lastName": "Прізвище",
+        "email": "Електронна скринька",
+        "bithdate": "День народження",
+        "location": "Локація офісу",
+        "homeLocation": "Домашня локація",
+        "reEmail": "Отримувати листи",
+        "noHomeLocationMessage": "Немає домашньої локації. Перейдіть до редагування профілю, щоб її додати."
+      },
+      "edit": {
+        "pickBirthdate": "Виберіть дату народження",
+        "noHomeLocationEditMessage": "Виберіть домашню локацію",
+        "roomNumber": "Номер кімнати",
+        "activeLocation": "Активна локація",
+        "usehomelocation": "Дім",
+        "useofficelocation": "Офіс",
+        "locationUpdate": "Домашня адреса успішно оновлена.",
+        "homeLocationUpdate": "Тепер дім - це ваша активна локація.",
+        "officeLocationUpdate": "Тепер офіс - це ваша активна локація.",
+        "cancelDialog": "Ви впевнені, що хочете вийти із редагування?"
+      },
+      "picker": {
+        "pick": "Обрати",
+        "close": "Закрити"
+      }
+    },
     "searchBar": {
       "searchPlaceholder": "Введіть назву книги або автора"
     },
@@ -275,11 +303,70 @@
         "found-number": "Кількість знайдених користувачів: {{value}}",
         "first-name": "Ім'я",
         "last-name": "Прізвище",
-        "register-date": "Дата реєстрації"
+        "register-date": "Дата реєстрації",
+        "is-active": "Є активний",
+        "show-deleted": "З видаленими"
+      },
+      "user-view": {
+        "user-details": "Інформація про користувача",
+        "user-deleted": "Користувача видалено!",
+        "first-name": "Ім'я",
+        "last-name": "Прізвище",
+        "email": "Електронна пошта",
+        "birthday": "День народження",
+        "location": "Локація",
+        "room-number": "Номер кімнати",
+        "user-books": "Книги користувача",
+        "name": "Назва",
+        "state": "Стан",
+        "actions": "Дії",
+        "take-ownership": "Присвоїти",
+        "deactivate": "Деактивувати",
+        "activate": "Активувати",
+        "cannot-delete": "Ви не можете видалити користувача з активними книгами!",
+        "delete-user": "Видалити користувача",
+        "recover": "Відновити",
+        "confirmation": {
+          "delete": "Ви хочете видалити {{firstName}} {{lastName}} зі списку користувачів?",
+          "recover": "Ви хочете відновити {{firstName}} {{lastName}}?",
+          "take-ownership": "Ви хочете отримати право власності на цю книгу?",
+          "activate": "Ви хочете активувати книгу?",
+          "deactivate": "Ви хочете деактивувати книгу?"
+        }
       },
       "timespans": {
         "timespan": "Таймспан",
         "timespans": "Таймспани"
+      },
+      "issues": {
+        "issue": "Проблема",
+        "issues": "Проблеми",
+        "name": "Назва",
+        "add-success": "Новий тип проблеми успішно створений!",
+        "update-success": "Проблема успішно відредагована!",
+        "delete-success": "Проблема успішно видалена!"
+      },
+      "issues-form": {
+        "edit-title": "Редагування проблеми",
+        "edit-button": "Відредагувати",
+        "add-title": "Додати тип проблеми",
+        "add-button": "Додати"
+      },
+      "suggestion-message": {
+        "messages": "Повідомлення",
+        "selectAll": "Вибрати всі",
+        "deselectAll": "Скасувати вибір",
+        "delete": "Видалити",
+        "reply": "Відповісти",
+        "read": "Прочитане",
+        "unread": "Непрочитане",
+        "decline": "Відхилено",
+        "user": "Користувач",
+        "summary": "Тема",
+        "status": "Статус",
+        "delete-success": "Повідомлення видалено успішно",
+        "status-changed": "Статус змінено успішно",
+        "message-sent-success": "Повідомлення відправлено успішно"
       }
     },
     "comment": {

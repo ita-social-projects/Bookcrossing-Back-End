@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookCrossingBackEnd.Migrations
 {
     [DbContext(typeof(BookCrossingContext))]
-    [Migration("20200905200729_Add_HomeAdress_ToLocation_Entity")]
-    partial class Add_HomeAdress_ToLocation_Entity
+    [Migration("20200916174158_AddIssueTable")]
+    partial class AddIssueTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -431,7 +431,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            DateAdded = new DateTime(2020, 9, 5, 23, 7, 28, 127, DateTimeKind.Local).AddTicks(7668),
+                            DateAdded = new DateTime(2020, 9, 16, 20, 41, 55, 969, DateTimeKind.Local).AddTicks(6790),
                             LanguageId = 1,
                             Name = "Adventures of Junior",
                             Rating = 0.0,
@@ -514,6 +514,57 @@ namespace BookCrossingBackEnd.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.RDBMS.Entities.Issue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("name")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Issue");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "General"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Improvement suggestion"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Support needed"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Error found"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Book Exchange"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Others"
+                        });
+                });
+
             modelBuilder.Entity("Domain.RDBMS.Entities.Language", b =>
                 {
                     b.Property<int>("Id")
@@ -553,9 +604,6 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnName("city")
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
-
-                    b.Property<string>("HomeAdress")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnName("is_active")
