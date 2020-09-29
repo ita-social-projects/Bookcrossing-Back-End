@@ -405,7 +405,7 @@ namespace Application.Services.Implementation
             await _emailSenderService.SendForBookDeactivatedAsync(emailMessageForBookActivated);
         }
 
-        public async void SendMailForOwnership(Book book, User user, string emailMessage)
+        public async Task SendMailForOwnership(Book book, User user, string emailMessage)
         {
             var emailMessageForBookActivated = new RequestMessage()
             {
