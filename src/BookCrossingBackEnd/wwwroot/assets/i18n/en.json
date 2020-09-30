@@ -72,6 +72,12 @@
     "searchBar": {
       "searchPlaceholder": "Enter Book Title or Author"
     },
+    "contant-us": {
+      "contacts": "Contacts",
+      "summary": "Summary",
+      "search": "Search",
+      "text-message": "We appreciate your time to describe this matter"
+    },
     "book-edit": {
       "editbook": "Edit book",
       "booktitle": "Book title:",
@@ -342,6 +348,7 @@
         "issue": "Issue",
         "issues": "Issues",
         "name": "Name",
+        "translation": "Name in Ukrainian",
         "add-success": "New issue was created successfully!",
         "update-success": "Issue was edited successfully!",
         "delete-success": "Issue was deleted successfully!"
