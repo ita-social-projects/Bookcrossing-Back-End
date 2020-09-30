@@ -16,7 +16,7 @@ namespace Application.Services.Interfaces
         /// Retrive all locations in db
         /// </summary>
         /// <returns>Colletion of home locations DTOs from db</returns>
-        IEnumerable<LocationHomeDto> GetAll();
+        Task<IEnumerable<LocationHomeDto>> GetAll();
         /// <summary>
         /// Retrieve location by id
         /// </summary>
