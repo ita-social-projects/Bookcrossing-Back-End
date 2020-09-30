@@ -29,12 +29,13 @@ namespace Application.Services.Implementation
             _bookRepository = bookRepository;
         }
 
-        public IEnumerable<LocationHomeDto> GetAll()
+        public async Task<IEnumerable<LocationHomeDto>> GetAll()
         {
-            return _mapper.Map<IEnumerable<LocationHomeDto>>(_locationHomeRepository
-                                                .GetAll()
-                                                .OrderBy(x => x.City)
-                                                );
+            return  _mapper.Map<IEnumerable<LocationHomeDto>>(await _locationHomeRepository
+                                                                    .GetAll()
+                                                                    .OrderBy(x => x.City)
+                                                                    .ToArrayAsync()
+                                                                    );
         }
 
         public async Task<LocationHomeDto> GetById(int Id)
