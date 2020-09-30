@@ -32,6 +32,7 @@ namespace ApplicationTest.Services
         private IEnumerable<LocationHome> _locations;
         private IEnumerable<User> _users;
         private LocationHome _location;
+        private int _locationId;
         private LocationHomeDto _locationDto;
         private LocationHomePostDto _locationPostDto;
         #endregion
@@ -60,6 +61,7 @@ namespace ApplicationTest.Services
             _users = SetupUsers;
 
             _location = _locations.First();
+            _locationId = _location.Id;
 
             _locationDto = _mapper.Map<LocationHomeDto>(_location);
 
@@ -149,45 +151,33 @@ namespace ApplicationTest.Services
         [Test]
         public async Task GetLocationById_LocationExists_ReturnsLocationDto()
         {
-            _locationRepositoryMock.Setup(m => m.FindByIdAsync(_location.Id)).ReturnsAsync(_location);
+            _locationRepositoryMock.Setup(m => m.FindByIdAsync(_locationId)).ReturnsAsync(_location);
 
-            var locationResult = await _locationService.GetById(_location.Id);
+            var locationResult = await _locationService.GetById(_locationId);
 
-            locationResult.Should().BeEquivalentTo(_mapper.Map<LocationHomeDto>(_location));
+            locationResult.Should().BeEquivalentTo(_locationDto);
         }
 
-        [Test]
-        public async Task GetAll_NoParametersPassed_ReturnssIEnumerableOfLocationHomeDtos()
-        {
-            _locationsQueryableMock = _locations.AsQueryable().BuildMock();
-            _locationRepositoryMock.Setup(m => m.GetAll()).Returns(_locationsQueryableMock.Object);
-
-            var locationResult = await _locationService.GetAll();
-
-            locationResult.Should().BeEquivalentTo(_mapper.Map<IEnumerable<LocationHomeDto>>(_locations));
-        }
 
         #region Remove
         [Test]
         public async Task RemoveLocation_LocationExists_VerifyRemoval()
         {
-            var location = _locations.Last();
-            _locationRepositoryMock.Setup(m => m.FindByIdAsync(location.Id)).ReturnsAsync(location);
-            _locationRepositoryMock.Setup(m => m.Remove(location));
+            _locationRepositoryMock.Setup(m => m.FindByIdAsync(_locationId)).ReturnsAsync(_location);
+            _locationRepositoryMock.Setup(m => m.Remove(_location));
 
-            var result = await _locationService.Remove(location.Id);
+            var result = await _locationService.Remove(_locationId);
 
-            _locationRepositoryMock.Verify(obj => obj.Remove(location), Times.Once);
+            _locationRepositoryMock.Verify(obj => obj.Remove(_location), Times.Once);
         }
 
         [Test]
         public async Task RemoveLocation_LocationExists_VerifySaveChanges()
         {
-            var location = _locations.Last();
-            _locationRepositoryMock.Setup(m => m.FindByIdAsync(location.Id)).ReturnsAsync(location);
-            _locationRepositoryMock.Setup(m => m.Remove(location));
+            _locationRepositoryMock.Setup(m => m.FindByIdAsync(_locationId)).ReturnsAsync(_location);
+            _locationRepositoryMock.Setup(m => m.Remove(_location));
 
-            var result = await _locationService.Remove(location.Id);
+            var result = await _locationService.Remove(_locationId);
 
             _locationRepositoryMock.Verify(obj => obj.SaveChangesAsync(), Times.Once);
         }
@@ -195,22 +185,21 @@ namespace ApplicationTest.Services
         [Test]
         public async Task RemoveLocation_LocationExists_ReturnsDto()
         {
-            var location = _locations.Last();
-            _locationRepositoryMock.Setup(m => m.FindByIdAsync(location.Id)).ReturnsAsync(location);
-            _locationRepositoryMock.Setup(m => m.Remove(location));
+            _locationRepositoryMock.Setup(m => m.FindByIdAsync(_locationId)).ReturnsAsync(_location);
+            _locationRepositoryMock.Setup(m => m.Remove(_location));
 
-            var result = await _locationService.Remove(location.Id);
+            var result = await _locationService.Remove(_locationId);
 
-            result.Should().BeEquivalentTo(_mapper.Map<LocationHomeDto>(location));
+            result.Should().BeEquivalentTo(_locationDto);
         }
 
         [Test]
         public async Task RemoveLocation_LocationNotExist_ReturnsNull()
         {
-            _locationRepositoryMock.Setup(s => s.FindByIdAsync(_locations.First().Id))
+            _locationRepositoryMock.Setup(s => s.FindByIdAsync(_location))
                 .ReturnsAsync(value: null);
 
-            var locationResult = await _locationService.Remove(_locations.First().Id);
+            var locationResult = await _locationService.Remove(_locationId);
 
             locationResult.Should().BeNull();
         }
@@ -231,25 +220,55 @@ namespace ApplicationTest.Services
         [TestFixture]
         public class LocationHomeServiceAddTests: LocationHomeServiceTests
         {
+            private Mock<IMapper> _mapperMock;
+            private int _userId;
+            private User _user;
+
             [SetUp]
             public void SetUpAdd()
             {
                 _usersRepositoryMock.Reset();
+                _locationRepositoryMock.Reset();
             }
+
+            private void SetUpMapper()
+            {
+                _mapperMock = new Mock<IMapper>();
+                _mapperMock.Setup(m => m.Map<LocationHomeDto>(_location)).Returns(_locationDto);
+                _mapperMock.Setup(m => m.Map<LocationHome>(_locationDto)).Returns(_location);
+                _mapperMock.Setup(m => m.Map<LocationHomePostDto>(_location)).Returns(_locationPostDto);
+                _mapperMock.Setup(m => m.Map<LocationHome>(_locationPostDto)).Returns(_location);
+            }
+
+            [OneTimeSetUp]
+            public void OneTimeSetupAdd()
+            {
+                _user = _users.First();
+                _userId = _user.Id;
+
+                SetUpMapper();
+
+                _locationService = new LocationHomeService(
+                _locationRepositoryMock.Object,
+                _mapperMock.Object,
+                _usersRepositoryMock.Object);
+            }
+
             [Test]
             public async Task Add_UserExists_VerifyLocationUpdate()
             {
-                _usersRepositoryMock.Setup(m => m.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(_users.First());
+                
+                _usersRepositoryMock.Setup(m => m.FindByIdAsync(_userId)).ReturnsAsync(_user);
 
                 await _locationService.Update(_locationPostDto);
 
-                _locationRepositoryMock.Verify(obj => obj.Update(It.IsAny<LocationHome>()), Times.Once);
+                _locationRepositoryMock.Verify(obj => obj.Update(_location), Times.Once);
             }
 
             [Test]
             public async Task Add_UserExists_VerifySaveChangesAsync()
             {
-                _usersRepositoryMock.Setup(m => m.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(_users.First());
+                _usersRepositoryMock.Setup(m => m.FindByIdAsync(_userId)).ReturnsAsync(_user);
 
                 await _locationService.Add(_locationPostDto);
 
@@ -259,21 +278,23 @@ namespace ApplicationTest.Services
             [Test]
             public async Task Add_UserExists_VerifyUserUpdate()
             {
-                _usersRepositoryMock.Setup(m => m.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(_users.First());
-                _usersRepositoryMock.Setup(m => m.Update(It.IsAny<User>()));
+                _usersRepositoryMock.Setup(m => m.FindByIdAsync(_userId)).ReturnsAsync(_user);
+
+                _usersRepositoryMock.Setup(m => m.Update(_user));
 
                 await _locationService.Add(_locationPostDto);
 
-                _usersRepositoryMock.Verify(obj => obj.Update(It.IsAny<User>()), Times.Once);
+                _usersRepositoryMock.Verify(obj => obj.Update(_user), Times.Once);
             }
 
             [Test]
             public async Task Add_UserExists_ReturnsZero()
             {
-                _usersRepositoryMock.Setup(m => m.FindByIdAsync(It.IsAny<int>())).ReturnsAsync(_users.First());
-                var result = await _locationService.Add(_locationPostDto);
+                _usersRepositoryMock.Setup(m => m.FindByIdAsync(_userId)).ReturnsAsync(_user);
 
-                result.Should().Be(1);
+                var result = await _locationService.Add(_locationPostDto);
+                
+                result.Should().Be(_userId);
             }
 
             [Test]
@@ -289,21 +310,14 @@ namespace ApplicationTest.Services
             [Test]
             public async Task Add_UserDoesNotExists_ReturnsZero()
             {
+                int expectedId = 0;
                 _usersRepositoryMock.Setup(m => m.FindByIdAsync(_locationPostDto.UserId)).ReturnsAsync(value: null);
 
                 var result = await _locationService.Add(_locationPostDto);
 
-                result.Should().Be(0);
+                result.Should().Be(expectedId);
             }
         }
         
-
-        private bool ListsHasSameElements(IEnumerable<LocationHome> obj1, IEnumerable<LocationHome> obj2)
-        {
-            var tempList1 = obj1.Except(obj2);
-            var tempList2 = obj2.Except(obj1);
-
-            return !(tempList1.Any() || tempList2.Any());
-        }
     }
 }
