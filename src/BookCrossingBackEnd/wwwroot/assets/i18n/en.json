@@ -72,12 +72,6 @@
     "searchBar": {
       "searchPlaceholder": "Enter Book Title or Author"
     },
-    "contant-us": {
-      "contacts": "Contacts",
-      "summary": "Summary",
-      "search": "Search",
-      "text-message": "We appreciate your time to describe this matter"
-    },
     "book-edit": {
       "editbook": "Edit book",
       "booktitle": "Book title:",
@@ -375,6 +369,12 @@
         "status-changed": "Status has been changed successfully",
         "message-sent-success": "Message has been sent successfully"
       }
+    },
+    "contact-us": {
+      "contacts": "Contacts",
+      "summary": "Summary",
+      "search": "Search",
+      "textMessage": "We appreciate your time to describe this matter"
     },
     "comment": {
       "commentplaceholder": "Write a comment up to 500 characters",
