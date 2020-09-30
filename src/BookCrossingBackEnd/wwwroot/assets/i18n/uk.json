@@ -70,7 +70,7 @@
       }
     },
     "searchBar": {
-      "searchPlaceholder": "Назва/Автор/ISBN"
+      "searchPlaceholder": "Введіть назву книги або автора"
     },
     "book-edit": {
       "editbook": "Редагувати книгу",
