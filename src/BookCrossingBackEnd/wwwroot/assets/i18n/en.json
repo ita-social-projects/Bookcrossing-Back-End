@@ -381,6 +381,14 @@
       "editplaceholder": "Edit your comment...",
       "viewall": "View all replies",
       "hideall": "Hide all replies"
+    },
+    "search-map": {
+      "search": "Search books nearby",
+      "marker": "Marker",
+      "home": "Home",
+      "current": "Current",
+      "set": "Set",
+      "radius": "Radius (km)"
     }
   }
 }
