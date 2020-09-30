@@ -161,7 +161,7 @@ namespace Application.Services.Implementation
             {
                 await _wishListService.NotifyAboutAvailableBookAsync(book.Id);
             }
-            return isDatabaseUpdated;
+            return true;
         }
 
         public async Task<PaginationDto<BookGetDto>> GetAllAsync(BookQueryParams parameters)
