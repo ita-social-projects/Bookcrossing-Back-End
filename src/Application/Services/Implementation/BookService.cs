@@ -161,9 +161,7 @@ namespace Application.Services.Implementation
 
         public async Task<PaginationDto<BookGetDto>> GetAllAsync(BookQueryParams parameters)
         {
-
-
-            if (parameters.LocationFilterOn == true && 
+            if (parameters.LocationFilterOn == true &&
                 (parameters.HomeLocations == null || parameters.HomeLocations.Length == 0) &&
                 (parameters.Locations == null || parameters.Locations.Length == 0))
             {
@@ -173,7 +171,6 @@ namespace Application.Services.Implementation
                     Page = new List<BookGetDto>()
                 };
             }
-
 
             var query = GetFilteredQuery(_bookRepository.GetAll(), parameters);
             if (parameters.HomeLocations?.Length > 0)
@@ -513,7 +510,7 @@ namespace Application.Services.Implementation
                 {
                     query = query.Where(
                         x =>
-                            x.ISBN.Contains(parameters.SearchTerm) ||
+                            (x.ISBN != null && x.ISBN.Contains(parameters.SearchTerm)) ||
                             x.Name.Contains(parameters.SearchTerm) || 
                             x.BookAuthor.Any(
                                 a => 
@@ -526,7 +523,7 @@ namespace Application.Services.Implementation
                 {
                     query = query.Where(
                         x =>
-                            x.ISBN.Contains(parameters.SearchTerm) ||
+                            (x.ISBN != null && x.ISBN.Contains(parameters.SearchTerm)) ||
                             x.Name.Contains(parameters.SearchTerm) || 
                             x.BookAuthor.Any(
                                 a => 
