@@ -203,7 +203,7 @@ namespace Application.Services.Implementation
 
         public async Task RecoverDeletedUser(int userId)
         {
-            var user = await _userRepository.FindByCondition(ar => ar.IsDeleted);
+            var user = await _userRepository.FindByIdAsync(userId);
             if (user == null)
             {
                 throw new ObjectNotFoundException($"There is no user with id = {userId} in database");
