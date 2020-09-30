@@ -31,10 +31,11 @@ namespace BookCrossingBackEnd.Controllers
         }
 
         // GET: api/HomeLocation
+        //IEnum
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LocationHomeDto>>> GetAllLocations()
+        public async Task<ActionResult<List<LocationHomeDto>>> GetAllLocations()
         {
-            return Ok(await Task.Run(() => _locationService.GetAll()));
+            return Ok(await _locationService.GetAll());
         }
 
         // PUT: api/LocationHome

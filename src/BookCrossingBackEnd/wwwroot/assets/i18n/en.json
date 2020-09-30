@@ -4,7 +4,6 @@
     "yes": "Yes",
     "no": "No",
     "cancel": "Cancel",
-    "close": "Close",
     "add": "Add",
     "edit": "Edit",
     "editing": "Edit",
@@ -42,12 +41,6 @@
     "database-links": "Other tables have links to this record"
   },
   "components": {
-    "locationpopup": {
-      "headerMessage": "Please specify your location",
-      "headerMessageUnder": "The action is required for Book's registration and Book's requesting",
-      "chooseone": "Choose one",
-      "or": "or"
-    },
     "profile": {
       "home": {
         "firstName": "First name",
@@ -388,6 +381,14 @@
       "editplaceholder": "Edit your comment...",
       "viewall": "View all replies",
       "hideall": "Hide all replies"
+    },
+    "search-map": {
+      "search": "Search books nearby",
+      "marker": "Marker",
+      "home": "Home",
+      "current": "Current",
+      "set": "Set",
+      "radius": "Radius (km)"
     }
   }
 }
