@@ -133,6 +133,11 @@ namespace Application.Services.Implementation
                 }
                 book.ImagePath = imagePath;
             }
+            if (bookDto.UserId != 0 && bookDto.UserId != oldBook.UserId ) 
+            {
+                oldBook.UserId = bookDto.UserId;
+                _bookRepository.Update(oldBook);
+            }
             await _bookRepository.Update(book, bookDto.FieldMasks);
             if (bookDto.UserId != oldBook.UserId)
             {
@@ -161,9 +166,7 @@ namespace Application.Services.Implementation
 
         public async Task<PaginationDto<BookGetDto>> GetAllAsync(BookQueryParams parameters)
         {
-
-
-            if (parameters.LocationFilterOn == true && 
+            if (parameters.LocationFilterOn == true &&
                 (parameters.HomeLocations == null || parameters.HomeLocations.Length == 0) &&
                 (parameters.Locations == null || parameters.Locations.Length == 0))
             {
@@ -173,7 +176,6 @@ namespace Application.Services.Implementation
                     Page = new List<BookGetDto>()
                 };
             }
-
 
             var query = GetFilteredQuery(_bookRepository.GetAll(), parameters);
             if (parameters.HomeLocations?.Length > 0)
@@ -511,11 +513,29 @@ namespace Application.Services.Implementation
                 var term = parameters.SearchTerm.Split(" ");
                 if (term.Length == 1)
                 {
-                    query = query.Where(x => x.Name.Contains(parameters.SearchTerm) || x.BookAuthor.Any(a => a.Author.LastName.Contains(term[term.Length - 1]) || a.Author.FirstName.Contains(term[0])));
+                    query = query.Where(
+                        x =>
+                            (x.ISBN != null && x.ISBN.Contains(parameters.SearchTerm)) ||
+                            x.Name.Contains(parameters.SearchTerm) || 
+                            x.BookAuthor.Any(
+                                a => 
+                                    a.Author.LastName.Contains(term[term.Length - 1]) || 
+                                    a.Author.FirstName.Contains(term[0])
+                            )
+                    );
                 }
                 else
                 {
-                    query = query.Where(x => x.Name.Contains(parameters.SearchTerm) || x.BookAuthor.Any(a => a.Author.LastName.Contains(term[term.Length - 1]) && a.Author.FirstName.Contains(term[0])));
+                    query = query.Where(
+                        x =>
+                            (x.ISBN != null && x.ISBN.Contains(parameters.SearchTerm)) ||
+                            x.Name.Contains(parameters.SearchTerm) || 
+                            x.BookAuthor.Any(
+                                a => 
+                                    a.Author.LastName.Contains(term[term.Length - 1]) && 
+                                    a.Author.FirstName.Contains(term[0])
+                            )
+                    );
                 }
             }
             if (parameters.Genres != null)
