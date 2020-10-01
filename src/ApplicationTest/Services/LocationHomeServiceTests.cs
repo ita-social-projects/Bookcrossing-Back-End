@@ -27,7 +27,6 @@ namespace ApplicationTest.Services
         private Mock<IRepository<User>> _usersRepositoryMock;
         private Mock<IRepository<Book>> _bookRepositoryMock;
         private Mock<IQueryable<LocationHome>> _locationsQueryableMock;
-        private Mock<IRepository<Book>> _bookRepositoryMock;
 
         private IMapper _mapper;
         private IEnumerable<LocationHome> _locations;
@@ -252,7 +251,8 @@ namespace ApplicationTest.Services
                 _locationService = new LocationHomeService(
                 _locationRepositoryMock.Object,
                 _mapperMock.Object,
-                _usersRepositoryMock.Object);
+                _usersRepositoryMock.Object,
+                _bookRepositoryMock.Object);
             }
 
             [Test]
