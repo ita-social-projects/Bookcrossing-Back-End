@@ -4,6 +4,7 @@
     "yes": "Yes",
     "no": "No",
     "cancel": "Cancel",
+    "close": "Close",
     "add": "Add",
     "edit": "Edit",
     "editing": "Edit",
@@ -41,6 +42,12 @@
     "database-links": "Other tables have links to this record"
   },
   "components": {
+    "locationpopup": {
+      "headerMessage": "Please specify your location",
+      "headerMessageUnder": "The action is required for Book's registration and Book's requesting",
+      "chooseone": "Choose one",
+      "or": "or"
+    },
     "profile": {
       "home": {
         "firstName": "First name",
