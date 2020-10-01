@@ -542,6 +542,57 @@ namespace BookCrossingBackEnd.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.RDBMS.Entities.Issue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("name")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Issue");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "General"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Improvement suggestion"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Support needed"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Error found"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Book Exchange"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Others"
+                        });
+                });
+
             modelBuilder.Entity("Domain.RDBMS.Entities.Language", b =>
                 {
                     b.Property<int>("Id")

@@ -1,6 +1,6 @@
 ﻿using Application.Dto;
 using AutoMapper;
-using RdbmsEntities = Domain.RDBMS.Entities;
+using Domain.RDBMS.Entities;
 
 namespace Application.MapperProfilers
 {
@@ -8,9 +8,9 @@ namespace Application.MapperProfilers
     {
         public LocationHomeProfile()
         {
-            CreateMap<LocationHomeDto, RdbmsEntities.LocationHome>().ReverseMap();
+            CreateMap<LocationHomeDto, LocationHome>().ReverseMap();
 
-            CreateMap<LocationHomePostDto, RdbmsEntities.LocationHome>().ReverseMap();
+            CreateMap<LocationHomePostDto, LocationHome>().ReverseMap();
         }
     }
 }

@@ -53,6 +53,7 @@ namespace BookCrossingBackEnd.ServiceExtension
             services.AddScoped<ISuggestionMessageService, SuggestionMessageService>();
             services.AddScoped<ISettingsService, SettingsService>();
             services.AddScoped<IStatisticsService, StatisticsService>();
+            services.AddScoped<IIssueService, IssueService>();
         }
 
         public static void AddNotifications(this IServiceCollection services)
@@ -173,6 +174,7 @@ namespace BookCrossingBackEnd.ServiceExtension
                 mc.AddProfile(new NotificationProfile());
                 mc.AddProfile(new Application.MapperProfilers.SuggestionMessageProfile());
                 mc.AddProfile(new SettingProfile());
+                mc.AddProfile(new IssueProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

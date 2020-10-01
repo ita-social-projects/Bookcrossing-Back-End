@@ -111,7 +111,7 @@ namespace BookCrossingBackEnd.Controllers
 
         [HttpPut]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RecoverUser([FromRoute] int id)
+        public async Task<IActionResult> RecoverUser([FromBody] int id)
         {
             _logger.LogInformation("Recover user {id}", id);
             await _userService.RecoverDeletedUser(id);

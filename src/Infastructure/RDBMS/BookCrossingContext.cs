@@ -31,6 +31,7 @@ namespace Infrastructure.RDBMS
         public DbSet<Aphorism> Aphorisms { get; set; }
         public DbSet<Notification> Notification { get; set; }
         public DbSet<Setting> Setting { get; set; }
+        public DbSet<Issue> Issue { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -61,6 +62,7 @@ namespace Infrastructure.RDBMS
             modelBuilder.ApplyConfiguration(new NotificationConfiguration());
             modelBuilder.ApplyConfiguration(new SuggestionMessageConfiguration());
             modelBuilder.ApplyConfiguration(new SettingConfiguration());
+            modelBuilder.ApplyConfiguration(new IssueConfiguration());
 
             DataSeeder.Seed(modelBuilder);
         }

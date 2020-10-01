@@ -1,6 +1,6 @@
-﻿using Application.Dto;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Dto;
 
 namespace Application.Services.Interfaces
 {
@@ -35,5 +35,7 @@ namespace Application.Services.Interfaces
         /// <param name="locationHomeDto">instance of location</param>
         /// <returns></returns>
         Task Update(LocationHomeDto locationHomeDto);
+
+        IEnumerable<MapHomeLocationDto> GetBooksQuantityOnHomeLocations();
     }
 }
