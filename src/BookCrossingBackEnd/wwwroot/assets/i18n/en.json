@@ -71,7 +71,7 @@
       }
     },
     "searchBar": {
-      "searchPlaceholder": "Enter Book Title or Author"
+      "searchPlaceholder": "Title/Author/ISBN"
     },
     "book-edit": {
       "editbook": "Edit book",
