@@ -152,7 +152,8 @@
     },
     "signIn": {
       "forgot-password": "Забули пароль?"
-    }
+    },
+
     "book": {
       "name": "Назва книги",
       "authors": "Автори",
