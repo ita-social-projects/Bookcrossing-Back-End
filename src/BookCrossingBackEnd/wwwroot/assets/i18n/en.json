@@ -349,6 +349,7 @@
         "issue": "Issue",
         "issues": "Issues",
         "name": "Name",
+        "translation": "Name in Ukrainian",
         "add-success": "New issue was created successfully!",
         "update-success": "Issue was edited successfully!",
         "delete-success": "Issue was deleted successfully!"
@@ -375,6 +376,12 @@
         "status-changed": "Status has been changed successfully",
         "message-sent-success": "Message has been sent successfully"
       }
+    },
+    "contact-us": {
+      "contacts": "Contacts",
+      "summary": "Summary",
+      "search": "Search",
+      "textMessage": "We appreciate your time to describe this matter"
     },
     "comment": {
       "commentplaceholder": "Write a comment up to 500 characters",

@@ -32,35 +32,42 @@ namespace Infrastructure.RDBMS.Seeder
         private static void Seed(EntityTypeBuilder<Issue> entityTypeBuilder)
         {
             entityTypeBuilder.HasData(
-                new Genre
+                new Issue
                 {
                     Id = 1,
-                    Name = "General"
+                    Name = "General",
+                    NameUk = "Загальне"
                 },
-                new Genre
+                new Issue
                 {
                     Id = 2,
-                    Name = "Improvement suggestion"
+                    Name = "Improvement suggestion",
+                    NameUk = "Пропозиція щодо вдосконалення"
+
                 },
-                new Genre
+                new Issue
                 {
                     Id = 3,
-                    Name = "Support needed"
+                    Name = "Support needed",
+                    NameUk = "Потрібна підтримка"
                 },
-                new Genre
+                new Issue
                 {
                     Id = 4,
-                    Name = "Error found"
+                    Name = "Error found",
+                    NameUk = "Знайдено помилку"
                 },
-                new Genre
+                new Issue
                 {
                     Id = 5,
-                    Name = "Book Exchange"
+                    Name = "Book Exchange",
+                    NameUk = "Обмін книгами"
                 },
-                new Genre
+                new Issue
                 {
                     Id = 6,
-                    Name = "Others"
+                    Name = "Others",
+                    NameUk = "Інше"
                 }
             );
         }

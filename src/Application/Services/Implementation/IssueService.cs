@@ -57,9 +57,9 @@ namespace Application.Services.Implementation
             return affectedRows > 0;
         }
 
-        public async Task<IEnumerable<IssueDto>> GetAll()
+        public Task<IEnumerable<IssueDto>> GetAll()
         {
-            return _mapper.Map<IEnumerable<IssueDto>>(_issueRepository.GetAll());
+            return Task.Run(() => _mapper.Map<IEnumerable<IssueDto>>(_issueRepository.GetAll()));
         }
 
         public async Task<PaginationDto<IssueDto>> GetAll(FullPaginationQueryParams fullPaginationQuery)

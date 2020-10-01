@@ -98,6 +98,8 @@ namespace ApplicationTest.Services
 
         #region Post
 
+        //mock mapper to return concrete instancw of dto
+        //or check by id to not mock mapper
         [Test]
         public async Task AddIssue_IssueIsValid_Returns_IssueDto()
         {
@@ -113,6 +115,7 @@ namespace ApplicationTest.Services
 
         #region Delete
 
+        //Make new test for verifying and for true check
         [Test]
         public async Task RemoveIssue_IssueExists_ReturnsTrue()
         {
@@ -185,6 +188,7 @@ namespace ApplicationTest.Services
 
             var issueResult = await _issueService.GetAll();
 
+            //make expected or mock mapper for concrete instance
             issueResult.Should().BeEquivalentTo(_mapper.Map<IEnumerable<IssueDto>>(localIssues));
         }
 
