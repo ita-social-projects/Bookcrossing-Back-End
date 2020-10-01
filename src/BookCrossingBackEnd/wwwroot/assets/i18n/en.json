@@ -1,4 +1,4 @@
-{
+﻿{
   "common": {
     "language": "Change language",
     "yes": "Yes",
@@ -25,6 +25,7 @@
     "statistics": "Statistics",
     "manage": "Management",
     "logOut": "Log Out",
+    "contactUs": "Contact us",
     "languages": {
       "gb": "English",
       "ua": "Ukrainian"
@@ -74,10 +75,12 @@
     },
     "book-edit": {
       "editbook": "Edit book",
-      "booktitle": "Book title:",
+      "register-book": "Register book",
+      "booktitle": "Book title",
       "fieldrequaired": "This field is required.",
       "withoutauthor": "Without author",
       "author": "Author",
+      "withoutAuthor": "without author",
       "lastnamerequaired": "Lastname is required.",
       "notconfirmedsave": "Entered author is saved as 'not confirmed'",
       "category": "Category",
@@ -134,7 +137,11 @@
     },
     "home": {
       "rules": "Rules",
-      "register": "Register Book"
+      "register": "Register Book",
+      "save": "Save",
+      "cancel": "Cancel",
+      "field-required": "This field is required.",
+      "author-not-confirmed": "Author is saved as 'not confirmed."
     },
     "signIn": {
       "forgot-password": "Forgot password?"
@@ -162,6 +169,7 @@
       "registeredby": "Registered by",
       "requestedby": "Requested by",
       "status": "Status",
+      "ISBN": "ISBN",
       "statuses": {
         "available": "Available",
         "request": "Request",
@@ -350,7 +358,8 @@
         "edit-title": "Edit Issue",
         "edit-button": "Update",
         "add-title": "Add Issue",
-        "add-button": "Add"
+        "add-button": "Add",
+        "find-by": "Find by"
       },
       "suggestion-message": {
         "messages": "Messages",
