@@ -324,6 +324,7 @@ namespace Application.Services.Implementation
                 $"{request.User.FirstName} {request.User.LastName} has successfully received and started reading '{book.Name}'.",
                 book.Id,
                 NotificationAction.Open);
+
             await _notificationsService.NotifyAsync(
                 request.User.Id,
                 $"You became a current owner of the book '{book.Name}'",
@@ -366,6 +367,7 @@ namespace Application.Services.Implementation
                 $"Your book '{request.Book.Name}' request was canceled.",
                 request.BookId,
                 NotificationAction.Open);
+
             await _notificationsService.NotifyAsync(
                 request.User.Id,
                 $"Your request for book '{request.Book.Name}' was canceled.",

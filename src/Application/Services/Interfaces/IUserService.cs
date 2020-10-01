@@ -47,5 +47,8 @@ namespace Application.Services.Interfaces
         Task ResetPassword(ResetPasswordDto newPassword);
 
         Task<bool> ForbidEmailNotification(ForbidEmailDto email);
+
+        public void SendMail(User user, string message);
+        public void SendNotificationToUser(int userIdAdmin, string message);
     }
 }

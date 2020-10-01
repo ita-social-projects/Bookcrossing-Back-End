@@ -138,10 +138,17 @@ namespace Application.Services.Interfaces
         /// <returns></returns>
         IEnumerable<Request> GetBooksTransitions();
 
+        public  void SendMailForActivated(Book book, User user);
+        public void SendMailForDeactivated(Book book, User user);
+
+
+        public void SendNotificationToUser(int userId, int bookId, string message);
+
         /// <summary>
         /// Get locations with books quantity
         /// </summary>
         /// <returns></returns>
         IEnumerable<MapLocationDto> GetBooksQuantityOnLocations();
+
     }
 }

@@ -9,7 +9,9 @@
     <None Remove="Controllers\AController.cs~RF3109555.TMP" />
     <None Remove="Settings.StyleCop" />
     <None Remove="StyleCop.Cache" />
+    <None Remove="Templates\BookOwnership.html" />
     <None Remove="Templates\BookReceived.html" />
+    <None Remove="Templates\UserDeleted.html" />
     <None Remove="Templates\WishBecameAvailable.html" />
     <None Remove="Validators\BookCommentInsertValidator.cs~RF310e123.TMP" />
   </ItemGroup>
@@ -37,10 +39,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
     <PackageReference Include="Mongo.Migration" Version="3.0.123" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
