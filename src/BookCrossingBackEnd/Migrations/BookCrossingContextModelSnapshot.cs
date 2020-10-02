@@ -378,7 +378,7 @@ namespace BookCrossingBackEnd.Migrations
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("ISBN")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(17)");
 
                     b.Property<string>("ImagePath")
                         .HasColumnName("imagepath")
