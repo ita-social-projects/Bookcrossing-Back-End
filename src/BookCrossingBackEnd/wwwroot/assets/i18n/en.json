@@ -390,7 +390,8 @@
       "contacts": "Contacts",
       "summary": "Summary",
       "search": "Search",
-      "textMessage": "We appreciate your time to describe this matter"
+      "textMessage": "We appreciate your time to describe this matter",
+      "send": "Send"
     },
     "comment": {
       "commentplaceholder": "Write a comment up to 500 characters",
