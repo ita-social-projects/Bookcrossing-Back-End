@@ -4,8 +4,8 @@
     "yes": "Так",
     "no": "Ні",
     "cancel": "Скасувати",
+    "add": "Додати",
     "close": "Закрити",
-    "add": "Добавити",
     "edit": "Редагувати",
     "editing": "Редагування",
     "update": "Редагувати",
@@ -26,6 +26,7 @@
     "statistics": "Статистика",
     "manage": "Управління",
     "logOut": "Вийти",
+    "contactUs" : "Зв'язатися з нами",
     "languages": {
       "gb": "Англійська",
       "ua": "Українська"
@@ -81,15 +82,17 @@
     },
     "book-edit": {
       "editbook": "Редагувати книгу",
-      "booktitle": "Назва:",
+      "register-book": "Створення книги",
+      "booktitle": "Назва",
       "fieldrequaired": "Це поле обов'язкове.",
       "withoutauthor": "Без автора",
       "author": "Автор",
+      "withoutAuthor": "без автора",
       "lastnamerequaired": "Прізвище обов'язкове.",
       "notconfirmedsave": "Введений автор збережений як 'не затверджений'",
       "category": "Категорія",
       "language": "Мова",
-      "publishinghouse": "Будинок видавництва",
+      "publishinghouse": "Видавництво",
       "notice": "Зауваження",
       "inactive": "Неактивна",
       "editimage": "Редагувати зображення",
@@ -141,11 +144,16 @@
     },
     "home": {
       "rules": "Правила",
-      "register": "Зареєструвати книгу"
+      "register": "Зареєструвати книгу",
+      "save": "Зберегти",
+      "cancel": "Скасувати",
+      "field-required": "Обов'язкове поле.",
+      "author-not-confirmed": "Автор не є підтверджений."
     },
     "signIn": {
       "forgot-password": "Забули пароль?"
     },
+
     "book": {
       "name": "Назва книги",
       "authors": "Автори",
@@ -169,6 +177,7 @@
       "registeredby": "Реєструвач",
       "requestedby": "Запитувач",
       "status": "Статус",
+      "ISBN": "ISBN",
       "statuses": {
         "available": "Доступна",
         "request": "Зробити запит",
@@ -197,7 +206,7 @@
     },
     "admin": {
       "table-management": "Управління Таблицями",
-      "add": "Добавити",
+      "add": "Додати",
       "search": "Пошук",
       "authors": {
         "authors": "Автори",
@@ -217,8 +226,8 @@
       "authors-form": {
         "edit-title": "Редагування автора",
         "edit-button": "Відредагувати",
-        "add-title": "Добавити автора",
-        "add-button": "Добавити",
+        "add-title": "Додати автора",
+        "add-button": "Додати",
         "merge-title": "Об'єднати авторів",
         "merge-button": "Об'єднати",
         "merge-selected": "Вибрані автори",
@@ -358,7 +367,8 @@
         "edit-title": "Редагування проблеми",
         "edit-button": "Відредагувати",
         "add-title": "Додати тип проблеми",
-        "add-button": "Додати"
+        "add-button": "Додати",
+        "find-by": "Пошук по"
       },
       "suggestion-message": {
         "messages": "Повідомлення",
@@ -392,7 +402,7 @@
       "delete": "Видалити",
       "deletemessage": "[Цей коментар видалено]",
       "reply": "Відповісти",
-      "replymessage": "Будьласка увійдіть щоб залишати будь якого роду коментарі",
+      "replymessage": "Будь ласка увійдіть щоб залишати будь якого роду коментарі",
       "editplaceholder": "Відредагуйте свій коментар...",
       "viewall": "Відкрити усі відповіді",
       "hideall": "Заховати усі відповіді"
