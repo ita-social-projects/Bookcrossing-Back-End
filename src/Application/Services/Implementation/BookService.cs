@@ -136,6 +136,9 @@ namespace Application.Services.Implementation
             await _bookRepository.Update(book, bookDto.FieldMasks);
             if (bookDto.UserId != oldBook.UserId)
             {
+                oldBook.UserId = bookDto.UserId;
+                _bookRepository.Update(oldBook);
+
                 var user = await _userLocationRepository.FindByIdAsync(oldBook.UserId.Value);
                 string emailMessageForUser = $" Administrator has successfully received your book '{oldBook.Name}'";
                 SendMailForOwnership(book, user, emailMessageForUser );
