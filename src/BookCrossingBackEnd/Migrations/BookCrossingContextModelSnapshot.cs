@@ -378,7 +378,7 @@ namespace BookCrossingBackEnd.Migrations
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("ISBN")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(17)");
 
                     b.Property<string>("ImagePath")
                         .HasColumnName("imagepath")
@@ -693,7 +693,7 @@ namespace BookCrossingBackEnd.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -705,7 +705,7 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Street")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
