@@ -102,6 +102,7 @@
       "cancel": "Відмінити"
     },
     "books": {
+      "likeTooltip": "Ця книга ваша",
       "authors": "Автори",
       "author": "Автор",
       "status": "Статус",
