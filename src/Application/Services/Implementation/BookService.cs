@@ -134,7 +134,7 @@ namespace Application.Services.Implementation
                 book.ImagePath = imagePath;
             }
             await _bookRepository.Update(book, bookDto.FieldMasks);
-            if (bookDto.UserId != oldBook.UserId)
+            if (bookDto.UserId != oldBook.UserId && bookDto.UserId != 0)
             {
                 oldBook.UserId = bookDto.UserId;
                 _bookRepository.Update(oldBook);
