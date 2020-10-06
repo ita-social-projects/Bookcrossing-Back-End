@@ -141,14 +141,14 @@ namespace Application.Services.Implementation
 
                 var user = await _userLocationRepository.FindByIdAsync(oldBook.UserId.Value);
                 string emailMessageForUser = $" Administrator has successfully received your book '{oldBook.Name}'";
-                SendMailForOwnership(book, user, emailMessageForUser );
+                await SendMailForOwnership(book, user, emailMessageForUser );
                 SendNotificationToUser(oldBook.UserId.Value, book.Id, emailMessageForUser);
 
                 var userId = _userResolverService.GetUserId();
                 var admin = await _userLocationRepository.FindByIdAsync(userId);
 
                 string emailMessageForAdmin = $"You became the current owner of the book '{oldBook.Name}'";
-                SendMailForOwnership(book, admin, emailMessageForAdmin );
+                await SendMailForOwnership(book, admin, emailMessageForAdmin );
                 SendNotificationToUser(userId, book.Id, emailMessageForAdmin );
             }
             var affectedRows = await _bookRepository.SaveChangesAsync();
