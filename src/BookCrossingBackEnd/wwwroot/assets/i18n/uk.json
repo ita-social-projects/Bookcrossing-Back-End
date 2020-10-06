@@ -22,11 +22,12 @@
     "requested": "Запити",
     "currentlyOwned": "Отримані",
     "read": "Прочитані",
+    "currentlyRead": "Зараз Читаються",
     "wishlist": "Список Бажань",
     "statistics": "Статистика",
     "manage": "Управління",
     "logOut": "Вийти",
-    "contactUs" : "Зв'язатися з нами",
+    "contactUs": "Зв'язатися з нами",
     "languages": {
       "gb": "Англійська",
       "ua": "Українська"

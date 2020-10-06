@@ -70,6 +70,15 @@ namespace Application.Services.Interfaces
         /// <returns></returns>
         /// 
 
+        Task<PaginationDto<BookGetDto>> GetCurrentRead(BookQueryParams parameters);
+
+        /// <summary>
+        /// Retrieve books currently read by user
+        /// </summary>
+        ///  <param name="parameters">filter parametrs</param>
+        /// <returns></returns>
+        /// 
+
         Task<List<BookGetDto>> GetCurrentOwnedById(int id);
 
 
