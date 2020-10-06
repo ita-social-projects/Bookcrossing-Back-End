@@ -282,6 +282,15 @@ namespace Application.Services.Implementation
             return await _paginationService.GetPageAsync<BookGetDto, Book>(query, parameters);
         }
 
+        public async Task<PaginationDto<BookGetDto>> GetCurrentRead(BookQueryParams parameters)
+        {
+            var userId = _userResolverService.GetUserId();
+            var books = _bookRepository.GetAll().Where(b => b.UserId == userId && b.State == BookState.Reading);
+            books = GetFilteredQuery(books, parameters);
+
+            return await _paginationService.GetPageAsync<BookGetDto, Book>(books, parameters);
+        }
+
         public async Task<List<BookGetDto>> GetCurrentOwnedById(int id)
         {
             var query = _mapper.Map<List<BookGetDto>>(await _bookRepository.GetAll().Where(p => p.UserId == id).ToListAsync());
