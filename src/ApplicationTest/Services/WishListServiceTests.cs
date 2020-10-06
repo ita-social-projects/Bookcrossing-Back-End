@@ -20,6 +20,8 @@ namespace ApplicationTest.Services
     [TestFixture]
     internal class WishListServiceTests
     {
+
+        const int _firstBookId = 1;
         private Mock<IRepository<Wish>> _wishRepositoryMock;
         private Mock<IRepository<Book>> _bookRepositoryMock;
         private Mock<IUserResolverService> _userResolverServiceMock;
@@ -27,7 +29,6 @@ namespace ApplicationTest.Services
         private Mock<IEmailSenderService> _emailSenderServiceMock;
         private Mock<INotificationsService> _notificationServiceMock;
         private WishListService _service;
-
         private User _currentUser;
         private User _userWithEmailNotAllowed;
         private Book _book;
@@ -213,6 +214,20 @@ namespace ApplicationTest.Services
             result.Should().Be(matchedBooks);
         }
 
+        #region GetNumberOfBookWishersByBookIdAsync
+        [TestCase(_firstBookId,2)]
+        [TestCase(3,0)]
+        public async Task GetNumberOfBookWishersByBookIdAsync_HasWishes_ReturnsNumberOfWishes(int bookId,int expected)
+        {
+            var setup = _wishes.AsQueryable().BuildMock().Object.Where(x => x.BookId == bookId);
+            _wishRepositoryMock.Setup(m => m.GetAll()).Returns(setup);
+
+            var result = await _service.GetNumberOfBookWishersByBookIdAsync(bookId);
+
+            result.Should().Be(expected);
+        }
+        #endregion
+
         private void MockData()
         {
             _currentUser = new User
@@ -232,9 +247,11 @@ namespace ApplicationTest.Services
                 IsEmailAllowed = false
             };
 
+            
+
             _book = new Book
             {
-                Id = 1,
+                Id = _firstBookId,
                 Name = "History of Test",
                 UserId = It.Is<int>(id => id != _currentUser.Id)
             };

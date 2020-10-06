@@ -17,6 +17,7 @@ namespace Application.Dto
         public double Rating { get; set; }
         public string ISBN { get; set; }
         public int LanguageId { get; set; }
+        public int WishCount { get; set; }
         public LanguageDto Language { get; set; }
         public List<AuthorDto> Authors { get; set; }
         public List<GenreDto> Genres { get; set; }

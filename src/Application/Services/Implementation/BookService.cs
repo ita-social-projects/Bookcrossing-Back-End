@@ -65,7 +65,7 @@ namespace Application.Services.Implementation
 
         public async Task<BookGetDto> GetByIdAsync(int bookId)
         {
-            return _mapper.Map<BookGetDto>(await _bookRepository.GetAll()
+            var result = _mapper.Map<BookGetDto>(await _bookRepository.GetAll()
                                                                .Include(p => p.BookAuthor)
                                                                .ThenInclude(x => x.Author)
                                                                .Include(p => p.BookGenre)
@@ -76,6 +76,14 @@ namespace Application.Services.Implementation
                                                                .ThenInclude(x => x.Location)
                                                                .Include(p => p.Language)
                                                                .FirstOrDefaultAsync(p => p.Id == bookId));
+
+            if (result != null)
+            {
+                var wishCount = await _wishListService.GetNumberOfBookWishersByBookIdAsync(bookId);
+                result.WishCount = wishCount;
+            }
+
+            return result;
         }
 
         public async Task<BookGetDto> AddAsync(BookPostDto bookDto)
@@ -177,7 +185,6 @@ namespace Application.Services.Implementation
                 };
             }
 
-
             var query = GetFilteredQuery(_bookRepository.GetAll(), parameters);
             if (parameters.HomeLocations?.Length > 0)
             {
@@ -188,7 +195,14 @@ namespace Application.Services.Implementation
             {
                 query = query.OrderBy(parameters.SortableParams);
             }
-            return await _paginationService.GetPageAsync<BookGetDto, Book>(query, parameters);
+            var pagination = await _paginationService.GetPageAsync<BookGetDto, Book>(query, parameters);
+
+            foreach (var book in pagination.Page)
+            {
+                book.WishCount = await _wishListService.GetNumberOfBookWishersByBookIdAsync(book.Id);
+            }
+
+            return pagination;
         }
 
         public IQueryable<Book> GetBooksInReadStatus()
