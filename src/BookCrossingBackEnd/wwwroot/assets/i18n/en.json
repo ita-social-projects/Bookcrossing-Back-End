@@ -70,7 +70,7 @@
         "locationUpdate": "Home location succesfuly updated.",
         "homeLocationUpdate": "Congrats! Now your location is set to home.",
         "officeLocationUpdate": "Congrats! Now your location is set to office.",
-        "cancelDialog": "Are yo sure want to cancel?"
+        "cancelDialog": "Are you sure you want to cancel?"
       },
       "picker": {
         "pick": "Pick",
