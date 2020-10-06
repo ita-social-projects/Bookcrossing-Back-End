@@ -102,6 +102,7 @@
       "cancel": "Cancel"
     },
     "books": {
+      "likeTooltip": "This book is yours",
       "authors": "Authors",
       "author": "Author",
       "status": "Status",
