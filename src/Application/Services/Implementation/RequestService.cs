@@ -255,20 +255,13 @@ namespace Application.Services.Implementation
                 location = location.Where(wherePredicate);
             }
 
-            var bookIds =
-                from b in books
-                join g in genre on b.Id equals g.BookId
-                join la in lang on b.Language.Id equals la.Id
-                join a in author on b.Id equals a.BookId
-                join l in location on b.User.UserRoomId equals l.Id
-                select b.Id;
             var query = _requestRepository.GetAll()
                 .Include(i => i.Book).ThenInclude(i => i.BookAuthor).ThenInclude(i => i.Author)
                 .Include(i => i.Book).ThenInclude(i => i.BookGenre).ThenInclude(i => i.Genre)
                 .Include(i => i.Book).ThenInclude(i => i.Language)
                 .Include(i => i.Owner).ThenInclude(i => i.UserRoom).ThenInclude(i => i.Location)
                 .Include(i => i.User).ThenInclude(i => i.UserRoom).ThenInclude(i => i.Location)
-                .Where(predicate).Where(x => bookIds.Contains(x.BookId));
+                .Where(predicate);
 
             return await _paginationService.GetPageAsync<RequestDto, Request>(query, parameters);
         }
