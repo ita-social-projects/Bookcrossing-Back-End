@@ -157,11 +157,15 @@ namespace Application.Services.Implementation
             {
                 throw new InvalidOperationException();
             }
-            var requestsIds = user.RequestUser.Where(request => request.ReceiveDate == null).Select(request => request.Id);
-            foreach (var requestId in requestsIds)
+            var requestsIds = user.RequestUser
+                .Where(request => request.ReceiveDate == null)
+                .Select(request => request.Id)
+                .ToList();
+            for (int i = 0; i < requestsIds.Count; i++)
             {
-                await _requestService.RemoveAsync(requestId);
+                await _requestService.RemoveAsync(requestsIds.ElementAt(i));
             }
+
             user.IsDeleted = true;
             var affectedRows = await _userRepository.SaveChangesAsync();
 
