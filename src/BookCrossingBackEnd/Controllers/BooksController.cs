@@ -108,6 +108,12 @@ namespace BookCrossingBackEnd.Controllers
             return await _bookService.GetCurrentOwned(parameters);
         }
 
+        [HttpGet("currentlyread")]
+        public async Task<ActionResult<PaginationDto<BookGetDto>>> GetCurrentReadBooksAsync([FromQuery] BookQueryParams parameters)
+        {
+            return await _bookService.GetCurrentRead(parameters);
+        }
+
         [HttpGet("current/{id}")]
         public async Task<ActionResult<List<BookGetDto>>> GetCurrentOwnedBooksByIdAsync(int id)
         {

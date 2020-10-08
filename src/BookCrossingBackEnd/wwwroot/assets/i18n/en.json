@@ -22,6 +22,7 @@
     "requested": "Requested",
     "currentlyOwned": "Currently Owned",
     "read": "Read",
+    "currentlyRead": "Currently Reading",
     "wishlist": "Wish List",
     "statistics": "Statistics",
     "manage": "Management",
@@ -70,7 +71,7 @@
         "locationUpdate": "Home location succesfuly updated.",
         "homeLocationUpdate": "Congrats! Now your location is set to home.",
         "officeLocationUpdate": "Congrats! Now your location is set to office.",
-        "cancelDialog": "Are yo sure want to cancel?"
+        "cancelDialog": "Are you sure you want to cancel?"
       },
       "picker": {
         "pick": "Pick",
@@ -102,6 +103,7 @@
       "cancel": "Cancel"
     },
     "books": {
+      "likeTooltip": "This book is yours",
       "authors": "Authors",
       "author": "Author",
       "status": "Status",
@@ -413,6 +415,26 @@
       "current": "Current",
       "set": "Set",
       "radius": "Radius (km)"
-    }
+    },
+    "statistics": {
+      "wishlist": "Added to wishlist",
+      "request": "Requested",
+      "in-progress": "To be finished",
+      "books-were-read": "Times your books were read",
+      "reading": "Reading statistics",
+      "city": "City",
+      "office": "Office",
+      "genre": "Genres",
+      "period": "Period",
+      "from": "From",
+      "to": "To",
+      "donating": "Donation statistics",
+      "donated": "Donated",
+      "read": "Books read",
+      "languages": "Book languages",
+      "lack-donation-stats": "You didn't donate any book yet",
+      "lack-reading-stats": "You didn't read any book yet",
+      "all-time": "All time"
+    } 
   }
 }

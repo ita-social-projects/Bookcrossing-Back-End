@@ -66,7 +66,7 @@ namespace Application.Services.Implementation
 
         public async Task<BookGetDto> GetByIdAsync(int bookId)
         {
-            return _mapper.Map<BookGetDto>(await _bookRepository.GetAll()
+            var result = _mapper.Map<BookGetDto>(await _bookRepository.GetAll()
                                                                .Include(p => p.BookAuthor)
                                                                .ThenInclude(x => x.Author)
                                                                .Include(p => p.BookGenre)
@@ -77,6 +77,14 @@ namespace Application.Services.Implementation
                                                                .ThenInclude(x => x.Location)
                                                                .Include(p => p.Language)
                                                                .FirstOrDefaultAsync(p => p.Id == bookId));
+
+            if (result != null)
+            {
+                var wishCount = await _wishListService.GetNumberOfBookWishersByBookIdAsync(bookId);
+                result.WishCount = wishCount;
+            }
+
+            return result;
         }
 
         public async Task<BookGetDto> AddAsync(BookPostDto bookDto)
@@ -135,21 +143,21 @@ namespace Application.Services.Implementation
                 book.ImagePath = imagePath;
             }
             await _bookRepository.Update(book, bookDto.FieldMasks);
-            if (bookDto.UserId != oldBook.UserId)
+            if (bookDto.UserId != oldBook.UserId && bookDto.UserId != 0)
             {
                 oldBook.UserId = bookDto.UserId;
                 _bookRepository.Update(oldBook);
 
                 var user = await _userLocationRepository.FindByIdAsync(oldBook.UserId.Value);
                 string emailMessageForUser = $" Administrator has successfully received your book '{oldBook.Name}'";
-                SendMailForOwnership(book, user, emailMessageForUser );
+                await SendMailForOwnership(book, user, emailMessageForUser );
                 SendNotificationToUser(oldBook.UserId.Value, book.Id, emailMessageForUser);
 
                 var userId = _userResolverService.GetUserId();
                 var admin = await _userLocationRepository.FindByIdAsync(userId);
 
                 string emailMessageForAdmin = $"You became the current owner of the book '{oldBook.Name}'";
-                SendMailForOwnership(book, admin, emailMessageForAdmin );
+                await SendMailForOwnership(book, admin, emailMessageForAdmin );
                 SendNotificationToUser(userId, book.Id, emailMessageForAdmin );
             }
             var affectedRows = await _bookRepository.SaveChangesAsync();
@@ -178,7 +186,6 @@ namespace Application.Services.Implementation
                 };
             }
 
-
             var query = GetFilteredQuery(_bookRepository.GetAll(), parameters);
             if (parameters.HomeLocations?.Length > 0)
             {
@@ -189,7 +196,14 @@ namespace Application.Services.Implementation
             {
                 query = query.OrderBy(parameters.SortableParams);
             }
-            return await _paginationService.GetPageAsync<BookGetDto, Book>(query, parameters);
+            var pagination = await _paginationService.GetPageAsync<BookGetDto, Book>(query, parameters);
+
+            foreach (var book in pagination.Page)
+            {
+                book.WishCount = await _wishListService.GetNumberOfBookWishersByBookIdAsync(book.Id);
+            }
+
+            return pagination;
         }
 
         public IQueryable<Book> GetBooksInReadStatus()
@@ -267,6 +281,15 @@ namespace Application.Services.Implementation
             query = GetFilteredQuery(query, parameters);
 
             return await _paginationService.GetPageAsync<BookGetDto, Book>(query, parameters);
+        }
+
+        public async Task<PaginationDto<BookGetDto>> GetCurrentRead(BookQueryParams parameters)
+        {
+            var userId = _userResolverService.GetUserId();
+            var books = _bookRepository.GetAll().Where(b => b.UserId == userId && b.State == BookState.Reading);
+            books = GetFilteredQuery(books, parameters);
+
+            return await _paginationService.GetPageAsync<BookGetDto, Book>(books, parameters);
         }
 
         public async Task<List<BookGetDto>> GetCurrentOwnedById(int id)

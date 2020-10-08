@@ -22,5 +22,12 @@ namespace Application.Services.Interfaces
         /// <param name="userId"> The user of the wish list </param>
         /// <returns> Number of wished books </returns>
         Task<int> GetNumberOfWishedBooksAsync(int userId);
+
+        /// <summary>
+        /// Gets number of users that wish the book with bookId
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <returns>Number of users who wish the book with bookId</returns>
+        Task<int> GetNumberOfBookWishersByBookIdAsync(int bookId);
     }
 }
