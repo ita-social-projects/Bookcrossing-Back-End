@@ -191,6 +191,12 @@ namespace Application.Services.Implementation
                 var queryBooksAtHome = GetFilteredQuery(_bookRepository.GetAll(), parameters, false);
                 query = query.Union(queryBooksAtHome);
             }
+            foreach (var item in query)
+            {
+                item.WishCount= await _wishListService.GetNumberOfBookWishersByBookIdAsync(item.Id);
+                _bookRepository.Update(item);
+                await _bookRepository.SaveChangesAsync();
+            }
             if (parameters.SortableParams != null)
             {
                 query = query.OrderBy(parameters.SortableParams);

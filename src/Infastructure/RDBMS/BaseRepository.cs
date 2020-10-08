@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 namespace Infrastructure.RDBMS
 {
@@ -97,7 +98,7 @@ namespace Infrastructure.RDBMS
         {
             lock (Context)
             {
-                return Context.SaveChangesAsync().Result;
+               return Context.SaveChangesAsync().Result;
             }
         }
 
