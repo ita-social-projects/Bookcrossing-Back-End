@@ -503,17 +503,11 @@ namespace Application.Services.Implementation
 
         private IQueryable<Book> GetFilteredQuery(IQueryable<Book> query, BookQueryParams parameters, bool byLocation = true)
         {
-            //if (parameters.ShowAvailable == true)
-            //{
-            //    query = query.Where(b => b.State == BookState.Available);
-            //}
-
             if (parameters.BookStates != null)
             {
                 var predicate = PredicateBuilder.New<Book>();
                 foreach (var state in parameters.BookStates)
                 {
-                    var tempState = state;
                     predicate = predicate.Or(g => g.State == state);
                 }
                 query = query.Where(predicate);

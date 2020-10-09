@@ -149,7 +149,7 @@ namespace ApplicationTest.Services
                 Locations = new [] { 1 },
                 Genres = new[] { 1 },
                 SearchTerm = "Martin",
-                ShowAvailable = true
+                BookStates = new BookState[] { BookState.Available}
             };
 
             var booksResult = await _bookService.GetAllAsync(query);
@@ -253,14 +253,43 @@ namespace ApplicationTest.Services
             booksResult.Page.Should().HaveCount(2);
         }
 
+        //[Test]
+        //public async Task GetAllBooks_WhenHasShowAvailableFalse_Returns_all_books()
+        //{
+        //    var booksMock = GetPopulatedBooks().AsQueryable().BuildMock();
+
+        //    _bookRepositoryMock.Setup(s => s.GetAll()).Returns(booksMock.Object);
+
+        //    var query = new BookQueryParams { Page = 1, PageSize = 10, ShowAvailable = false };
+
+        //    var booksResult = await _bookService.GetAllAsync(query);
+
+        //    booksResult.Page.Should().HaveCount(GetPopulatedBooks().Count);
+        //}
+
+        //[Test]
+        //public async Task GetAllBooks_WhenHasShowAvailableTrue_Returns_available_books()
+        //{
+        //    var booksMock = GetPopulatedBooks().AsQueryable().BuildMock();
+
+        //    _bookRepositoryMock.Setup(s => s.GetAll()).Returns(booksMock.Object);
+
+        //    var query = new BookQueryParams { Page = 1, PageSize = 10, ShowAvailable = true };
+
+        //    var booksResult = await _bookService.GetAllAsync(query);
+
+        //    booksResult.Page.Should().HaveCount(4);
+        //}
+
         [Test]
-        public async Task GetAllBooks_WhenHasShowAvailableFalse_Returns_all_books()
+        public async Task GetAllBooks_WhenBookStatesIsNull_Returns_all_books()
         {
             var booksMock = GetPopulatedBooks().AsQueryable().BuildMock();
 
             _bookRepositoryMock.Setup(s => s.GetAll()).Returns(booksMock.Object);
 
-            var query = new BookQueryParams { Page = 1, PageSize = 10, ShowAvailable = false };
+            var query = new BookQueryParams { Page = 1, PageSize = 10, 
+                BookStates = null };
 
             var booksResult = await _bookService.GetAllAsync(query);
 
@@ -268,13 +297,14 @@ namespace ApplicationTest.Services
         }
 
         [Test]
-        public async Task GetAllBooks_WhenHasShowAvailableTrue_Returns_available_books()
+        public async Task GetAllBooks_WhenBookStatesIsNotNull_Returns_available_books()
         {
             var booksMock = GetPopulatedBooks().AsQueryable().BuildMock();
 
             _bookRepositoryMock.Setup(s => s.GetAll()).Returns(booksMock.Object);
 
-            var query = new BookQueryParams { Page = 1, PageSize = 10, ShowAvailable = true };
+            var query = new BookQueryParams { Page = 1, PageSize = 10, 
+                BookStates = new BookState[] { BookState.Available } };
 
             var booksResult = await _bookService.GetAllAsync(query);
 

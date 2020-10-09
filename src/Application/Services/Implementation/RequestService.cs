@@ -237,9 +237,14 @@ namespace Application.Services.Implementation
                 lang = lang.Where(wherePredicate);
             }
 
-            if (parameters.ShowAvailable == true)
+            if (parameters.BookStates != null)
             {
-                books = books.Where(b => b.State == BookState.Available);
+                var statePredicate = PredicateBuilder.New<Book>();
+                foreach (var state in parameters.BookStates)
+                {
+                    statePredicate = statePredicate.Or(g => g.State == state);
+                }
+                books = books.Where(statePredicate);
             }
 
             var location = _userLocationRepository.GetAll();

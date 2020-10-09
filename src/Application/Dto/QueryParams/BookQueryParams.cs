@@ -15,8 +15,6 @@ namespace Application.Dto.QueryParams
 
         public int[] HomeLocations { get; set; }
 
-        public bool? ShowAvailable { get; set; }
-
         public BookState[] BookStates { get; set; }
 
         public SortableParams SortableParams { get; set; }
