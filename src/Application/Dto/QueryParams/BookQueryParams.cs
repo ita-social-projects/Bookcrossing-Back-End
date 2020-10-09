@@ -1,4 +1,7 @@
-﻿namespace Application.Dto.QueryParams
+﻿using Domain.RDBMS.Entities;
+using System.Collections;
+
+namespace Application.Dto.QueryParams
 {
     public class BookQueryParams : PageableParams
     {
@@ -13,6 +16,8 @@
         public int[] HomeLocations { get; set; }
 
         public bool? ShowAvailable { get; set; }
+
+        public BookState[] BookStates { get; set; }
 
         public SortableParams SortableParams { get; set; }
 

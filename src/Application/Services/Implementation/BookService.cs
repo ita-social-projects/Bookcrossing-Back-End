@@ -15,6 +15,7 @@ using Domain.RDBMS.Entities;
 using Domain.RDBMS.Enums;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using MimeKit;
 
 namespace Application.Services.Implementation
@@ -502,9 +503,20 @@ namespace Application.Services.Implementation
 
         private IQueryable<Book> GetFilteredQuery(IQueryable<Book> query, BookQueryParams parameters, bool byLocation = true)
         {
-            if (parameters.ShowAvailable == true)
+            //if (parameters.ShowAvailable == true)
+            //{
+            //    query = query.Where(b => b.State == BookState.Available);
+            //}
+
+            if (parameters.BookStates != null)
             {
-                query = query.Where(b => b.State == BookState.Available);
+                var predicate = PredicateBuilder.New<Book>();
+                foreach (var state in parameters.BookStates)
+                {
+                    var tempState = state;
+                    predicate = predicate.Or(g => g.State == state);
+                }
+                query = query.Where(predicate);
             }
             if (byLocation && parameters.Locations != null)
             {
@@ -537,11 +549,15 @@ namespace Application.Services.Implementation
                 var term = parameters.SearchTerm.Split(" ");
                 if (term.Length == 1)
                 {
-                    query = query.Where(x => x.Name.Contains(parameters.SearchTerm) || x.BookAuthor.Any(a => a.Author.LastName.Contains(term[term.Length - 1]) || a.Author.FirstName.Contains(term[0])));
+                    query = query.Where(x => x.Name.Contains(parameters.SearchTerm) 
+                    || x.BookAuthor.Any(a => a.Author.LastName.Contains(term[term.Length - 1]) 
+                    || a.Author.FirstName.Contains(term[0])));
                 }
                 else
                 {
-                    query = query.Where(x => x.Name.Contains(parameters.SearchTerm) || x.BookAuthor.Any(a => a.Author.LastName.Contains(term[term.Length - 1]) && a.Author.FirstName.Contains(term[0])));
+                    query = query.Where(x => x.Name.Contains(parameters.SearchTerm) 
+                    || x.BookAuthor.Any(a => a.Author.LastName.Contains(term[term.Length - 1]) 
+                    && a.Author.FirstName.Contains(term[0])));
                 }
             }
             if (parameters.Genres != null)
