@@ -17,6 +17,8 @@ namespace Application.Dto.QueryParams
 
         public BookState[] BookStates { get; set; }
 
+        public BookState[] BookStates { get; set; }
+
         public SortableParams SortableParams { get; set; }
 
         public bool? LocationFilterOn { get; set; }
