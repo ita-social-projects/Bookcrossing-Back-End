@@ -104,6 +104,9 @@ namespace ApplicationTest.Services
                 .Returns(_currentUser.Id);
             _bookRepositoryMock.Setup(obj => obj.FindByIdAsync(_book.Id))
                 .ReturnsAsync(_book);
+            _wishRepositoryMock.Setup(m => m.GetAll())
+                .Returns(_wishes.AsQueryable().BuildMock().Object);
+            var matchedBooks = _wishes.Count(w => w.UserId == _currentUser.Id);
 
             await _service.AddWishAsync(_book.Id);
 

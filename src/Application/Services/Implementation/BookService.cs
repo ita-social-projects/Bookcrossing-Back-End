@@ -192,6 +192,7 @@ namespace Application.Services.Implementation
                 var queryBooksAtHome = GetFilteredQuery(_bookRepository.GetAll(), parameters, false);
                 query = query.Union(queryBooksAtHome);
             }
+
             if (parameters.SortableParams != null)
             {
                 query = query.OrderBy(parameters.SortableParams);
