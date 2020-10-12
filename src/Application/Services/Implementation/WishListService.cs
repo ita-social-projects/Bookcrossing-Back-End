@@ -77,6 +77,10 @@ namespace Application.Services.Implementation
 
             _wishRepository.Add(newWish);
             await _wishRepository.SaveChangesAsync();
+
+            book.WishCount = await GetNumberOfBookWishersByBookIdAsync(bookId);
+            _bookRepository.Update(book);
+            await _bookRepository.SaveChangesAsync();
         }
 
         public async Task RemoveWishAsync(int bookId)
