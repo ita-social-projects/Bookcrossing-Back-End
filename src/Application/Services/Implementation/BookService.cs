@@ -15,7 +15,6 @@ using Domain.RDBMS.Entities;
 using Domain.RDBMS.Enums;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using MimeKit;
 
 namespace Application.Services.Implementation
@@ -543,15 +542,29 @@ namespace Application.Services.Implementation
                 var term = parameters.SearchTerm.Split(" ");
                 if (term.Length == 1)
                 {
-                    query = query.Where(x => x.Name.Contains(parameters.SearchTerm) 
-                    || x.BookAuthor.Any(a => a.Author.LastName.Contains(term[term.Length - 1]) 
-                    || a.Author.FirstName.Contains(term[0])));
+                    query = query.Where(
+                        x =>
+                            (x.ISBN != null && x.ISBN.Contains(parameters.SearchTerm)) ||
+                            x.Name.Contains(parameters.SearchTerm) ||
+                            x.BookAuthor.Any(
+                                a =>
+                                    a.Author.LastName.Contains(term[term.Length - 1]) ||
+                                    a.Author.FirstName.Contains(term[0])
+                            )
+                    );
                 }
                 else
                 {
-                    query = query.Where(x => x.Name.Contains(parameters.SearchTerm) 
-                    || x.BookAuthor.Any(a => a.Author.LastName.Contains(term[term.Length - 1]) 
-                    && a.Author.FirstName.Contains(term[0])));
+                    query = query.Where(
+                        x =>
+                            (x.ISBN != null && x.ISBN.Contains(parameters.SearchTerm)) ||
+                            x.Name.Contains(parameters.SearchTerm) ||
+                            x.BookAuthor.Any(
+                                a =>
+                                    a.Author.LastName.Contains(term[term.Length - 1]) &&
+                                    a.Author.FirstName.Contains(term[0])
+                            )
+                    );
                 }
             }
             if (parameters.Genres != null)
