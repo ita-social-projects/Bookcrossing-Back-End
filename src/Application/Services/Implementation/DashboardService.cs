@@ -41,7 +41,12 @@ namespace Application.Services.Implementation
             var data = _bookRepository.GetAll().IgnoreQueryFilters();
             var dataResult = await data.GroupBy(x => new { x.State, x.User.UserRoom.Location.City })
                                         .Select(x => new { x.Key.City, x.Key.State, count = x.Count() }).ToListAsync();
-            var dictionary = dataResult.GroupBy(x => x.City).ToDictionary(x => x.Key, x => x.ToDictionary(x => x.State, x => x.count));
+            var dictionary = dataResult.GroupBy(x => x.City)
+                .ToDictionary(
+                    x => x.Key ?? "", 
+                    x => 
+                        x.ToDictionary(x => x.State, x => x.count));
+
             var cityData = new Dictionary<string, AvailabilityDataDto>();
             foreach (var city in dictionary)
             {
