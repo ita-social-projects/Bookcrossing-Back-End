@@ -349,7 +349,52 @@ namespace Infrastructure.RDBMS.Seeder
                 new Language
                 {
                     Id = 1,
-                    Name = "Unknown"
+                    Name = "English"
+                },
+                new Language
+                {
+                    Id = 2,
+                    Name = "Українська"
+                },
+                new Language
+                {
+                    Id = 3,
+                    Name = "Русский"
+                },
+                new Language
+                {
+                    Id = 4,
+                    Name = "Italiano"
+                },
+                new Language
+                {
+                    Id = 5,
+                    Name = "Deutsche"
+                },
+                new Language
+                {
+                    Id = 6,
+                    Name = "Español"
+                },
+                new Language
+                {
+                    Id = 7,
+                    Name = "Polskie"
+                },
+                new Language
+                {
+                    Id = 8,
+                    Name = "Беларуская"
+                },
+                new Language
+                {
+                    Id = 9,
+                    Name = "Français"
+                },
+                new Language
+                {
+                    Id = 10,
+                    Name = "Português"
                 }
             );
         }
