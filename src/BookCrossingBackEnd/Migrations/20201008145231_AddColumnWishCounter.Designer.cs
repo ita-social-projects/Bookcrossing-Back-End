@@ -4,14 +4,16 @@ using Infrastructure.RDBMS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookCrossingBackEnd.Migrations
 {
     [DbContext(typeof(BookCrossingContext))]
-    partial class BookCrossingContextModelSnapshot : ModelSnapshot
+    [Migration("20201008145231_AddColumnWishCounter")]
+    partial class AddColumnWishCounter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -631,52 +633,7 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "English"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Українська"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Русский"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Italiano"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Deutsche"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Español"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Polskie"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Беларуская"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "Français"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "Português"
+                            Name = "Unknown"
                         });
                 });
 

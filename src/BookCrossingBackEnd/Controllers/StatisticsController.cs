@@ -66,17 +66,17 @@ namespace BookCrossingBackEnd.Controllers
         }
 
         [HttpGet("userDonations")]
-        public async Task<ActionResult<PieChartData>> GetUserDonationsData([FromQuery] int? amountOfDays)
+        public async Task<ActionResult<PieChartData>> GetUserDonationsData([FromQuery] int? amountOfDays, [FromQuery] string language)
         {
             var startDate = amountOfDays.HasValue ? DateTime.Now.AddDays(-amountOfDays.Value) : DateTime.MinValue;
 
-            return Ok(await _statisticsService.GetUserDonationsData(startDate));
+            return Ok(await _statisticsService.GetUserDonationsData(startDate, language));
         }
 
         [HttpGet("userRead")]
-        public ActionResult<PieChartData> GetUserReadData()
+        public ActionResult<PieChartData> GetUserReadData([FromQuery] string language)
         {
-            return Ok(_statisticsService.GetUserReadData());
+            return Ok(_statisticsService.GetUserReadData(language));
         }
 
         [HttpGet("bookLanguages")]
