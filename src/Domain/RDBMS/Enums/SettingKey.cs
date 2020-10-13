@@ -7,7 +7,7 @@ namespace Domain.RDBMS.Enums
     {
         [Namespace("Timespans")]
         [DefaultValue("10.00:00:00")]
-        [Description("'Request autocancel' - is the time between book 'Request' and its automatic canceation. By changing this value - you change time period for users to receive book from book holder.")]
+        [Description("'Request autocancel' - is the time between book 'Request' and its automatic cancelation. By changing this value - you change time period for users to receive book from book holder.")]
         RequestAutoCancelTimespan,
         [Namespace("Timespans")]
         [DefaultValue("9.00:00:00")]

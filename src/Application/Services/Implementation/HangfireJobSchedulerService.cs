@@ -49,7 +49,9 @@ namespace Application.Services.Implementation
             var notificationJobId = BackgroundJob.Schedule<NotificationsService>(
                 x => x.NotifyAsync(
                     message.User.Id,
-                    $"You have requested '{message.BookName}'. Please click 'Start reading' if the book is received otherwise the book request will be automatically canceled in 1 day",
+                    $"You have requested '{message.BookName}'. Please click 'Start reading' if the book is " +
+                    $"received otherwise the book request will be automatically canceled in " +
+                    $"{autoCancelTimespan - reminderTimespan}",
                     message.BookId,
                     NotificationAction.StartReading),
                 reminderTimespan);
