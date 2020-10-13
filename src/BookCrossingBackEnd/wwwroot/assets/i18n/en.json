@@ -155,6 +155,7 @@
     "signIn": {
       "forgot-password": "Forgot password?"
     },
+
     "book": {
       "name": "Book name",
       "authors": "Authors",
@@ -313,7 +314,8 @@
         "edit-title": "Edit Language",
         "edit-button": "Update",
         "add-title": "Add Language",
-        "add-button": "Add"
+        "add-button": "Add",
+        "lang-message": "Specify name of the language in its local format and spelling"
       },
       "users": {
         "users": "Users",
