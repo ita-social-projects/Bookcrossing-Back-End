@@ -29,5 +29,8 @@ namespace Application.Dto.OuterSource
 
         [XmlElement("description")]
         public string Description { get; set; }
+
+        [XmlElement("isbn13")]
+        public string ISBN { get; set; }
     }
 }
