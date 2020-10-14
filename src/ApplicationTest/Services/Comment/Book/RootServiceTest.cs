@@ -25,6 +25,77 @@ namespace ApplicationTest.Services.Comment.Book
         private Mock<IRootRepository<BookRootComment>> _mockRootRepository;
         private Mock<IRepository<Domain.RDBMS.Entities.Book>> _bookRepositoryMock;
         private Mock<ICommentOwnerMapper> _mockMapper;
+        private Mock<ISentimentAnalisysService> _sentimentService;
+
+        #region DummyData
+        private const float _predictedRationAvarage = 1f;
+        public IEnumerable<IBookComment> GetCommentTree()
+        {
+            return new List<BookRootComment>()
+            {
+                new BookRootComment()
+                {
+                    PredictedRating = 1f,
+                    Comments = new List<BookChildComment>()
+                    {
+                        new BookChildComment()
+                        {
+                            PredictedRating = 1f,
+                            Comments = Enumerable.Empty<BookChildComment>()
+                        },
+                        new BookChildComment()
+                        {
+                            PredictedRating = 1f,
+                            Comments = Enumerable.Empty<BookChildComment>()
+                        }
+                    }
+                },
+                new BookRootComment()
+                {
+                    PredictedRating = 1f,
+                    Comments = new List<BookChildComment>()
+                    {
+                        new BookChildComment()
+                        {
+                            PredictedRating = 1f,
+                            Comments = Enumerable.Empty<BookChildComment>()
+                        }
+                    }
+                },
+                new BookRootComment()
+                {
+                    PredictedRating = 1f,
+                    Comments = new List<BookChildComment>()
+                    {
+                        new BookChildComment()
+                        {
+                            PredictedRating = 1f,
+                            Comments = new List<BookChildComment>()
+                            {
+                                new BookChildComment()
+                                {
+                                    PredictedRating = 1f,
+                                    Comments = Enumerable.Empty<BookChildComment>()
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        #endregion
+        public void SetupMocks()
+        {
+            var bookRootComments = new List<BookRootComment>()
+            {
+                new BookRootComment(){ IsDeleted = false, PredictedRating = 5 },
+                new BookRootComment(){ IsDeleted = false, PredictedRating = 1}
+            }.AsEnumerable();
+            var comment = new BookRootComment() { Id = It.IsAny<string>() };
+            _mockRootRepository.Setup(m => m.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(comment);
+            _bookRepositoryMock.Setup(m => m.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(It.IsAny<Domain.RDBMS.Entities.Book>());
+            _mockRootRepository.Setup(m => m.FindManyAsync(root => root.BookId == It.IsAny<int>())).ReturnsAsync(bookRootComments);
+        }
 
         [SetUp]
         public void Setup()
@@ -32,9 +103,13 @@ namespace ApplicationTest.Services.Comment.Book
             _mockRootRepository = new Mock<IRootRepository<BookRootComment>>();
             _mockMapper = new Mock<ICommentOwnerMapper>();
             _bookRepositoryMock = new Mock<IRepository<Domain.RDBMS.Entities.Book>>();
-            _bookRootCommentService = new BookRootCommentService(_mockRootRepository.Object, _mockMapper.Object, _bookRepositoryMock.Object);
+            _sentimentService = new Mock<ISentimentAnalisysService>();
+            _bookRootCommentService = new BookRootCommentService(_mockRootRepository.Object, _mockMapper.Object, _bookRepositoryMock.Object, _sentimentService.Object);
+
+            SetupMocks();
         }
 
+        #region Get
         private IEnumerable<BookRootComment> GetTestCommentsEntities()
         {
             return new List<BookRootComment>()
@@ -180,6 +255,7 @@ namespace ApplicationTest.Services.Comment.Book
                 }
             };
         }
+        #endregion
 
         #region Update
 
@@ -347,6 +423,18 @@ namespace ApplicationTest.Services.Comment.Book
             result.Should().HaveCount(expectedDtos.Count());
         }
 
+        #endregion
+
+        #region Recursive Avarages
+        [Test]
+        public void GetAvaragePredictedRating_ModelValid_ReturnsAvarage()
+        {
+            var expected = _predictedRationAvarage;
+
+            var actual = _bookRootCommentService.GetAvaragePredictedRating(GetCommentTree());
+
+            actual.Should().Be(expected);
+        }
         #endregion
     }
 }

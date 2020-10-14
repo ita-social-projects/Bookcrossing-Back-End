@@ -13,6 +13,8 @@ namespace Application.Dto.Comment.Book
 
         public OwnerDto Owner { get; set; }
 
+        public float PredictedRating { get; set; }
+
         public bool IsDeleted { get; set; }
 
         public IEnumerable<ChildDto> Comments { get; set; }

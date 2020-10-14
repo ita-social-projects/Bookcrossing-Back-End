@@ -399,6 +399,12 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
+                    b.Property<float>("PredictedRating")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("predicted_rating")
+                        .HasColumnType("real")
+                        .HasDefaultValue(0f);
+
                     b.Property<string>("Publisher")
                         .HasColumnName("publisher")
                         .HasColumnType("nvarchar(150)")
@@ -438,6 +444,7 @@ namespace BookCrossingBackEnd.Migrations
                             DateAdded = new DateTime(2020, 10, 8, 17, 52, 30, 850, DateTimeKind.Local).AddTicks(7323),
                             LanguageId = 1,
                             Name = "Adventures of Junior",
+                            PredictedRating = 0f,
                             Rating = 0.0,
                             State = "Available",
                             UserId = 2,

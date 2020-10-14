@@ -12,6 +12,7 @@ namespace Domain.RDBMS.Entities
         public string Publisher { get; set; }
         public BookState? State { get; set; }
         public double Rating { get; set; }
+        public float PredictedRating { get; set; }
         public string Notice { get; set; }
         public string ImagePath { get; set; }
         public int LanguageId { get; set; }

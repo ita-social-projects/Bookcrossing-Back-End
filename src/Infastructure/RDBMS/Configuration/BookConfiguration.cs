@@ -28,6 +28,10 @@ namespace Infrastructure.RDBMS.Configuration
                 .HasColumnName("rating")
                 .HasDefaultValue(0);
 
+            builder.Property(e => e.PredictedRating)
+                .HasColumnName("predicted_rating")
+                .HasDefaultValue(0);
+
             builder.Property(e => e.Publisher)
                 .HasColumnName("publisher")
                 .HasMaxLength(150);
