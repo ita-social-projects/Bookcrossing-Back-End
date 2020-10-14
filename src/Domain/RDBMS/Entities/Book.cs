@@ -18,6 +18,7 @@ namespace Domain.RDBMS.Entities
         public int LanguageId { get; set; }
         public virtual Language Language { get; set; }
         public DateTime DateAdded { get; set; }
+        public int WishCount { get; set; }
         public string ISBN { get; set; }
         public virtual User User { get; set; }
         public virtual List<BookAuthor> BookAuthor { get; set; }

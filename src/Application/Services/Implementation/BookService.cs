@@ -144,8 +144,8 @@ namespace Application.Services.Implementation
             await _bookRepository.Update(book, bookDto.FieldMasks);
             if (bookDto.UserId != oldBook.UserId && bookDto.UserId != 0)
             {
-                oldBook.UserId = bookDto.UserId;
-                _bookRepository.Update(oldBook);
+                //oldBook.UserId = bookDto.UserId;
+                //_bookRepository.Update(oldBook);
 
                 var user = await _userLocationRepository.FindByIdAsync(oldBook.UserId.Value);
                 string emailMessageForUser = $" Administrator has successfully received your book '{oldBook.Name}'";
@@ -191,6 +191,7 @@ namespace Application.Services.Implementation
                 var queryBooksAtHome = GetFilteredQuery(_bookRepository.GetAll(), parameters, false);
                 query = query.Union(queryBooksAtHome);
             }
+
             if (parameters.SortableParams != null)
             {
                 query = query.OrderBy(parameters.SortableParams);
@@ -502,9 +503,14 @@ namespace Application.Services.Implementation
 
         private IQueryable<Book> GetFilteredQuery(IQueryable<Book> query, BookQueryParams parameters, bool byLocation = true)
         {
-            if (parameters.ShowAvailable == true)
+            if (parameters.BookStates != null)
             {
-                query = query.Where(b => b.State == BookState.Available);
+                var predicate = PredicateBuilder.New<Book>();
+                foreach (var state in parameters.BookStates)
+                {
+                    predicate = predicate.Or(g => g.State == state);
+                }
+                query = query.Where(predicate);
             }
             if (byLocation && parameters.Locations != null)
             {
@@ -537,11 +543,29 @@ namespace Application.Services.Implementation
                 var term = parameters.SearchTerm.Split(" ");
                 if (term.Length == 1)
                 {
-                    query = query.Where(x => x.Name.Contains(parameters.SearchTerm) || x.BookAuthor.Any(a => a.Author.LastName.Contains(term[term.Length - 1]) || a.Author.FirstName.Contains(term[0])));
+                    query = query.Where(
+                        x =>
+                            (x.ISBN != null && x.ISBN.Contains(parameters.SearchTerm)) ||
+                            x.Name.Contains(parameters.SearchTerm) ||
+                            x.BookAuthor.Any(
+                                a =>
+                                    a.Author.LastName.Contains(term[term.Length - 1]) ||
+                                    a.Author.FirstName.Contains(term[0])
+                            )
+                    );
                 }
                 else
                 {
-                    query = query.Where(x => x.Name.Contains(parameters.SearchTerm) || x.BookAuthor.Any(a => a.Author.LastName.Contains(term[term.Length - 1]) && a.Author.FirstName.Contains(term[0])));
+                    query = query.Where(
+                        x =>
+                            (x.ISBN != null && x.ISBN.Contains(parameters.SearchTerm)) ||
+                            x.Name.Contains(parameters.SearchTerm) ||
+                            x.BookAuthor.Any(
+                                a =>
+                                    a.Author.LastName.Contains(term[term.Length - 1]) &&
+                                    a.Author.FirstName.Contains(term[0])
+                            )
+                    );
                 }
             }
             if (parameters.Genres != null)

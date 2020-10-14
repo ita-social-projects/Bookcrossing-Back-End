@@ -149,7 +149,7 @@ namespace ApplicationTest.Services
                 Locations = new [] { 1 },
                 Genres = new[] { 1 },
                 SearchTerm = "Martin",
-                ShowAvailable = true
+                BookStates = new BookState[] { BookState.Requested}
             };
 
             var booksResult = await _bookService.GetAllAsync(query);
@@ -254,13 +254,13 @@ namespace ApplicationTest.Services
         }
 
         [Test]
-        public async Task GetAllBooks_WhenHasShowAvailableFalse_Returns_all_books()
+        public async Task GetAllBooks_WhenBookStatesIsNull_Returns_all_books()
         {
             var booksMock = GetPopulatedBooks().AsQueryable().BuildMock();
 
             _bookRepositoryMock.Setup(s => s.GetAll()).Returns(booksMock.Object);
 
-            var query = new BookQueryParams { Page = 1, PageSize = 10, ShowAvailable = false };
+            var query = new BookQueryParams { Page = 1, PageSize = 10, BookStates = null };
 
             var booksResult = await _bookService.GetAllAsync(query);
 
@@ -268,17 +268,19 @@ namespace ApplicationTest.Services
         }
 
         [Test]
-        public async Task GetAllBooks_WhenHasShowAvailableTrue_Returns_available_books()
+        [TestCase(2)]
+        public async Task GetAllBooks_WhenBookStatesIsNotNull_Returns_available_books(int expected)
         {
             var booksMock = GetPopulatedBooks().AsQueryable().BuildMock();
 
             _bookRepositoryMock.Setup(s => s.GetAll()).Returns(booksMock.Object);
 
-            var query = new BookQueryParams { Page = 1, PageSize = 10, ShowAvailable = true };
+            var query = new BookQueryParams { Page = 1, PageSize = 10, 
+                BookStates = new BookState[] { BookState.Available } };
 
             var booksResult = await _bookService.GetAllAsync(query);
 
-            booksResult.Page.Should().HaveCount(4);
+            booksResult.Page.Should().HaveCount(expected);
         }
 
         [Test]
@@ -388,12 +390,12 @@ namespace ApplicationTest.Services
                 {
                     Id = 1, BookGenre = new List<BookGenre> { genres[0], genres[1] },
                     BookAuthor = new List<BookAuthor> { authors[0] }, Language = languages[0], LanguageId = 1,
-                    Name = "CLR", State = BookState.Available, User = users[0], UserId = 1
+                    Name = "CLR", State = BookState.Requested, User = users[0], UserId = 1
                 },
                 new Book
                 {
                     Id = 2, BookGenre = new List<BookGenre> { genres[2] }, BookAuthor = new List<BookAuthor> { authors[1] },
-                    Name = "Test", Language = languages[1], LanguageId = 2, State = BookState.Available,
+                    Name = "Test", Language = languages[1], LanguageId = 2, State = BookState.Requested,
                     User = users[1], UserId = 2
                 },
                 new Book

@@ -37,21 +37,21 @@ namespace Application.Services.Implementation
             _bookRepository = bookRepository;
         }
 
-        public async Task<PieChartData> GetUserDonationsData(DateTime from)
+        public async Task<PieChartData> GetUserDonationsData(DateTime from, string language = "en")
         {
             var registeredBooks = (await _bookService.GetRegisteredAsync())
                 .Where(b => b.DateAdded >= from)
                 .Include(b => b.BookGenre)
                 .ThenInclude(b => b.Genre);
 
-            return TransformBookGenresToPieData(registeredBooks);
+            return TransformBookGenresToPieData(registeredBooks, language);
         }
 
-        public PieChartData GetUserReadData()
+        public PieChartData GetUserReadData(string language)
         {
             var readBooks = _bookService.GetAlreadyReadBooks();
             
-            return TransformBookGenresToPieData(readBooks);
+            return TransformBookGenresToPieData(readBooks, language);
         }
 
         public PieChartData GetUserMostReadLanguagesData()
@@ -137,8 +137,8 @@ namespace Application.Services.Implementation
             }
             DateTime to = query.To ?? DateTime.Today;
             var genres = query.Genres?.Length > 0
-                ? _genreRepository.GetAll().Where(g => query.Genres.Contains(g.Id)).Select(g => g.Name).ToList()
-                : _genreRepository.GetAll().Select(g => g.Name).ToList();
+                ? _genreRepository.GetAll().Where(g => query.Genres.Contains(g.Id)).Select(g => query.language == "en" ? g.Name : g.NameUk).ToList()
+                : _genreRepository.GetAll().Select(g => query.language == "en" ? g.Name : g.NameUk).ToList();
 
 
             var data = new Dictionary<string, List<int>>();
@@ -160,7 +160,7 @@ namespace Application.Services.Implementation
 
                         counts.Add(transitions
                             .Where(r => r.RequestDate.Year == currentYear)
-                            .Count(r => r.Book.BookGenre.Exists(g => g.Genre.Name == genre))
+                            .Count(r => r.Book.BookGenre.Exists(g => query.language == "en" ? g.Genre.Name == genre : g.Genre.NameUk == genre))
                         );
                     }
 
@@ -188,7 +188,7 @@ namespace Application.Services.Implementation
 
                         counts.Add(transitions
                             .Where(r => r.RequestDate.Year == current.Year && r.RequestDate.Month == current.Month)
-                            .Count(r => r.Book.BookGenre.Exists(g => g.Genre.Name == genre))
+                            .Count(r => r.Book.BookGenre.Exists(g => query.language == "en" ? g.Genre.Name == genre : g.Genre.NameUk == genre))
                         );
                     }
 
@@ -201,7 +201,7 @@ namespace Application.Services.Implementation
 
                         counts.Add(transitions
                             .Where(r => r.RequestDate.Year == to.Year && r.RequestDate.Month == to.Month)
-                            .Count(r => r.Book.BookGenre.Exists(g => g.Genre.Name == genre))
+                            .Count(r => r.Book.BookGenre.Exists(g => query.language == "en" ? g.Genre.Name == genre : g.Genre.NameUk == genre))
                         );
                     }
 
@@ -222,7 +222,7 @@ namespace Application.Services.Implementation
 
                         counts.Add(transitions
                             .Where(r => r.RequestDate.Date == current.Date)
-                            .Count(r => r.Book.BookGenre.Exists(g => g.Genre.Name == genre))
+                            .Count(r => r.Book.BookGenre.Exists(g => query.language == "en" ? g.Genre.Name == genre : g.Genre.NameUk == genre))
                         );
                     }
 
@@ -380,12 +380,13 @@ namespace Application.Services.Implementation
             return new StatisticsChartData(periods, data);
         }
 
-        protected PieChartData TransformBookGenresToPieData(IQueryable<Book> books)
+        protected PieChartData TransformBookGenresToPieData(IQueryable<Book> books, string language)
         {
             var booksGenres = books.SelectMany(
                 b => b.BookGenre,
                 (b, g) => new { Book = b, Genre = g.Genre });
-            var sortedGroups = booksGenres.GroupBy(b => b.Genre.Name)
+
+            var sortedGroups = booksGenres.GroupBy(b => language == "en" ? b.Genre.Name : b.Genre.NameUk)
                 .Select(b => new { Genre = b.Key, Count = b.Count() })
                 .OrderByDescending(g => g.Count)
                 .ToList();

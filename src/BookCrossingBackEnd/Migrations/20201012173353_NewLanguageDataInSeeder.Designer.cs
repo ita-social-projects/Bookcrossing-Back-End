@@ -4,14 +4,16 @@ using Infrastructure.RDBMS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookCrossingBackEnd.Migrations
 {
     [DbContext(typeof(BookCrossingContext))]
-    partial class BookCrossingContextModelSnapshot : ModelSnapshot
+    [Migration("20201012173353_NewLanguageDataInSeeder")]
+    partial class NewLanguageDataInSeeder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -399,12 +401,6 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<float>("PredictedRating")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("predicted_rating")
-                        .HasColumnType("real")
-                        .HasDefaultValue(0f);
-
                     b.Property<string>("Publisher")
                         .HasColumnName("publisher")
                         .HasColumnType("nvarchar(150)")
@@ -426,9 +422,6 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnName("user_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("WishCount")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("LanguageId");
@@ -441,14 +434,12 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            DateAdded = new DateTime(2020, 10, 8, 17, 52, 30, 850, DateTimeKind.Local).AddTicks(7323),
+                            DateAdded = new DateTime(2020, 10, 12, 20, 33, 51, 253, DateTimeKind.Local).AddTicks(5844),
                             LanguageId = 1,
                             Name = "Adventures of Junior",
-                            PredictedRating = 0f,
                             Rating = 0.0,
                             State = "Available",
-                            UserId = 2,
-                            WishCount = 0
+                            UserId = 2
                         });
                 });
 

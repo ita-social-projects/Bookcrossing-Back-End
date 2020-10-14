@@ -12,13 +12,13 @@ namespace Application.Services.Interfaces
         /// </summary>
         /// <param name="from">Start date for search</param>
         /// <returns></returns>
-        Task<PieChartData> GetUserDonationsData(DateTime from);
+        Task<PieChartData> GetUserDonationsData(DateTime from, string language = "en");
 
         /// <summary>
         /// Retrieves data about the books read by the user
         /// </summary>
         /// <returns></returns>
-        PieChartData GetUserReadData();
+        PieChartData GetUserReadData(string language = "en");
 
         /// <summary>
         /// Retrieves data about languages of book read by user
