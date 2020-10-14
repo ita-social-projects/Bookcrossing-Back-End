@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Application.Dto.Comment.Book;
 using Application.Services.Implementation;
@@ -6,7 +8,9 @@ using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.NoSQL;
 using Domain.NoSQL.Entities;
+using Domain.RDBMS;
 using FluentAssertions;
+using Microsoft.CodeAnalysis.Differencing;
 using MongoDB.Driver;
 using Moq;
 using NUnit.Framework;
@@ -18,9 +22,82 @@ namespace ApplicationTest.Services.Comment.Book
     {
         private IBookChildCommentService _bookChildCommentService;
         private Mock<IChildRepository<BookRootComment, BookChildComment>> _childRepository;
+        private Mock<IRepository<Domain.RDBMS.Entities.Book>> _bookRepository;
         private Mock<IBookRootCommentService> _rootRepository;
+        private Mock<IRootRepository<BookRootComment>> _rootCommentRepository;
         private Mock<IMapper> _mapper;
         private BookChildCommentServiceProxy _bookChildCommentServiceProxy;
+        private Mock<ISentimentAnalisysService> _sentimentService;
+
+        #region DummyData
+        private const float _predictedRationAvarage = 1f;
+        public IEnumerable<IBookComment> GetCommentTree()
+        {
+            return new List<BookRootComment>()
+            {
+                new BookRootComment()
+                {
+                    PredictedRating = 1f,
+                    Comments = new List<BookChildComment>()
+                    {
+                        new BookChildComment()
+                        {
+                            PredictedRating = 1f,
+                            Comments = Enumerable.Empty<BookChildComment>()
+                        },
+                        new BookChildComment()
+                        {
+                            PredictedRating = 1f,
+                            Comments = Enumerable.Empty<BookChildComment>()
+                        }
+                    }
+                },
+                new BookRootComment()
+                {
+                    PredictedRating = 1f,
+                    Comments = new List<BookChildComment>()
+                    {
+                        new BookChildComment()
+                        {
+                            PredictedRating = 1f,
+                            Comments = Enumerable.Empty<BookChildComment>()
+                        }
+                    }
+                },
+                new BookRootComment()
+                {
+                    PredictedRating = 1f,
+                    Comments = new List<BookChildComment>()
+                    {
+                        new BookChildComment()
+                        {
+                            PredictedRating = 1f,
+                            Comments = new List<BookChildComment>()
+                            {
+                                new BookChildComment()
+                                {
+                                    PredictedRating = 1f,
+                                    Comments = Enumerable.Empty<BookChildComment>()
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        #endregion
+        public void SetupMocks()
+        {
+            var bookRootComments = new List<BookRootComment>()
+            {
+                new BookRootComment(){ IsDeleted = false, PredictedRating = 5 },
+                new BookRootComment(){ IsDeleted = false, PredictedRating = 1}
+            }.AsEnumerable();
+            var comment = new BookRootComment() { Id = It.IsAny<string>() };
+            _rootCommentRepository.Setup(m => m.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(comment);
+            _bookRepository.Setup(m => m.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(It.IsAny<Domain.RDBMS.Entities.Book>());
+            _rootCommentRepository.Setup(m => m.FindManyAsync(root => root.BookId == It.IsAny<int>())).ReturnsAsync(bookRootComments);
+        }
 
         [SetUp]
         public void Setup()
@@ -28,12 +105,24 @@ namespace ApplicationTest.Services.Comment.Book
             _childRepository = new Mock<IChildRepository<BookRootComment, BookChildComment>>();
             _rootRepository = new Mock<IBookRootCommentService>();
             _mapper = new Mock<IMapper>();
-            _bookChildCommentService = new BookChildCommentService(_childRepository.Object, _rootRepository.Object, _mapper.Object);
+            _bookRepository = new Mock<IRepository<Domain.RDBMS.Entities.Book>>();
+            _sentimentService = new Mock<ISentimentAnalisysService>();
+            _rootCommentRepository = new Mock<IRootRepository<BookRootComment>>();
+
+            _bookChildCommentService = new BookChildCommentService(_childRepository.Object, _rootRepository.Object, 
+                _mapper.Object, _bookRepository.Object, _sentimentService.Object,
+                 _rootCommentRepository.Object);
+
             _bookChildCommentServiceProxy = new BookChildCommentServiceProxy(
                 _childRepository.Object,
                 _rootRepository.Object,
-                _mapper.Object
+                _mapper.Object,
+                _sentimentService.Object,
+                _rootCommentRepository.Object,
+                _bookRepository.Object
             );
+
+            SetupMocks();
         }
 
         #region Update
@@ -129,13 +218,17 @@ namespace ApplicationTest.Services.Comment.Book
 
         #endregion
 
+        #region OtherFunctions
         [Test]
         public async Task SetAsDeleted_ReturnsNumberOfUpdatedObjects()
         {
             var bookChildCommentServiceMock = new BookChildCommentServiceProxy(
                 _childRepository.Object,
                 _rootRepository.Object,
-                _mapper.Object);
+                _mapper.Object,
+                _sentimentService.Object,
+                _rootCommentRepository.Object,
+                _bookRepository.Object);
 
             UpdateResult updateResult = new UpdateResult.Acknowledged(1, 1, 1);
 
@@ -165,7 +258,11 @@ namespace ApplicationTest.Services.Comment.Book
             var bookChildCommentServiceMock = new BookChildCommentServiceProxy(
                 _childRepository.Object,
                 _rootRepository.Object,
-                _mapper.Object);
+                _mapper.Object,
+                _sentimentService.Object,
+                _rootCommentRepository.Object,
+                _bookRepository.Object
+                );
             UpdateResult updateResult = new UpdateResult.Acknowledged(1, 1, 1);
 
             _childRepository.Setup(m => m.PullAsync(
@@ -250,15 +347,29 @@ namespace ApplicationTest.Services.Comment.Book
 
             (result != null).Should().Be(found);
         }
+        #endregion
 
+
+        [Test]
+        public void GetAvaragePredictedRating_ModelValid_ReturnsAvarage()
+        {
+            var expected = _predictedRationAvarage;
+
+            var actual = _bookChildCommentService.GetAvaragePredictedRating(GetCommentTree());
+
+            actual.Should().Be(expected);
+        }
 
         private class BookChildCommentServiceProxy : BookChildCommentService
         {
             public BookChildCommentServiceProxy(
                 IChildRepository<BookRootComment, BookChildComment> childCommentRepository,
                 IBookRootCommentService bookRootCommentService,
-                IMapper mapper
-            ) : base(childCommentRepository, bookRootCommentService, mapper)
+                IMapper mapper,
+                ISentimentAnalisysService sentimentAnalisys,
+                IRootRepository<BookRootComment> rootRepository,
+                IRepository<Domain.RDBMS.Entities.Book> repositoryBook
+            ) : base(childCommentRepository, bookRootCommentService, mapper, repositoryBook, sentimentAnalisys, rootRepository)
             {
             }
 

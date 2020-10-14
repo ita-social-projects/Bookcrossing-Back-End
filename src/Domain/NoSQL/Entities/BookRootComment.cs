@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace Domain.NoSQL.Entities
 {
     [BsonIgnoreExtraElements]
-    public class BookRootComment : IRootEntityBase
+    public class BookRootComment : IRootEntityBase, IBookComment
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -28,6 +28,8 @@ namespace Domain.NoSQL.Entities
 
         [BsonIgnoreIfNull]
         public IEnumerable<BookChildComment> Comments { get; set; }
+
+        public float PredictedRating { get; set; }
 
         public BookRootComment() { }
 

@@ -378,7 +378,7 @@ namespace BookCrossingBackEnd.Migrations
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("ISBN")
-                        .HasColumnType("nvarchar(17)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagePath")
                         .HasColumnName("imagepath")
@@ -398,6 +398,12 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnName("notice")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
+
+                    b.Property<float>("PredictedRating")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("predicted_rating")
+                        .HasColumnType("real")
+                        .HasDefaultValue(0f);
 
                     b.Property<string>("Publisher")
                         .HasColumnName("publisher")
@@ -432,9 +438,10 @@ namespace BookCrossingBackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            DateAdded = new DateTime(2020, 9, 28, 16, 25, 16, 370, DateTimeKind.Local).AddTicks(8555),
+                            DateAdded = new DateTime(2020, 10, 11, 17, 24, 18, 52, DateTimeKind.Local).AddTicks(2801),
                             LanguageId = 1,
                             Name = "Adventures of Junior",
+                            PredictedRating = 0f,
                             Rating = 0.0,
                             State = "Available",
                             UserId = 2
@@ -693,7 +700,7 @@ namespace BookCrossingBackEnd.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -705,7 +712,7 @@ namespace BookCrossingBackEnd.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Street")
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

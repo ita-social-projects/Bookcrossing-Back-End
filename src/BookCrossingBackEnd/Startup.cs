@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Application;
+using Application.Dto;
 using Application.Services.Implementation;
 using Application.Services.Interfaces;
 using Application.SignalR.Hubs;
@@ -21,6 +22,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.ML;
 
 namespace BookCrossingBackEnd
 {
@@ -112,6 +114,10 @@ namespace BookCrossingBackEnd
             .UseMemoryStorage()
             );
 
+            services.AddPredictionEnginePool<ModelInputDto, ModelOutputDto>()
+                .FromFile("SentimentAnalysisModel","MLModels/MLModel.zip",true);
+
+            services.AddScoped<ISentimentAnalisysService, SentimentAnalysisService>();
             services.AddScoped<IAphorismService, AphorismService>();
         }
 

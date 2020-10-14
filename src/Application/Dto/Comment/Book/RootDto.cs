@@ -13,6 +13,8 @@ namespace Application.Dto.Comment.Book
 
         public int Rating { get; set; }
 
+        public float PredictedRating { get; set; }
+
         public int BookId { get; set; }
 
         public bool IsDeleted { get; set; }

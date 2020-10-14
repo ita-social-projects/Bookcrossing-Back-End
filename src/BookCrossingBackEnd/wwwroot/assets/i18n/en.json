@@ -156,6 +156,7 @@
       "forgot-password": "Forgot password?"
     },
     "book": {
+      "aiscore": "AI score",
       "name": "Book name",
       "authors": "Authors",
       "genres": "Genres",
