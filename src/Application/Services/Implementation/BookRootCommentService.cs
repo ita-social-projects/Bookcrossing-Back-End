@@ -51,7 +51,7 @@ namespace Application.Services.Implementation
         {
             var book = await _bookRepository.FindByIdAsync(bookId);
             var comments = await _rootCommentRepository.FindManyAsync(root => root.BookId == bookId);
-            if (comments.Count() > 0)
+            if (comments.Any())
             {
                 book.PredictedRating = GetAvaragePredictedRating(comments);
                 _bookRepository.Update(book);
@@ -66,7 +66,7 @@ namespace Application.Services.Implementation
                     Text = insertDto.Text,
                     BookId = insertDto.BookId,
                     OwnerId = insertDto.OwnerId,
-                    Date = DateTime.UtcNow.ToString("s", CultureInfo.InvariantCulture), 
+                    Date = DateTime.UtcNow.ToString("O"), 
                     PredictedRating = await _sentimentAnalisysService.Predict(insertDto.Text)
                 });
 
@@ -119,7 +119,7 @@ namespace Application.Services.Implementation
                 { 
                     Text = updateDto.Text, 
                     PredictedRating = await _sentimentAnalisysService.Predict(updateDto.Text),
-                    Date = DateTime.UtcNow.ToString("s", CultureInfo.InvariantCulture)
+                    Date = DateTime.UtcNow.ToString("O")
                 });
 
             var comment = await _rootCommentRepository.FindByIdAsync(updateDto.Id);

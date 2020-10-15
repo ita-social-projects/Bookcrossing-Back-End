@@ -60,7 +60,7 @@ namespace Application.Services.Implementation
             var comment = await _rootCommentRepository.FindByIdAsync(rootId);
             var book = await _bookRepository.FindByIdAsync(comment.BookId);
             var comments = await _rootCommentRepository.FindManyAsync(root => root.BookId == book.Id);
-            if (comments.Count() > 0)
+            if (comments.Any())
             {
                 book.PredictedRating = GetAvaragePredictedRating(comments);
                 _bookRepository.Update(book);
@@ -78,7 +78,7 @@ namespace Application.Services.Implementation
                 {
                     Text = insertDto.Text,
                     OwnerId = insertDto.OwnerId,
-                    Date = DateTime.UtcNow.ToString("s", CultureInfo.InvariantCulture),
+                    Date = DateTime.UtcNow.ToString("O"),
                     PredictedRating = await _sentimentAnalisysService.Predict(insertDto.Text)
                 },
                 path,
@@ -113,7 +113,7 @@ namespace Application.Services.Implementation
             var result = (int)(await _childCommentRepository.SetAsync(
                 rootId,
                 new BookChildComment() { IsDeleted = true, Text = childComment.Text, Comments = children,
-                    Date = DateTime.UtcNow.ToString("s", CultureInfo.InvariantCulture)
+                    Date = DateTime.UtcNow.ToString("O")
                 },
                 path
             )).ModifiedCount;
@@ -168,7 +168,7 @@ namespace Application.Services.Implementation
 
             var updateResult = await _childCommentRepository.SetAsync(
                 rootId,
-                new BookChildComment() { Text = updateDto.Text, Comments = children, Date = DateTime.UtcNow.ToString("s", CultureInfo.InvariantCulture),
+                new BookChildComment() { Text = updateDto.Text, Comments = children, Date = DateTime.UtcNow.ToString("O"),
                     PredictedRating = await _sentimentAnalisysService.Predict(updateDto.Text) },
                 path);
 
