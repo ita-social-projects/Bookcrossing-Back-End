@@ -356,7 +356,7 @@
         "timespans": "Timespans",
         "request": {
           "autocancel": "Request autocancel",
-          "description": "Request autocancel' - is the time between book 'Request' and its automatic canceation. By changing this value - you change time period for users to receive book from book holder."
+          "description": "Request autocancel' - is the time between book 'Request' and its automatic cancelation. By changing this value - you change time period for users to receive book from book holder."
         },
         "reminder": {
           "forUser": "Reminder for user",
