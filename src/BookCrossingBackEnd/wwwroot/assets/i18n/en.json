@@ -353,7 +353,25 @@
       },
       "timespans": {
         "timespan": "Timespan",
-        "timespans": "Timespans"
+        "timespans": "Timespans",
+        "request": {
+          "autocancel": "Request autocancel",
+          "description": "Request autocancel' - is the time between book 'Request' and its automatic canceation. By changing this value - you change time period for users to receive book from book holder."
+        },
+        "reminder": {
+          "forUser": "Reminder for user",
+          "description": "'Reminder for user' - is the time between book's 'Request' and sending a reminder for the user about autocancelation."
+        },
+        "change": "Change",
+        "reset": "Reset",
+        "set-timespan": "Please, set the timespan for",
+        "successfully-changed": "You have successfully changed the time period for '{{name}}' from [{{oldTimePeriod}}] to [{{newTimePeriod}}]",
+        "error-changed": "Timespan for reminding must be less than timespan for autocancel",
+        "set": "Set",
+        "cancel": "Cancel",
+        "minutes": "Minutes",
+        "hours": "Hours",
+        "days": "Days"
       },
       "issues": {
         "issue": "Issue",
