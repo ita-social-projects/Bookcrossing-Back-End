@@ -131,7 +131,9 @@
       "dateadded": "Date added",
       "bookstitle": "Book's title",
       "sortby": "Sort by",
-      "airating":  "AI rating"
+      "airating": "AI score",
+      "wish": "Number of wishers",
+      "state": "States"
     },
     "requests": {
       "requests": "All requests",
@@ -457,6 +459,9 @@
       "lack-donation-stats": "You didn't donate any book yet",
       "lack-reading-stats": "You didn't read any book yet",
       "all-time": "All time"
-    } 
+    },
+    "footer": {
+      "contact": "Contact us"
+    }
   }
 }
