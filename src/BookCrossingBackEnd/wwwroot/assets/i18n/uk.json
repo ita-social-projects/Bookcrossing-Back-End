@@ -390,7 +390,9 @@
         "edit-button": "Відредагувати",
         "add-title": "Додати тип проблеми",
         "add-button": "Додати",
-        "find-by": "Пошук по"
+        "find-by": "Пошук по",
+        "searchHolder": "назві/автору/ISBN",
+        "select": "Обрати"
       },
       "suggestion-message": {
         "messages": "Повідомлення",
