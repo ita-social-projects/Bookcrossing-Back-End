@@ -387,7 +387,7 @@
         "delete-success": "Issue was deleted successfully!"
       },
       "issues-form": {
-        "edit-title": "Edit Issue",
+        "edit-title":"Edit Issue",
         "edit-button": "Update",
         "add-title": "Add Issue",
         "add-button": "Add",
