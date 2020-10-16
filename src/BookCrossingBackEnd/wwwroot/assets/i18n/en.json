@@ -387,11 +387,13 @@
         "delete-success": "Issue was deleted successfully!"
       },
       "issues-form": {
-        "edit-title": "Edit Issue",
+        "edit-title":"Edit Issue",
         "edit-button": "Update",
         "add-title": "Add Issue",
         "add-button": "Add",
-        "find-by": "Find by"
+        "find-by": "Find by",
+        "searchHolder": "Name/Author/ISBN",
+        "select": "Select"
       },
       "suggestion-message": {
         "messages": "Messages",
