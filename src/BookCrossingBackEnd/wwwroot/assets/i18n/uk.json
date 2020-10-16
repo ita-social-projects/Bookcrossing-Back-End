@@ -130,7 +130,8 @@
       "rating": "Рейтингом",
       "dateadded": "Датою запису",
       "bookstitle": "Назвою книги",
-      "sortby": "Сортувати за"
+      "sortby": "Сортувати за",
+      "airating": "AI рейтингом"
     },
     "requests": {
       "requests": "Всі реквести",

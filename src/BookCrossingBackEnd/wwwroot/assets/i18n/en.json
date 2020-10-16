@@ -130,7 +130,8 @@
       "rating": "Rating",
       "dateadded": "Date added",
       "bookstitle": "Book's title",
-      "sortby": "Sort by"
+      "sortby": "Sort by",
+      "airating":  "AI rating"
     },
     "requests": {
       "requests": "All requests",
