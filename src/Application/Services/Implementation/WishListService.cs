@@ -86,6 +86,7 @@ namespace Application.Services.Implementation
         public async Task RemoveWishAsync(int bookId)
         {
             var currentUserId = _userResolverService.GetUserId();
+            var book = await _bookRepository.FindByIdAsync(bookId);
 
             var wishForRemoving = await _wishRepository.FindByIdAsync(currentUserId, bookId);
             if (wishForRemoving == null)
@@ -95,6 +96,10 @@ namespace Application.Services.Implementation
 
             _wishRepository.Remove(wishForRemoving);
             await _wishRepository.SaveChangesAsync();
+
+            book.WishCount = await GetNumberOfBookWishersByBookIdAsync(bookId);
+            _bookRepository.Update(book);
+            await _bookRepository.SaveChangesAsync();
         }
 
         public async Task NotifyAboutAvailableBookAsync(int bookId)

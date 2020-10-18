@@ -198,11 +198,6 @@ namespace Application.Services.Implementation
             }
             var pagination = await _paginationService.GetPageAsync<BookGetDto, Book>(query, parameters);
 
-            foreach (var book in pagination.Page)
-            {
-                book.WishCount = await _wishListService.GetNumberOfBookWishersByBookIdAsync(book.Id);
-            }
-
             return pagination;
         }
 
