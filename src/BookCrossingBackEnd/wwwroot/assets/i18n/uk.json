@@ -41,7 +41,8 @@
     "validation-max-length": "Це поле не може мати більше ніж {{value}} символів",
     "validation-letter-symbol-pattern": "Тільки букви та сивмоли як:",
     "validation-are-acceptable": "є дозволеними",
-    "database-links": "На цей запис є посилання з інших таблиць"
+    "database-links": "На цей запис є посилання з інших таблиць",
+    "file-type-error":  "Фотографії мають бути у форматі jpg, png або jpeg"
   },
   "components": {
     "locationpopup": {
@@ -119,7 +120,7 @@
       "statuses": {
         "available": "Доступна",
         "request": "Зробити запит",
-        "requested": "Запитана",
+        "requested": "Подано запит",
         "cancelrequest": "Відмінити запит",
         "reading": "Читається",
         "inactive": "Неактивна",
@@ -131,7 +132,9 @@
       "dateadded": "Датою запису",
       "bookstitle": "Назвою книги",
       "sortby": "Сортувати за",
-      "airating": "AI рейтингом"
+      "airating": "AI оцінкою",
+      "wish": "К-тю бажаючих",
+      "state": "Стани"
     },
     "requests": {
       "requests": "Всі реквести",
@@ -166,7 +169,7 @@
       "availability": "Доступність",
       "available": "Доступна",
       "notAvailable": "Зайнята",
-      "request": "Зареквестити",
+      "request": "Зробити запит",
       "reviews": "Відгуки на книгу",
       "startreading": "Почати читати",
       "cancelrequest": "Відмінити запит",
@@ -185,7 +188,7 @@
       "statuses": {
         "available": "Доступна",
         "request": "Зробити запит",
-        "requested": "Запитана",
+        "requested": "Подано запит",
         "cancelrequest": "Відмінити запит",
         "reading": "Читається",
         "inactive": "Неактивна",
@@ -387,7 +390,7 @@
         "delete-success": "Проблема успішно видалена!"
       },
       "issues-form": {
-        "edit-title": "Редагування проблеми",
+        "edit-title":"Редагування проблеми",
         "edit-button": "Відредагувати",
         "add-title": "Додати тип проблеми",
         "add-button": "Додати",
@@ -442,7 +445,7 @@
     },
     "statistics": {
       "wishlist": "Доданих до списку побажань",
-      "request": "Запрошених",
+      "request": "Поданих запитів",
       "in-progress": "В процесі",
       "books-were-read": "Разів ваши книги були прочитані",
       "reading": "Статистика читання",
@@ -459,6 +462,9 @@
       "lack-donation-stats": "Ви не пожертвували жодної книги",
       "lack-reading-stats": "Ви не прочитали жодної книги",
       "all-time": "Весь період"
+    },
+    "footer": {
+      "contact": "Зв'яжіться з нами"
     }
   }
 }

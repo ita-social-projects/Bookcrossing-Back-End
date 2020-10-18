@@ -41,7 +41,8 @@
     "validation-max-length": "This field shouldn't be more than {{value}} characters",
     "validation-letter-symbol-pattern": "Only letters and symbols",
     "validation-are-acceptable": "are acceptable",
-    "database-links": "Other tables have links to this record"
+    "database-links": "Other tables have links to this record",
+    "file-type-error": "Acceptable image formats are jpg, png or jpeg"
   },
   "components": {
     "locationpopup": {
@@ -131,7 +132,9 @@
       "dateadded": "Date added",
       "bookstitle": "Book's title",
       "sortby": "Sort by",
-      "airating":  "AI rating"
+      "airating": "AI score",
+      "wish": "Number of wishers",
+      "state": "States"
     },
     "requests": {
       "requests": "All requests",
@@ -256,7 +259,7 @@
       "genres": {
         "genre": "Category",
         "genres": "Categories in English",
-        "genresUk": "Category in Ukrainian"
+        "genresUk": "Categories in Ukrainian"
       },
       "dashboard": {
         "data-range": "Data range",
@@ -387,7 +390,7 @@
         "delete-success": "Issue was deleted successfully!"
       },
       "issues-form": {
-        "edit-title": "Edit Issue",
+        "edit-title":"Edit Issue",
         "edit-button": "Update",
         "add-title": "Add Issue",
         "add-button": "Add",
@@ -459,6 +462,9 @@
       "lack-donation-stats": "You didn't donate any book yet",
       "lack-reading-stats": "You didn't read any book yet",
       "all-time": "All time"
-    } 
+    },
+    "footer": {
+      "contact": "Contact us"
+    }
   }
 }
