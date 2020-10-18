@@ -18,7 +18,8 @@ namespace BookCrossingBackEnd
                 .UseStartup<Startup>()
                 .ConfigureLogging((hostingContext, logging) =>
                 {
-
+                    logging.AddConsole();
+                    logging.AddAzureWebAppDiagnostics();
                     var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
                     var isDevelopment = environment == Environments.Development;
                     string appInsightKey;
