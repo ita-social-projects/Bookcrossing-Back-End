@@ -41,7 +41,8 @@
     "validation-max-length": "Це поле не може мати більше ніж {{value}} символів",
     "validation-letter-symbol-pattern": "Тільки букви та сивмоли як:",
     "validation-are-acceptable": "є дозволеними",
-    "database-links": "На цей запис є посилання з інших таблиць"
+    "database-links": "На цей запис є посилання з інших таблиць",
+    "file-type-error":  "Фотографії мають бути у форматі jpg, png або jpeg"
   },
   "components": {
     "locationpopup": {
