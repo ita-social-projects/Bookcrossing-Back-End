@@ -9,7 +9,7 @@ namespace Application.MapperProfilers
         public BookRootCommentProfile()
         {
             CreateMap<NoSqlEntities.BookRootComment, Dto.Comment.Book.RootDto>()
-                .ForMember(dto => dto.Date, opt => opt.MapFrom(entity => DateTime.ParseExact(entity.Date, "o", CultureInfo.InvariantCulture, DateTimeStyles.None).ToLocalTime()))
+                .ForMember(dto => dto.Date, opt => opt.MapFrom(entity => DateTime.ParseExact(entity.Date, "o", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind).ToLocalTime()))
              .ForMember(dto => dto.Comments, opt => opt.MapFrom(entity => entity.Comments))
              .ForMember(dto => dto.Owner, opt => opt.MapFrom(entity => new Dto.Comment.OwnerDto() { Id = entity.OwnerId }))
              .ReverseMap();

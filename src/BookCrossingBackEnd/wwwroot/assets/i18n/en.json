@@ -41,7 +41,8 @@
     "validation-max-length": "This field shouldn't be more than {{value}} characters",
     "validation-letter-symbol-pattern": "Only letters and symbols",
     "validation-are-acceptable": "are acceptable",
-    "database-links": "Other tables have links to this record"
+    "database-links": "Other tables have links to this record",
+    "file-type-error": "Acceptable image formats are jpg, png or jpeg"
   },
   "components": {
     "locationpopup": {
