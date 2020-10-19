@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <None Remove="Controllers\AController.cs~RF3109555.TMP" />
+    <None Remove="MLModels\MLModel.zip" />
     <None Remove="Settings.StyleCop" />
     <None Remove="StyleCop.Cache" />
     <None Remove="Templates\BookOwnership.html" />
@@ -19,6 +20,12 @@
   <ItemGroup>
     <Content Include="Templates\*">
       <CopyToPublishDirectory>always</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="MLModels\MLModel.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
@@ -60,7 +67,7 @@
     <Folder Include="wwwroot\assets\i18n\" />
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+<ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 
 </Project>
