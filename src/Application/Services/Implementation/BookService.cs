@@ -465,7 +465,18 @@ namespace Application.Services.Implementation
             }
 
             var bookRating = new BookRating(ratingQueryParams.BookId, ratingQueryParams.UserId, ratingQueryParams.Rating);
-            _bookRatingRepository.Add(bookRating);
+            var rating = await _bookRatingRepository.FindByIdAsync(ratingQueryParams.BookId, ratingQueryParams.UserId);
+
+            if (rating == null)
+            {
+                _bookRatingRepository.Add(bookRating);
+            }
+            else
+            {
+                rating.Rating = bookRating.Rating;
+                _bookRatingRepository.Update(rating);
+            }
+
             await _bookRatingRepository.SaveChangesAsync();
             var avgRating = _bookRatingRepository.GetAll()
                 .Where(b => b.BookId == ratingQueryParams.BookId)
