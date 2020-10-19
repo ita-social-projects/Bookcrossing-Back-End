@@ -412,7 +412,8 @@
         "status": "Статус",
         "delete-success": "Повідомлення видалено успішно",
         "status-changed": "Статус змінено успішно",
-        "message-sent-success": "Повідомлення відправлено успішно"
+        "message-sent-success": "Повідомлення відправлено успішно",
+        "write-your-message":  "Введіть ваше повідомлення"
       }
     },
     "contact-us": {

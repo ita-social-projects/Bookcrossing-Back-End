@@ -412,7 +412,8 @@
         "status": "Status",
         "delete-success": "Messages have been deleted successfully",
         "status-changed": "Status has been changed successfully",
-        "message-sent-success": "Message has been sent successfully"
+        "message-sent-success": "Message has been sent successfully",
+        "write-your-message": "Write your message"
       }
     },
     "contact-us": {
