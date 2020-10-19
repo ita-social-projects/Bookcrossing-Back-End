@@ -1,10 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using Domain.RDBMS.Attributes;
 using Domain.RDBMS.Entities;
-using Domain.RDBMS.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -336,9 +331,129 @@ namespace Infrastructure.RDBMS.Seeder
             builder.HasData(
                 new Genre
                 {
-                    Id = 1,
-                    Name = "Unknown",
-                    NameUk = "Невідомий"
+                    Id = 2,
+                    Name = "Art and Culture",
+                    NameUk = "Мистецтво"
+                },
+                new Genre
+                {
+                    Id = 3,
+                    Name = "Westerns",
+                    NameUk = "Вестерни"
+                },
+                new Genre
+                {
+                    Id = 4,
+                    Name = "Children Books",
+                    NameUk = "Дитячі книги"
+                },
+                new Genre
+                {
+                    Id = 5,
+                    Name = "Business",
+                    NameUk = "Бізнес"
+                },
+                new Genre
+                {
+                    Id = 6,
+                    Name = "Cooking",
+                    NameUk = "Кулінарія"
+                },
+                new Genre
+                {
+                    Id = 7,
+                    Name = "Education",
+                    NameUk = "Навчання"
+                },
+                new Genre
+                {
+                    Id = 8,
+                    Name = "Health",
+                    NameUk = "Здоров'я"
+                },
+                new Genre
+                {
+                    Id = 9,
+                    Name = "History",
+                    NameUk = "Історія"
+                },
+                new Genre
+                {
+                    Id = 10,
+                    Name = "IT",
+                    NameUk = "IT"
+                },
+                new Genre
+                {
+                    Id = 11,
+                    Name = "Nature",
+                    NameUk = "Природа"
+                },
+                new Genre
+                {
+                    Id = 12,
+                    Name = "Philosophy",
+                    NameUk = "Філософія"
+                },
+                new Genre
+                {
+                    Id = 13,
+                    Name = "Poetry",
+                    NameUk = "Поезія"
+                },
+                new Genre
+                {
+                    Id = 14,
+                    Name = "References",
+                    NameUk = "Посилання"
+                },
+                new Genre
+                {
+                    Id = 15,
+                    Name = "Religion",
+                    NameUk = "Релігія"
+                },
+                new Genre
+                {
+                    Id = 16,
+                    Name = "Romance",
+                    NameUk = "Романи"
+                },
+                new Genre
+                {
+                    Id = 17,
+                    Name = "Science",
+                    NameUk = "Наука"
+                },
+                new Genre
+                {
+                    Id = 18,
+                    Name = "Fantasy",
+                    NameUk = "Фантастика"
+                },
+                new Genre
+                {
+                    Id = 19,
+                    Name = "Sport",
+                    NameUk = "Спорт"
+                },
+                new Genre
+                {
+                    Id = 20,
+                    Name = "Travel",
+                    NameUk = "Подорожування"
+                },
+                new Genre
+                {
+                    Id = 21,
+                    Name = "Biographies",
+                    NameUk = "Біографія"
+                },
+                new Genre
+                {
+                    Id = 22,
+                    Name = "other",
+                    NameUk = "інше"
                 }
             );
         }
