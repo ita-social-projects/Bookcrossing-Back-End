@@ -13,10 +13,10 @@ namespace Application.Services.Implementation
     public class SentimentAnalysisService : ISentimentAnalisysService
     {
         private const string _dummyLabel = "0";
-        private PredictionEnginePool<ModelInputDto, ModelOutputDto> _engine;
-        public SentimentAnalysisService(PredictionEnginePool<ModelInputDto, ModelOutputDto> engine)
+        private PredictionEnginePool<ModelInputDto, ModelOutputDto> _enginePool;
+        public SentimentAnalysisService(PredictionEnginePool<ModelInputDto, ModelOutputDto> enginePool)
         {
-            _engine = engine;
+            _enginePool = enginePool;
         }
 
         private float ConvertToStar(ModelOutputDto modelOutputDto)
@@ -31,7 +31,8 @@ namespace Application.Services.Implementation
                 Label = _dummyLabel
             };
 
-            var predictionModel = await Task.Run(() => _engine.Predict("SentimentAnalysisModel", model));
+            var engine = _enginePool.GetPredictionEngine("SentimentAnalysisModel");
+            var predictionModel = await Task.Run(() => engine.Predict(model));
 
             var starPrediction = ConvertToStar(predictionModel);
             return starPrediction;
