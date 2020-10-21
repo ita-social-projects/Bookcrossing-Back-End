@@ -193,6 +193,7 @@ namespace ApplicationTest.Services
                 obj => obj.NotifyAsync(
                     _currentUser.Id,
                     $"The book '{_book.Name}' from your wish list is available now.",
+                    $"Книга '{_book.Name}' із вашого списку бажань стала тепер доступною",
                     _book.Id,
                     NotificationAction.Request),
                 Times.Once);
@@ -200,6 +201,7 @@ namespace ApplicationTest.Services
                 obj => obj.NotifyAsync(
                     _userWithEmailNotAllowed.Id,
                     $"The book '{_book.Name}' from your wish list is available now.",
+                    $"Книга '{_book.Name}' із вашого списку бажань стала тепер доступною",
                     _book.Id,
                     NotificationAction.Request),
                 Times.Once);

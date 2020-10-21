@@ -1,5 +1,6 @@
 {
   "common": {
+    "clear-all": "Очистити всі",
     "language": "Змінити мову",
     "yes": "Так",
     "no": "Ні",
@@ -390,7 +391,7 @@
         "delete-success": "Проблема успішно видалена!"
       },
       "issues-form": {
-        "edit-title":"Редагування проблеми",
+        "edit-title": "Редагування проблеми",
         "edit-button": "Відредагувати",
         "add-title": "Додати тип проблеми",
         "add-button": "Додати",
@@ -413,7 +414,7 @@
         "delete-success": "Повідомлення видалено успішно",
         "status-changed": "Статус змінено успішно",
         "message-sent-success": "Повідомлення відправлено успішно",
-        "write-your-message":  "Введіть ваше повідомлення"
+        "write-your-message": "Введіть ваше повідомлення"
       }
     },
     "contact-us": {
@@ -463,6 +464,12 @@
       "lack-donation-stats": "Ви не пожертвували жодної книги",
       "lack-reading-stats": "Ви не прочитали жодної книги",
       "all-time": "Весь період"
+    },
+    "notification": {
+      "open": "Відкрити",
+      "request": "Подати запит",
+      "start-reading": "Почати читати",
+      "reply": "Відповісти"
     },
     "footer": {
       "contact": "Зв'яжіться з нами"

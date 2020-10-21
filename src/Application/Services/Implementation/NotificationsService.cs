@@ -36,7 +36,7 @@ namespace Application.Services.Implementation
             _notificationHubContext = notificationHubContext;
         }
 
-        public async Task NotifyAsync(int userId, string message, int? bookId = null, NotificationAction action = NotificationAction.None)
+        public async Task NotifyAsync(int userId, string message, string messageUk, int? bookId = null, NotificationAction action = NotificationAction.None)
         {
             if (message == null)
             {
@@ -53,6 +53,7 @@ namespace Application.Services.Implementation
                 UserId = userId,
                 Message = message,
                 BookId = bookId,
+                MessageUk = messageUk,
                 Action = action
             };
 
