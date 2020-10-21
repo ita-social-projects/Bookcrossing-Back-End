@@ -52,6 +52,9 @@ namespace Application.Services.Implementation
                     $"You have requested '{message.BookName}'. Please click 'Start reading' if the book is " +
                     $"received otherwise the book request will be automatically canceled in " +
                     $"{autoCancelTimespan - reminderTimespan}",
+                    $"Ви подали запит на книгу '{message.BookName}'. Будь ласка, натисніть 'Почати читати', якщо отримали книгу," +
+                    $" в іншому випадку запит на книгу буде автоматично скасовано через " +
+                    $"{autoCancelTimespan - reminderTimespan}",
                     message.BookId,
                     NotificationAction.StartReading),
                 reminderTimespan);

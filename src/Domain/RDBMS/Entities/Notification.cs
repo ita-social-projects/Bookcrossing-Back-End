@@ -9,6 +9,8 @@ namespace Domain.RDBMS.Entities
 
         public string Message { get; set; }
 
+        public string MessageUk { get; set; }
+
         public int UserId { get; set; }
 
         public int? ReceiverUserId { get; set; }
