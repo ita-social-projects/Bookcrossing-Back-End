@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Linq;
@@ -176,14 +176,15 @@ namespace Application.Services.Implementation
 
             await transaction.CommitAsync();
 
-            SendMail(user, "�Your account was deleted from Bookcrossing app.");
+            SendMail(user, " Your account was deleted from Bookcrossing app.");
 
             var userIdAdmin = _userResolverService.GetUserId();
             var userAdmin = await _userRepository.FindByIdAsync(userIdAdmin);
 
             SendMail(userAdmin, $"The user '{user.FirstName}' was successfully deleted from the user's list");
-           
-            SendNotificationToUser(userIdAdmin, $"The user {user.FirstName} was successfully deleted from the user's list");
+            string emailMessageForAdmin = $"The user {user.FirstName} was successfully deleted from the user's list";
+            string emailMessageForAdminUk = $"Користувач {user.FirstName} був успішно видалений із списку користувачів";
+            SendNotificationToUser(userIdAdmin, emailMessageForAdmin, emailMessageForAdminUk);
         }
 
         public async void SendMail( User user, string message)
@@ -196,11 +197,12 @@ namespace Application.Services.Implementation
             await _emailSenderService.SendTheUserWasDeleted(emailMessageForDeletedUser, message );
         }
 
-        public async void SendNotificationToUser(int userIdAdmin, string message)
+        public async void SendNotificationToUser(int userIdAdmin, string message, string messageuk)
         {
             await _notificationsService.NotifyAsync(
               userIdAdmin,
               message,
+              messageuk,
               null,
               NotificationAction.None);
         }
@@ -226,14 +228,18 @@ namespace Application.Services.Implementation
 
             SendMail(user, "Your account was recovered in Bookcrossing app");
 
-            SendNotificationToUser(userId, $"Your account {user.FirstName}  was recovered in Bookcrossing app");
+            string emailMessageForUser = $"Your account {user.FirstName}  was recovered in Bookcrossing app";
+            string emailMessageForUserUk = $"Ваш обліковий запис у Bookcrossing {user.FirstName} відновлено";
+            SendNotificationToUser(userId, emailMessageForUser, emailMessageForUserUk);
 
             var userIdAdmin = _userResolverService.GetUserId();
             var userAdmin = await _userRepository.FindByIdAsync(userIdAdmin);
 
             SendMail(userAdmin, $"The user {user.FirstName} was successfully recovered in the user's list");
 
-            SendNotificationToUser(userIdAdmin, $"The user {user.FirstName} was successfully recovered in the user's list");
+            string emailMessageForAdmin = $"The user {user.FirstName} was successfully recovered in the user's list";
+            string emailMessageForAdminUk = $"Користувач {user.FirstName} був успішно відновлений у списку користувачів"; 
+            SendNotificationToUser(userIdAdmin, emailMessageForAdmin, emailMessageForAdminUk);
 
         }
 

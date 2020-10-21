@@ -114,6 +114,7 @@ namespace Application.Services.Implementation
                 await _notificationsService.NotifyAsync(
                     wish.User.Id,
                     $"The book '{wish.Book.Name}' from your wish list is available now.",
+                    $"Книга '{wish.Book.Name}' із вашого списку бажань стала тепер доступною",
                     wish.BookId,
                     NotificationAction.Request);
                 if (wish.User.IsEmailAllowed)

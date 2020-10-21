@@ -18,5 +18,7 @@ namespace Application.Dto
         public bool IsSeen { get; set; }
 
         public DateTime Date { get; set; }
+        public string MessageUk { get; set; }
+
     }
 }

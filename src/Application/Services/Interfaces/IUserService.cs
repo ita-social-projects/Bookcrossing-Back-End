@@ -49,6 +49,6 @@ namespace Application.Services.Interfaces
         Task<bool> ForbidEmailNotification(ForbidEmailDto email);
 
         public void SendMail(User user, string message);
-        public void SendNotificationToUser(int userIdAdmin, string message);
+        public void SendNotificationToUser(int userIdAdmin, string message, string messageUk);
     }
 }
