@@ -149,15 +149,17 @@ namespace Application.Services.Implementation
 
                 var user = await _userLocationRepository.FindByIdAsync(oldBook.UserId.Value);
                 string emailMessageForUser = $" Administrator has successfully received your book '{oldBook.Name}'";
+                string emailMessageForUserUk = $" Адміністратор успішно отримав Вашу книгу '{oldBook.Name}'";
                 await SendMailForOwnership(book, user, emailMessageForUser );
-                SendNotificationToUser(oldBook.UserId.Value, book.Id, emailMessageForUser);
+                SendNotificationToUser(oldBook.UserId.Value, book.Id, emailMessageForUser, emailMessageForUserUk);
 
                 var userId = _userResolverService.GetUserId();
                 var admin = await _userLocationRepository.FindByIdAsync(userId);
 
                 string emailMessageForAdmin = $"You became the current owner of the book '{oldBook.Name}'";
+                string emailMessageForAdminUk = $" Ви стали власником книги '{oldBook.Name}'";
                 await SendMailForOwnership(book, admin, emailMessageForAdmin );
-                SendNotificationToUser(userId, book.Id, emailMessageForAdmin );
+                SendNotificationToUser(userId, book.Id, emailMessageForAdmin, emailMessageForAdminUk);
             }
             var affectedRows = await _bookRepository.SaveChangesAsync();
             var isDatabaseUpdated = affectedRows > 0;
@@ -342,14 +344,19 @@ namespace Application.Services.Implementation
                 {
                     SendMailForActivated(book, book.User);
 
-                    SendNotificationToUser(book.User.Id, book.Id, $"The status of your book '{book.Name}' have successfully changed to 'Active'");
+                    string emailMessageForUser = $"The status of your book '{book.Name}' have successfully changed to 'Active'";
+                    string emailMessageForUserUk = $"Статус Вашої книги '{book.Name}' успішно змінено на 'Активна'";
+
+                    SendNotificationToUser(book.User.Id, book.Id, emailMessageForUser, emailMessageForUserUk);
 
                     var userId = _userResolverService.GetUserId();
-                    var user = await _userLocationRepository.FindByIdAsync(userId);
+                    var admin = await _userLocationRepository.FindByIdAsync(userId);
 
-                    SendMailForActivated(book, user);
+                    SendMailForActivated(book, admin);
 
-                    SendNotificationToUser(userId, book.Id, $"You have successfully change the book's status to 'Active' for '{book.Name}'");
+                    string emailMessageForAdmin = $"You have successfully change the book's status to 'Active' for '{book.Name}'";
+                    string emailMessageForAdminUk = $"Ви успішно змінили статут книги на 'Активна' для '{book.Name}'";
+                    SendNotificationToUser(userId, book.Id, emailMessageForAdmin, emailMessageForAdminUk);
                 }
                 await _wishListService.NotifyAboutAvailableBookAsync(book.Id);
             }
@@ -385,14 +392,18 @@ namespace Application.Services.Implementation
             {
                 SendMailForDeactivated(book,book.User);
 
-                SendNotificationToUser(book.User.Id,book.Id, $"The status of your book '{book.Name}' have successfully changed to Inactive");
+                string emailMessageForUser = $" The status of your book '{book.Name}' have successfully changed to 'Inactive'";
+                string emailMessageForUserUk = $" Статус вашої книги '{book.Name}' успішно змінено на 'Неактивна'";
+                SendNotificationToUser(book.User.Id,book.Id, emailMessageForUser, emailMessageForUserUk);
 
                 var userId = _userResolverService.GetUserId();
                 var user = await _userLocationRepository.FindByIdAsync(userId);
 
                 SendMailForDeactivated(book, user);
 
-                SendNotificationToUser(userId, book.Id, $"You have successfully change the book's status to Inactive for '{book.Name}'");
+                string emailMessageForAdmin = $"You have successfully change the book's status to 'Inactive' for '{ book.Name}'";
+                string emailMessageForAdminUk = $" Ви успішно  змінили статус книги на 'Неактивна' для '{ book.Name}'";
+                SendNotificationToUser(userId, book.Id, emailMessageForAdmin, emailMessageForAdminUk);
 ;
             }
             book.State = BookState.InActive;
@@ -439,11 +450,12 @@ namespace Application.Services.Implementation
             await _emailSenderService.SendForOwnershipAsync(emailMessageForBookActivated, emailMessage);
         }
 
-        public async void SendNotificationToUser(int userId, int bookId, string message)
+        public async void SendNotificationToUser(int userId, int bookId, string message, string messageUk)
         {
             await _notificationsService.NotifyAsync(
                userId,
                message,
+               messageUk,
                bookId,
                NotificationAction.Open);
         }

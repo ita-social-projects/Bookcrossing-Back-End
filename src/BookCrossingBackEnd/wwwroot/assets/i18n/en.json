@@ -1,5 +1,6 @@
 ﻿{
   "common": {
+    "clear-all": "Clear all",
     "language": "Change language",
     "yes": "Yes",
     "no": "No",
@@ -390,7 +391,7 @@
         "delete-success": "Issue was deleted successfully!"
       },
       "issues-form": {
-        "edit-title":"Edit Issue",
+        "edit-title": "Edit Issue",
         "edit-button": "Update",
         "add-title": "Add Issue",
         "add-button": "Add",
@@ -464,8 +465,14 @@
       "lack-reading-stats": "You didn't read any book yet",
       "all-time": "All time"
     },
+    "notification": {
+      "open": "Open",
+      "request": "Request",
+      "start-reading": "Start Reading",
+      "reply": "Reply"
+    },
     "footer": {
-      "contact": "Contact us"
+      "contact": "Contact us" 
     }
   }
 }

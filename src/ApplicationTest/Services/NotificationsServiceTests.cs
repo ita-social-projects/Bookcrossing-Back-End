@@ -72,7 +72,7 @@ namespace ApplicationTest.Services
         [Test]
         public async Task NotifyAsync_MessageArgumentIsNull_ThrowsArgumentNullException()
         {
-            await _service.Invoking(obj => obj.NotifyAsync(It.IsAny<int>(), null))
+            await _service.Invoking(obj => obj.NotifyAsync(It.IsAny<int>(), null, null))
                 .Should()
                 .ThrowAsync<ArgumentNullException>();
         }
@@ -81,7 +81,7 @@ namespace ApplicationTest.Services
         [TestCase(" \n\t\r\v")]
         public async Task NotifyAsync_MessageArgumentIsEmptyOrWhiteSpaces_ThrowsArgumentException(string message)
         {
-            await _service.Invoking(obj => obj.NotifyAsync(It.IsAny<int>(), message))
+            await _service.Invoking(obj => obj.NotifyAsync(It.IsAny<int>(), message, null))
                 .Should()
                 .ThrowAsync<ArgumentException>();
         }
@@ -100,6 +100,7 @@ namespace ApplicationTest.Services
             await _service.NotifyAsync(
                 _notification.UserId,
                 _notification.Message,
+                _notification.MessageUk,
                 _notification.BookId,
                 _notification.Action);
 

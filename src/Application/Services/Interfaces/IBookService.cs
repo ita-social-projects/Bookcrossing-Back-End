@@ -151,7 +151,7 @@ namespace Application.Services.Interfaces
         public void SendMailForDeactivated(Book book, User user);
 
 
-        public void SendNotificationToUser(int userId, int bookId, string message);
+        public void SendNotificationToUser(int userId, int bookId, string message, string messageUk);
 
         /// <summary>
         /// Get locations with books quantity
