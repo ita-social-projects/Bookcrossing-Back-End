@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Application.Dto;
 using Application.Dto.QueryParams;
@@ -30,7 +31,7 @@ namespace Application.Services.Implementation
 
         public async Task<List<LanguageDto>> GetAll()
         {
-            return _mapper.Map<List<LanguageDto>>(await _languageRepository.GetAll().ToListAsync());
+            return _mapper.Map<List<LanguageDto>>(await _languageRepository.GetAll().OrderBy(l => l.Name).ToListAsync());
         }
 
         public async Task<LanguageDto> Add(LanguagePostDto languageDto)
