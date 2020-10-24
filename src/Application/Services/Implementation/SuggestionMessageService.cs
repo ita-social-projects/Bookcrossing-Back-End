@@ -38,12 +38,19 @@ namespace Application.Services.Implementation
             return _mapper.Map<IEnumerable<SuggestionMessageDto>>(await _messageRepository.GetAll().AsNoTracking()
                                                                                    .Include(u => u.User)
                                                                                    .ThenInclude(r => r.Role)
+                                                                                   .OrderByDescending(m => m.Id)
                                                                                    .ToArrayAsync());
         }
 
         public async Task<PaginationDto<SuggestionMessageDto>> GetAll(FullPaginationQueryParams fullPaginationQuery)
         {   
-            var query = _messageRepository.GetAll().AsNoTracking().Include(u => u.User).ThenInclude(r => r.Role).IgnoreQueryFilters();
+            var query = _messageRepository
+                .GetAll().
+                AsNoTracking()
+                .Include(u => u.User)
+                .ThenInclude(r => r.Role)
+                .OrderByDescending(m => m.Id)
+                .IgnoreQueryFilters();
 
             return await _paginationService.GetPageAsync<SuggestionMessageDto, SuggestionMessage>(query, fullPaginationQuery);
         }
