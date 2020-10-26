@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Application.Dto;
 using Application.Dto.QueryParams;
@@ -29,7 +30,7 @@ namespace Application.Services.Implementation
 
         public async Task<List<GenreDto>> GetAll()
         {
-            return _mapper.Map<List<GenreDto>>(await _genreRepository.GetAll().ToListAsync());
+            return _mapper.Map<List<GenreDto>>(await _genreRepository.GetAll().OrderBy(g => g.Name).ToListAsync());
         }
 
         public async Task<GenreDto> Add(GenreDto genreDto)
