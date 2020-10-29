@@ -18,11 +18,6 @@ using NUnit.Framework;
 
 namespace ApplicationTest.Services
 {
-
-    //Get rid of mapper mock and use mapper object instead
-    //Get rid of unnesesary ToList() functions
-    //Replace List with IEnumerable
-
     class IssueServiceTest
     {
 
