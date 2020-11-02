@@ -40,6 +40,7 @@
     "validation-required": "This field is required",
     "validation-min-length": "This field has to be more than {{value}} characters",
     "validation-max-length": "This field shouldn't be more than {{value}} characters",
+    "validation-pattern": "Please, use correct pattern.",
     "validation-letter-symbol-pattern": "Only letters and symbols",
     "validation-are-acceptable": "are acceptable",
     "database-links": "Other tables have links to this record",
