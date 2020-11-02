@@ -119,6 +119,7 @@
       "categories": "Катерогії",
       "availableOnly": "В Наявності",
       "requestfromcompany": "Зробити запит у компанії",
+      "back": "Назад",
       "nobooksfound": "Не знайдено жодної книги",
       "statuses": {
         "available": "Доступна",

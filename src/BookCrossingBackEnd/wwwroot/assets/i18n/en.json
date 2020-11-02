@@ -119,6 +119,7 @@
       "categories": "Categories",
       "availableOnly": "Available Only",
       "requestfromcompany": "Request from company",
+      "back": "Back",
       "nobooksfound": "No books found",
       "statuses": {
         "available": "Available",
