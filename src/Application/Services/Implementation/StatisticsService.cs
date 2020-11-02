@@ -172,7 +172,6 @@ namespace Application.Services.Implementation
                 foreach (var genre in genres)
                 {
                     List<int> counts = new List<int>();
-
                     DateTime current = from;
                     for (; current <= to; current = current.AddMonths(1))
                     {
