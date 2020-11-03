@@ -1,6 +1,7 @@
 ﻿{
   "common": {
     "clear-all": "Clear all",
+    "mark-all-as-read": "Mark all as read",
     "language": "Change language",
     "yes": "Yes",
     "no": "No",
