@@ -358,7 +358,7 @@
           "activate": "Do you want to activate the book?",
           "deactivate": "Do you want to deactivate the book?",
           "share": "Do you want to share book? The book will be available for request!",
-          "donate": "You can donate some money for the project. It's optional.",
+          "donate": "You can donate some money for the project. It's optional",
           "start-reading": "Do you want to start reading? You will be shown as current owner.",
           "cancel-request": "Do you want to cancel request? Current owner will be notified about your cancelation.",
           "request-book": "Do you want to request this book? Current owner will be notified about your request.",
