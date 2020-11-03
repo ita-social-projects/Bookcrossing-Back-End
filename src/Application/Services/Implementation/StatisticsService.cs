@@ -398,7 +398,7 @@ namespace Application.Services.Implementation
                     .Where(b => b.Count >= lastElementCount)
                     .ToList();
                 int othersCount = sortedGroups.Skip(topBooks.Count()).Sum(b => b.Count);
-                topBooks.Add(new { Genre = "Others", Count = othersCount });
+                topBooks.Add(new { Genre = language == "en" ? "Others" : "Решта", Count = othersCount });
                 sortedGroups = topBooks;
             }
 
