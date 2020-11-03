@@ -1,6 +1,7 @@
 ﻿{
   "common": {
     "clear-all": "Clear all",
+    "mark-asread": "Mark all as read",
     "language": "Change language",
     "yes": "Yes",
     "no": "No",
@@ -43,6 +44,7 @@
     "validation-pattern": "Please, use correct pattern.",
     "validation-letter-symbol-pattern": "Only letters and symbols",
     "validation-are-acceptable": "are acceptable",
+    "validation-inrange": "This field has to be in range ({{min}}, {{max}})",
     "database-links": "Other tables have links to this record",
     "file-type-error": "Acceptable image formats are jpg, png or jpeg"
   },
@@ -118,6 +120,7 @@
       "categories": "Categories",
       "availableOnly": "Available Only",
       "requestfromcompany": "Request from company",
+      "back": "Back",
       "nobooksfound": "No books found",
       "statuses": {
         "available": "Available",
@@ -127,6 +130,16 @@
         "reading": "Reading",
         "inactive": "Inactive",
         "unavailable": "Unavailable"
+      },
+      "confirmation": {
+        "request": "Do you want to request this book? Current owner will be notified about your request.",
+        "cancel-request": "Do you want to cancel request? Current owner will be notified about your cancellation."
+      },
+      "message": {
+        "succesfully-requested": "Book is successfully requested. Please contact with current owner to receive a book",
+        "request-canceled": "Request is cancelled",
+        "cannot-addToWishlist": "Cannot add own book to the wish list",
+        "succesfully-requested-fromcompany": "Book is successfully requested from company!"
       }
     },
     "booksfilter": {

@@ -1,6 +1,7 @@
 {
   "common": {
     "clear-all": "Очистити всі",
+    "mark-asread": "Позначити всі як прочитані",
     "language": "Змінити мову",
     "yes": "Так",
     "no": "Ні",
@@ -43,6 +44,7 @@
     "validation-pattern": "Будь ласка, використовуйте правильний патерн.",
     "validation-letter-symbol-pattern": "Тільки букви та сивмоли як:",
     "validation-are-acceptable": "є дозволеними",
+    "validation-inrange": "Це поле повино бути в межах ({{min}}, {{max}})",
     "database-links": "На цей запис є посилання з інших таблиць",
     "file-type-error": "Фотографії мають бути у форматі jpg, png або jpeg"
   },
@@ -118,6 +120,7 @@
       "categories": "Катерогії",
       "availableOnly": "В Наявності",
       "requestfromcompany": "Зробити запит у компанії",
+      "back": "Назад",
       "nobooksfound": "Не знайдено жодної книги",
       "statuses": {
         "available": "Доступна",
@@ -127,7 +130,18 @@
         "reading": "Читається",
         "inactive": "Неактивна",
         "unavailable": "Недоступна"
+      },
+      "confirmation": {
+        "request": "Подати запит на цю книгу? Поточного власника буде повідомлено про ваш запит.",
+        "cancel-request": "Бажаєте скасувати запит? Поточного власника буде повідомлено про скасування Вашого запиту"
+      },
+      "message": {
+        "succesfully-requested": "Запит на книгу успішно подано. Для того, щоб її отримати, будь ласка, зв'яжіться із поточним власником книги.",
+        "request-canceled": "Запит скасовано",
+        "cannot-addToWishlist": "Неможливо додати власну книгу до списку бажань",
+        "succesfully-requested-fromcompany": "Запит у компанії на книгу успішно подано"
       }
+      
     },
     "booksfilter": {
       "rating": "Рейтингом",
