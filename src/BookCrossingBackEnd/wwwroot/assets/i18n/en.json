@@ -1,6 +1,7 @@
 ﻿{
   "common": {
     "clear-all": "Clear all",
+    "mark-all-as-read": "Mark all as read",
     "language": "Change language",
     "yes": "Yes",
     "no": "No",
@@ -40,8 +41,10 @@
     "validation-required": "This field is required",
     "validation-min-length": "This field has to be more than {{value}} characters",
     "validation-max-length": "This field shouldn't be more than {{value}} characters",
+    "validation-pattern": "Please, use correct pattern.",
     "validation-letter-symbol-pattern": "Only letters and symbols",
     "validation-are-acceptable": "are acceptable",
+    "validation-inrange": "This field has to be in range ({{min}}, {{max}})",
     "database-links": "Other tables have links to this record",
     "file-type-error": "Acceptable image formats are jpg, png or jpeg"
   },
@@ -117,6 +120,7 @@
       "categories": "Categories",
       "availableOnly": "Available Only",
       "requestfromcompany": "Request from company",
+      "back": "Back",
       "nobooksfound": "No books found",
       "statuses": {
         "available": "Available",
@@ -126,6 +130,16 @@
         "reading": "Reading",
         "inactive": "Inactive",
         "unavailable": "Unavailable"
+      },
+      "confirmation": {
+        "request": "Do you want to request this book? Current owner will be notified about your request.",
+        "cancel-request": "Do you want to cancel request? Current owner will be notified about your cancellation."
+      },
+      "message": {
+        "succesfully-requested": "Book is successfully requested. Please contact with current owner to receive a book",
+        "request-canceled": "Request is cancelled",
+        "cannot-addToWishlist": "Cannot add own book to the wish list",
+        "succesfully-requested-fromcompany": "Book is successfully requested from company!"
       }
     },
     "booksfilter": {
@@ -356,7 +370,22 @@
           "recover": "Do you want to recover the {{firstName}} {{lastName}}?",
           "take-ownership": "Do you want to take ownership of this book?",
           "activate": "Do you want to activate the book?",
-          "deactivate": "Do you want to deactivate the book?"
+          "deactivate": "Do you want to deactivate the book?",
+          "share": "Do you want to share book? The book will be available for request!",
+          "donate": "You can donate some money for the project. It's optional",
+          "start-reading": "Do you want to start reading? You will be shown as current owner.",
+          "cancel-request": "Do you want to cancel request? Current owner will be notified about your cancelation.",
+          "request-book": "Do you want to request this book? Current owner will be notified about your request.",
+          "make-available": "Do you want to make book available? The book will be available for request!"
+        },
+        "notifications": {
+          "share": "Your Book`s status changed to available.",
+          "start-reading": "Book’s owner has been changed.",
+          "cancel-request": "Request is cancelled.",
+          "request-book": "Book is successfully requested. Please contact with current owner to receive a book.",
+          "make-available": "Book`s status changed to available.",
+          "message-sent-succes": "Message is successfully sent",
+          "add-own-book-error": "Cannot add own book to the wish list"
         }
       },
       "timespans": {
