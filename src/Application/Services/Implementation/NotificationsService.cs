@@ -132,7 +132,8 @@ namespace Application.Services.Implementation
             var notification = new Notification
             {
                 UserId = currentUserId,
-                Message = message,
+                Message =  $"To {message}",
+                MessageUk = $"До {message}",
                 Action = (NotificationAction)0
             };
 

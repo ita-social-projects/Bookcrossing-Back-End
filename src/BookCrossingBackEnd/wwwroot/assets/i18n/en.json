@@ -2,6 +2,7 @@
   "common": {
     "clear-all": "Clear all",
     "mark-all-as-read": "Mark all as read",
+    "by": "by",
     "language": "Change language",
     "yes": "Yes",
     "no": "No",
