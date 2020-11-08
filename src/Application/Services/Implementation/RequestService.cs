@@ -374,7 +374,7 @@ namespace Application.Services.Implementation
             await _notificationsService.NotifyAsync(
                 request.User.Id,
                 $"Your request for book '{request.Book.Name}' was canceled.",
-                "Ваш запит щодо книги  '{request.Book.Name}' скасовано",
+                $"Ваш запит щодо книги  '{request.Book.Name}' скасовано",
                 request.BookId,
                 NotificationAction.Open);
 
