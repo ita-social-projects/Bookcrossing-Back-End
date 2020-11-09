@@ -77,7 +77,8 @@
         "locationUpdate": "Home location succesfuly updated.",
         "homeLocationUpdate": "Congrats! Now your location is set to home.",
         "officeLocationUpdate": "Congrats! Now your location is set to office.",
-        "cancelDialog": "Are you sure you want to cancel?"
+        "cancelDialog": "Are you sure you want to cancel?",
+        "validation-error": "This field cannot contain numbers and special symbols and numbers"
       },
       "picker": {
         "pick": "Pick",
