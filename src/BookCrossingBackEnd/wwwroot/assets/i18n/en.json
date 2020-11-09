@@ -210,7 +210,8 @@
         "inactive": "Inactive",
         "unavailable": "Unavailable"
       },
-      "notice": "Notice"
+      "notice": "Notice",
+      "blank-message": "Please, type your message"
     },
     "password": {
       "reset-error": "An error occurred while changing the password!",
