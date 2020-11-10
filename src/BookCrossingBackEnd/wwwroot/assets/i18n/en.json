@@ -2,6 +2,7 @@
   "common": {
     "clear-all": "Clear all",
     "mark-all-as-read": "Mark all as read",
+    "by": "by",
     "language": "Change language",
     "yes": "Yes",
     "no": "No",
@@ -209,7 +210,8 @@
         "inactive": "Inactive",
         "unavailable": "Unavailable"
       },
-      "notice": "Notice"
+      "notice": "Notice",
+      "blank-message": "Please, type your message"
     },
     "password": {
       "reset-error": "An error occurred while changing the password!",

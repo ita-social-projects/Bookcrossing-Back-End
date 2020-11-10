@@ -11,10 +11,11 @@ namespace Infrastructure.RDBMS.Configuration
             builder.ToTable("Notification");
 
             builder.Property(notification => notification.Message)
-                .HasMaxLength(512);
+                .IsRequired()
+                .HasMaxLength(580);
 
             builder.Property(notification => notification.MessageUk)
-                .HasMaxLength(512);
+                .HasMaxLength(580);
 
             builder.Property(notification => notification.IsRead)
                 .HasDefaultValue(false);

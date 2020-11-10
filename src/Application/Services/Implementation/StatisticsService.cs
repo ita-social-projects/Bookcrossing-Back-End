@@ -393,9 +393,8 @@ namespace Application.Services.Implementation
 
             if (sortedGroups.Count > PieChartDataLimit)
             {
-                var lastElementCount = sortedGroups.ElementAt(PieChartDataLimit - 1).Count;
                 var topBooks = sortedGroups
-                    .Where(b => b.Count >= lastElementCount)
+                    .Take(PieChartDataLimit)
                     .ToList();
                 int othersCount = sortedGroups.Skip(topBooks.Count()).Sum(b => b.Count);
                 topBooks.Add(new { Genre = language == "en" ? "Others" : "Решта", Count = othersCount });
