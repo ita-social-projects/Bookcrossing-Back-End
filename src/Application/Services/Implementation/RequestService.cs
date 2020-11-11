@@ -16,6 +16,7 @@ using Domain.RDBMS.Entities;
 using Domain.RDBMS.Enums;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using MimeKit;
 
 namespace Application.Services.Implementation
@@ -196,71 +197,7 @@ namespace Application.Services.Implementation
         /// <inheritdoc />
         public async Task<PaginationDto<RequestDto>> GetAsync(Expression<Func<Request, bool>> predicate, BookQueryParams parameters)
         {
-            var books = _bookRepository.GetAll();
-            var author = _bookAuthorRepository.GetAll();
-            if (parameters.SearchTerm != null)
-            {
-                var term = parameters.SearchTerm.Split(" ");
-                if (term.Length <= 1)
-                {
-                    author = author.Where(a =>
-                        a.Author.FirstName.Contains(term[0]) || a.Author.LastName.Contains(term[0]) || a.Book.Name.Contains(parameters.SearchTerm));
-                }
-                else
-                {
-                    author = author.Where(a =>
-                        a.Author.FirstName.Contains(term[0]) && a.Author.LastName.Contains(term[term.Length - 1]) || a.Book.Name.Contains(parameters.SearchTerm));
-                }
-            }
 
-            var genre = _bookGenreRepository.GetAll();
-            if (parameters.Genres != null)
-            {
-                var wherePredicate = PredicateBuilder.New<BookGenre>();
-                foreach (var id in parameters.Genres)
-                {
-                    var tempId = id;
-                    wherePredicate = wherePredicate.Or(g => g.Genre.Id == tempId);
-                }
-
-                genre = genre.Where(wherePredicate);
-            }
-
-            var lang = _bookLanguageRepository.GetAll();
-            if (parameters.Languages != null)
-            {
-                var wherePredicate = PredicateBuilder.New<Language>();
-                foreach (var id in parameters.Languages)
-                {
-                    var tempId = id;
-                    wherePredicate = wherePredicate.Or(g => g.Id == tempId);
-                }
-
-                lang = lang.Where(wherePredicate);
-            }
-
-            if (parameters.BookStates != null)
-            {
-                var statePredicate = PredicateBuilder.New<Book>();
-                foreach (var state in parameters.BookStates)
-                {
-                    statePredicate = statePredicate.Or(g => g.State == state);
-                }
-                books = books.Where(statePredicate);
-            }
-
-            var location = _userLocationRepository.GetAll();
-            if (parameters.Locations != null)
-            {
-                var wherePredicate = PredicateBuilder.New<UserRoom>();
-                foreach (var id in parameters.Locations)
-                {
-                    var tempId = id;
-                    wherePredicate = wherePredicate.Or(r => r.LocationId == tempId);
-                }
-
-                location = location.Where(wherePredicate);
-            }
 
             var query = _requestRepository.GetAll()
                 .Include(i => i.Book).ThenInclude(i => i.BookAuthor).ThenInclude(i => i.Author)
@@ -270,11 +207,113 @@ namespace Application.Services.Implementation
                 .Include(i => i.User).ThenInclude(i => i.UserRoom).ThenInclude(i => i.Location)
                 .Where(predicate);
 
+            if (parameters.BookStates != null)
+            {
+                var wherePredicate = PredicateBuilder.New<Request>();
+                foreach (var state in parameters.BookStates)
+                {
+                    wherePredicate = wherePredicate.Or(g => g.Book.State == state);
+                }
+                query = query.Where(wherePredicate);
+            }
+
+            if (parameters.SearchTerm != null)
+            {
+                var term = parameters.SearchTerm.Split(" ");
+                if (term.Length == 1)
+                {
+                    query = query.Where(
+                        x =>
+                            (x.Book.ISBN != null && x.Book.ISBN.Contains(parameters.SearchTerm)) ||
+                            x.Book.Name.Contains(parameters.SearchTerm) ||
+                            x.Book.BookAuthor.Any(
+                                a =>
+                                    a.Author.LastName.Contains(term[term.Length - 1]) ||
+                                    a.Author.FirstName.Contains(term[0])
+                            )
+                    );
+                }
+                else
+                {
+                    query = query.Where(
+                        x =>
+                            (x.Book.ISBN != null && x.Book.ISBN.Contains(parameters.SearchTerm)) ||
+                            x.Book.Name.Contains(parameters.SearchTerm) ||
+                            x.Book.BookAuthor.Any(
+                                a =>
+                                    a.Author.LastName.Contains(term[term.Length - 1]) &&
+                                    a.Author.FirstName.Contains(term[0])
+                            )
+                    );
+                }
+            }
+
+            if (parameters.Languages != null)
+            {
+                var wherePredicate = PredicateBuilder.New<Request>();
+                foreach (var id in parameters.Languages)
+                {
+                    wherePredicate = wherePredicate.Or(g => g.Book.Language.Id == id);
+                }
+                query = query.Where(wherePredicate);
+            }
+
+            if (parameters.Genres != null)
+            {
+                var wherePredicate = PredicateBuilder.New<Request>();
+                foreach (var id in parameters.Genres)
+                {
+                    var tempId = id;
+                    wherePredicate = wherePredicate.Or(g => g.Book.BookGenre.Any(g => g.Genre.Id == tempId));
+                }
+                query = query.Where(wherePredicate);
+            }
+
+            if (parameters.SortableParams != null)
+            {
+                query = SortRequests(query, parameters.SortableParams);
+            }
+
             return await _paginationService.GetPageAsync<RequestDto, Request>(query, parameters);
         }
 
-        /// <inheritdoc />
-        public async Task<bool> ApproveReceiveAsync(int requestId)
+        public IQueryable<Request> SortRequests(IQueryable<Request> requests, SortableParams sortableParams)
+        {
+            switch (sortableParams.OrderByField)
+            {
+                case "Rating":
+                    requests = sortableParams.OrderByAscending ?
+                        requests.OrderBy(r => r.Book.Rating):
+                        requests.OrderByDescending(r => r.Book.Rating);
+                    break;
+                case "DateAdded":
+                    requests = sortableParams.OrderByAscending ?
+                        requests.OrderBy(r => r.Book.DateAdded) :
+                        requests.OrderByDescending(r => r.Book.DateAdded);
+                    break;
+                case "Name":
+                    requests = sortableParams.OrderByAscending ?
+                        requests.OrderBy(r => r.Book.Name) :
+                        requests.OrderByDescending(r => r.Book.Name);
+                    break;
+                case "PredictedRating":
+                    requests = sortableParams.OrderByAscending ?
+                        requests.OrderBy(r => r.Book.PredictedRating) :
+                        requests.OrderByDescending(r => r.Book.PredictedRating);
+                    break;
+                case "WishCount":
+                    requests = sortableParams.OrderByAscending ?
+                        requests.OrderBy(r => r.Book.WishCount) :
+                        requests.OrderByDescending(r => r.Book.WishCount);
+                    break;
+            }
+
+            return requests;
+        }
+
+
+            /// <inheritdoc />
+            public async Task<bool> ApproveReceiveAsync(int requestId)
         {
             var request = await _requestRepository.GetAll()
                 .Include(x => x.Book)
