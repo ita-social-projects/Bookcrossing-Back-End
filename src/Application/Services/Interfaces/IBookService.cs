@@ -159,5 +159,7 @@ namespace Application.Services.Interfaces
         /// <returns></returns>
         IEnumerable<MapLocationDto> GetBooksQuantityOnLocations();
 
+        public IQueryable<Book> OrderByWithSwitch(BookQueryParams parameters, IQueryable<Book> query);
+
     }
 }
