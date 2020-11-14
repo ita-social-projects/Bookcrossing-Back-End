@@ -196,7 +196,10 @@ namespace Application.Services.Implementation
 
             if (parameters.SortableParams != null)
             {
+                // first option for book sorting
                 query = query.OrderBy(parameters.SortableParams);
+                // second option for book sorting
+                //query = OrderByWithSwitch(parameters, query);
             }
             var pagination = await _paginationService.GetPageAsync<BookGetDto, Book>(query, parameters);
 
@@ -625,6 +628,53 @@ namespace Application.Services.Implementation
                 .AsEnumerable()
                 .GroupBy(b => b.User.UserRoom.Location)
                 .Select(l => new MapLocationDto(_mapper.Map<Location, LocationDto>(l.Key), l.Count()));
+        }
+
+        public IQueryable<Book> OrderByWithSwitch(BookQueryParams parameters, IQueryable<Book> query)
+        {
+            if (parameters.SortableParams.OrderByAscending)
+            {
+                switch (parameters.SortableParams.OrderByField)
+                {
+                    case "Rating":
+                        query = query.OrderBy(r => r.Rating);
+                        break;
+                    case "DateAdded":
+                        query = query.OrderBy(r => r.DateAdded);
+                        break;
+                    case "Name":
+                        query = query.OrderBy(r => r.Name);
+                        break;
+                    case "WishCount":
+                        query = query.OrderBy(r => r.WishCount);
+                        break;
+                    case "PredictedRating":
+                        query = query.OrderBy(r => r.PredictedRating);
+                        break;
+                }
+            }
+            else
+            {
+                switch (parameters.SortableParams.OrderByField)
+                {
+                    case "Rating":
+                        query = query.OrderByDescending(r => r.Rating);
+                        break;
+                    case "DateAdded":
+                        query = query.OrderByDescending(r => r.DateAdded);
+                        break;
+                    case "Name":
+                        query = query.OrderByDescending(r => r.Name);
+                        break;
+                    case "WishCount":
+                        query = query.OrderByDescending(r => r.WishCount);
+                        break;
+                    case "PredictedRating":
+                        query = query.OrderByDescending(r => r.PredictedRating);
+                        break;
+                }
+            }
+            return query;
         }
     }
 }
