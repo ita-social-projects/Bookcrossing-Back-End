@@ -36,6 +36,7 @@
             "ua": "Ukrainian"
         }
     },
+    
   "common-errors": {
     "error-message": "Oops something went wrong!",
     "validation-required": "This field is required",
