@@ -91,7 +91,7 @@ namespace Application.Services.Implementation
             var wishForRemoving = await _wishRepository.FindByIdAsync(currentUserId, bookId);
             if (wishForRemoving == null)
             {
-                throw new InvalidOperationException($"Cannot delete book with id = {bookId} from current user's wish list, because there is no book with id = {bookId}");
+                return;
             }
 
             _wishRepository.Remove(wishForRemoving);
