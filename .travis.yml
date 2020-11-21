@@ -18,7 +18,7 @@ before_script:
 script:
     - dotnet sonarscanner begin /o:ita-social-projects /k:ita-social-projects-bookcrossing-back-end /d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.host.url=https://sonarcloud.io /d:sonar.exclusions=src/BookCrossingBackEnd/Migrations/**
     - dotnet build src/BookCrossingBackEnd.sln -c Release
-    - dotnet test src/ApplicationTest/ApplicationTest.csproj --logger:trx
+    - dotnet test src/ApplicationTest/ApplicationTest.csproj --logger:trx /p:CollectCoverage=true
     - dotnet sonarscanner end
  
 deploy:
