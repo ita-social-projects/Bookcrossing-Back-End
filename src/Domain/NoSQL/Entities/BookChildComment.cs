@@ -22,12 +22,11 @@ namespace Domain.NoSQL.Entities
         public int OwnerId { get; set; }
 
         public bool IsDeleted { get; set; } = false;
+        public float PredictedRating { get; set; }
 
         public IEnumerable<BookChildComment> Comments { get; set; }
 
-        public BookChildComment() { }
-
-        public float PredictedRating { get; set; }
+        public BookChildComment() { }        
 
         public BookChildComment(bool IsForInserting)
         {
