@@ -18,7 +18,7 @@ before_script:
 script:
     - dotnet sonarscanner begin /o:ita-social-projects /k:ita-social-projects-bookcrossing-back-end /d:sonar.cs.opencover.reportsPaths="src/ApplicationTest/coverage.opencover.xml" /d:sonar.host.url=https://sonarcloud.io /d:sonar.exclusions=src/BookCrossingBackEnd/Migrations/**
     - dotnet build src/BookCrossingBackEnd.sln -c Release
-    - dotnet test calculation.tests/calculation.tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+    - dotnet test src/ApplicationTest/ApplicationTest.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
     - dotnet sonarscanner end
  
 deploy:
