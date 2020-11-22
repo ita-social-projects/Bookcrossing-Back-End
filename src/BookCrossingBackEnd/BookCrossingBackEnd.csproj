@@ -23,6 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\MLModels\MLModel.zip" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.2" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.11" />
@@ -58,6 +62,10 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\assets\i18n\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\MLModels\MLModel.zip" />
   </ItemGroup>
 
 <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
