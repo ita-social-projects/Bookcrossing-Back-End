@@ -23,6 +23,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="MLModels\**" />
+    <Content Remove="MLModels\**" />
+    <EmbeddedResource Remove="MLModels\**" />
+    <EntityDeploy Remove="MLModels\**" />
+    <None Remove="MLModels\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.2" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.11" />
