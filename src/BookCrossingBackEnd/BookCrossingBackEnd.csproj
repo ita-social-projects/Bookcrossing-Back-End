@@ -23,11 +23,15 @@
   </ItemGroup>
 
   <ItemGroup>
+
+    <Content Remove="wwwroot\MLModels\MLModel.zip" />
+
     <Compile Remove="MLModels\**" />
     <Content Remove="MLModels\**" />
     <EmbeddedResource Remove="MLModels\**" />
     <EntityDeploy Remove="MLModels\**" />
     <None Remove="MLModels\**" />
+
   </ItemGroup>
 
   <ItemGroup>
@@ -66,6 +70,10 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\assets\i18n\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\MLModels\MLModel.zip" />
   </ItemGroup>
 
 <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>

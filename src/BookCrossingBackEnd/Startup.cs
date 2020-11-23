@@ -113,8 +113,10 @@ namespace BookCrossingBackEnd
             .UseDefaultTypeSerializer()
             .UseMemoryStorage()
             );
+
              services.AddPredictionEnginePool<ModelInputDto, ModelOutputDto>()
                 .FromFile("SentimentAnalysisModel","wwwroot/MLModels/MLModel.zip",true);
+
             services.AddScoped<ISentimentAnalisysService, SentimentAnalysisService>();
             services.AddScoped<IAphorismService, AphorismService>();
         }
