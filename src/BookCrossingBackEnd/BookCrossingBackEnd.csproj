@@ -23,7 +23,15 @@
   </ItemGroup>
 
   <ItemGroup>
+
     <Content Remove="wwwroot\MLModels\MLModel.zip" />
+
+    <Compile Remove="MLModels\**" />
+    <Content Remove="MLModels\**" />
+    <EmbeddedResource Remove="MLModels\**" />
+    <EntityDeploy Remove="MLModels\**" />
+    <None Remove="MLModels\**" />
+
   </ItemGroup>
 
   <ItemGroup>
