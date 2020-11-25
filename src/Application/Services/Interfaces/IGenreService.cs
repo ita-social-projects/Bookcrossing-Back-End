@@ -30,9 +30,9 @@ namespace Application.Services.Interfaces
         /// <summary>
         /// Update specified Genre
         /// </summary>
-        /// <param name="genre">Genre's DTO instance</param>
+        /// <param name="genreDto">Genre's DTO instance</param>
         /// <returns></returns>
-        Task<bool> Update(GenreDto genre);
+        Task<bool> Update(GenreDto genreDto);
 
         /// <summary>
         /// Remove genre from database
@@ -44,8 +44,8 @@ namespace Application.Services.Interfaces
         /// <summary>
         /// Create new genre and add it into Database
         /// </summary>
-        /// <param name="genre">NewGenre DTO instance</param>
+        /// <param name="genreDto">NewGenre DTO instance</param>
         /// <returns>Returns created Genre's DTO </returns>
-        Task<GenreDto> Add(GenreDto genre);
+        Task<GenreDto> Add(GenreDto genreDto);
     }
 }

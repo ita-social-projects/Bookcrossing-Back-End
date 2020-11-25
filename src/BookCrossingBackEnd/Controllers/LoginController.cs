@@ -14,11 +14,9 @@ namespace BookCrossingBackEnd.Controllers
     {
 
         private readonly ITokenService _tokenService;
-        private readonly IUserResolverService _userResolverService;
-        public LoginController(ITokenService tokenService, IUserResolverService userResolverService)
+        public LoginController(ITokenService tokenService)
         {
             _tokenService = tokenService;
-            _userResolverService = userResolverService;
         }
 
         /// <summary>

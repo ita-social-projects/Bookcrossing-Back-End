@@ -30,11 +30,6 @@ namespace Application.Services.Implementation
         private readonly IRepository<User> _userRepository;
         private readonly IPaginationService _paginationService;
         private readonly IHangfireJobScheduleService _hangfireJobScheduleService;
-        private readonly IRepository<BookGenre> _bookGenreRepository;
-        private readonly IRepository<Language> _bookLanguageRepository;
-        private readonly IRepository<BookAuthor> _bookAuthorRepository;
-        private readonly IRepository<UserRoom> _userLocationRepository;
-        private readonly IRootRepository<BookRootComment> _rootCommentRepository;
         private readonly IWishListService _wishListService;
         private readonly INotificationsService _notificationsService;
 
@@ -45,12 +40,7 @@ namespace Application.Services.Implementation
             IEmailSenderService emailSenderService,
             IRepository<User> userRepository,
             IPaginationService paginationService,
-            IRepository<Language> bookLanguageRepository,
             IHangfireJobScheduleService hangfireJobScheduleService,
-            IRepository<BookAuthor> bookAuthorRepository,
-            IRepository<BookGenre> bookGenreRepository,
-            IRepository<UserRoom> userLocationRepository,
-            IRootRepository<BookRootComment> rootCommentRepository,
             IWishListService wishListService,
             INotificationsService notificationsService)
         {
@@ -61,11 +51,6 @@ namespace Application.Services.Implementation
             _userRepository = userRepository;
             _paginationService = paginationService;
             _hangfireJobScheduleService = hangfireJobScheduleService;
-            _bookGenreRepository = bookGenreRepository;
-            _bookLanguageRepository = bookLanguageRepository;
-            _bookAuthorRepository = bookAuthorRepository;
-            _userLocationRepository = userLocationRepository;
-            _rootCommentRepository = rootCommentRepository;
             _wishListService = wishListService;
             _notificationsService = notificationsService;
         }
@@ -313,13 +298,13 @@ namespace Application.Services.Implementation
 
 
             /// <inheritdoc />
-            public async Task<bool> ApproveReceiveAsync(int requestId)
+            public async Task<bool> ApproveReceiveAsync(int id)
         {
             var request = await _requestRepository.GetAll()
                 .Include(x => x.Book)
                 .Include(x => x.User)
                 .Include(x => x.Owner)
-                .FirstOrDefaultAsync(x => x.Id == requestId);
+                .FirstOrDefaultAsync(x => x.Id == id);
             if (request == null)
             {
                 return false;
@@ -372,7 +357,7 @@ namespace Application.Services.Implementation
                 book.Id,
                 NotificationActions.Open);
 
-            await _hangfireJobScheduleService.DeleteRequestScheduleJob(requestId);
+            await _hangfireJobScheduleService.DeleteRequestScheduleJob(id);
             return affectedRows > 0;
         }
 

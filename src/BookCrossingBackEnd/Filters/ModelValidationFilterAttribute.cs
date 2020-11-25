@@ -5,12 +5,12 @@ namespace BookCrossingBackEnd.Filters
 {
     public class ModelValidationFilterAttribute : ActionFilterAttribute
     {
-        public override void OnActionExecuting(ActionExecutingContext actionContext)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var modelState = actionContext.ModelState;
+            var modelState = context.ModelState;
 
             if (!modelState.IsValid)
-                actionContext.Result = new BadRequestObjectResult(modelState);
+                context.Result = new BadRequestObjectResult(modelState);
         }
     }
 }

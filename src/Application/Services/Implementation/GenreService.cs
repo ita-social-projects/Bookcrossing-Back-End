@@ -33,10 +33,10 @@ namespace Application.Services.Implementation
             return _mapper.Map<List<GenreDto>>(await _genreRepository.GetAll().OrderBy(g => g.Name).ToListAsync());
         }
 
-        public async Task<PaginationDto<GenreDto>> GetAll(FullPaginationQueryParams parameters)
+        public async Task<PaginationDto<GenreDto>> GetAll(FullPaginationQueryParams fullPaginationQuery)
         {
             var query = _genreRepository.GetAll();
-            return await _paginationService.GetPageAsync<GenreDto, Genre>(query, parameters);
+            return await _paginationService.GetPageAsync<GenreDto, Genre>(query, fullPaginationQuery);
         }
 
         public async Task<GenreDto> Add(GenreDto genreDto)

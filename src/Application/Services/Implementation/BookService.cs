@@ -8,8 +8,6 @@ using Application.Dto.QueryParams;
 using Application.QueryableExtension;
 using Application.Services.Interfaces;
 using AutoMapper;
-using Domain.NoSQL;
-using Domain.NoSQL.Entities;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
 using Domain.RDBMS.Enums;
@@ -22,15 +20,11 @@ namespace Application.Services.Implementation
     public class BookService : IBookService
     {
         private readonly IRepository<Book> _bookRepository;
-        private readonly IRepository<BookAuthor> _bookAuthorRepository;
-        private readonly IRepository<BookGenre> _bookGenreRepository;
         private readonly IRepository<BookRating> _bookRatingRepository;
-        private readonly IRepository<Language> _bookLanguageRepository;
         private readonly IRepository<User> _userLocationRepository;
         private readonly IRepository<Request> _requestRepository;
         private readonly IUserResolverService _userResolverService;
         private readonly IPaginationService _paginationService;
-        private readonly IRootRepository<BookRootComment> _rootCommentRepository;
         private readonly IImageService _imageService;
         private readonly IMapper _mapper;
         private readonly IHangfireJobScheduleService _hangfireJobScheduleService;
@@ -40,16 +34,14 @@ namespace Application.Services.Implementation
 
 
 
-        public BookService(IRepository<Book> bookRepository, IMapper mapper, IRepository<BookAuthor> bookAuthorRepository, IRepository<BookGenre> bookGenreRepository,
-            IRepository<Language> bookLanguageRepository, IRepository<User> userLocationRepository, IPaginationService paginationService, IRepository<Request> requestRepository,
-            IUserResolverService userResolverService, IImageService imageService, IHangfireJobScheduleService hangfireJobScheduleService, IEmailSenderService emailSenderService,
-            IRootRepository<BookRootComment> rootCommentRepository, IWishListService wishListService, IRepository<BookRating> bookRatingRepository, INotificationsService notificationsService)
+        public BookService(IRepository<Book> bookRepository, IMapper mapper, IRepository<User> userLocationRepository, 
+            IPaginationService paginationService, IRepository<Request> requestRepository,
+            IUserResolverService userResolverService, IImageService imageService, 
+            IHangfireJobScheduleService hangfireJobScheduleService, IEmailSenderService emailSenderService,
+            IWishListService wishListService, IRepository<BookRating> bookRatingRepository, INotificationsService notificationsService)
         {
             _bookRepository = bookRepository;
-            _bookAuthorRepository = bookAuthorRepository;
-            _bookGenreRepository = bookGenreRepository;
             _bookRatingRepository = bookRatingRepository;
-            _bookLanguageRepository = bookLanguageRepository;
             _userLocationRepository = userLocationRepository;
             _requestRepository = requestRepository;
             _paginationService = paginationService;
@@ -58,7 +50,6 @@ namespace Application.Services.Implementation
             _userResolverService = userResolverService;
             _hangfireJobScheduleService = hangfireJobScheduleService;
             _emailSenderService = emailSenderService;
-            _rootCommentRepository = rootCommentRepository;
             _wishListService = wishListService;
             _notificationsService = notificationsService;
         }
@@ -144,9 +135,6 @@ namespace Application.Services.Implementation
             await _bookRepository.Update(book, bookDto.FieldMasks);
             if (bookDto.UserId != oldBook.UserId && bookDto.UserId != 0)
             {
-                //oldBook.UserId = bookDto.UserId;
-                //_bookRepository.Update(oldBook);
-
                 var user = await _userLocationRepository.FindByIdAsync(oldBook.UserId.Value);
                 string emailMessageForUser = $" Administrator has successfully received your book '{oldBook.Name}'";
                 string emailMessageForUserUk = $" Адміністратор успішно отримав Вашу книгу '{oldBook.Name}'";
@@ -614,6 +602,8 @@ namespace Application.Services.Implementation
                 .ThenInclude(x => x.Location)
                 .Include(x => x.Language);
         }
+
+
 
         public IEnumerable<MapLocationDto> GetBooksQuantityOnLocations()
         {

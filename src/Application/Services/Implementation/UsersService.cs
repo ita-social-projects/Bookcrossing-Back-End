@@ -197,12 +197,12 @@ namespace Application.Services.Implementation
             await _emailSenderService.SendTheUserWasDeleted(emailMessageForDeletedUser, message );
         }
 
-        public async void SendNotificationToUser(int userIdAdmin, string message, string messageuk)
+        public async void SendNotificationToUser(int userIdAdmin, string message, string messageUk)
         {
             await _notificationsService.NotifyAsync(
               userIdAdmin,
               message,
-              messageuk,
+              messageUk,
               null,
               NotificationActions.None);
         }
