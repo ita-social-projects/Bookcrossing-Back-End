@@ -42,6 +42,13 @@ namespace BookCrossingBackEnd.Controllers
             return Ok(await _genreService.GetAll());
         }
 
+        [HttpGet("paginated")]
+        public async Task<ActionResult<PaginationDto<GenreDto>>> GetAllGenres([FromQuery] FullPaginationQueryParams fullPaginationQuery)
+        {
+            _logger.LogInformation("Getting all paginated genres");
+            return await _genreService.GetAll(fullPaginationQuery);
+        }
+
 
         // PUT: api/Genre
         [HttpPut]
@@ -72,18 +79,12 @@ namespace BookCrossingBackEnd.Controllers
         {
             _logger.LogInformation("Delete genre {Id}", id);
             var genre = await _genreService.Remove(id);
-            if (genre == false)
+            if (!genre)
             {
                 _logger.LogWarning("Delete genre ({Id}) NOT FOUND", id);
                 return NotFound();
             }
             return Ok();
-        }
-        [HttpGet("paginated")]
-        public async Task<ActionResult<PaginationDto<GenreDto>>> GetAllGenres([FromQuery] FullPaginationQueryParams fullPaginationQuery)
-        {
-            _logger.LogInformation("Getting all paginated genres");
-            return await _genreService.GetAll(fullPaginationQuery);
         }
     }
 }

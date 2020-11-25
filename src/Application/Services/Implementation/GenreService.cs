@@ -33,6 +33,12 @@ namespace Application.Services.Implementation
             return _mapper.Map<List<GenreDto>>(await _genreRepository.GetAll().OrderBy(g => g.Name).ToListAsync());
         }
 
+        public async Task<PaginationDto<GenreDto>> GetAll(FullPaginationQueryParams parameters)
+        {
+            var query = _genreRepository.GetAll();
+            return await _paginationService.GetPageAsync<GenreDto, Genre>(query, parameters);
+        }
+
         public async Task<GenreDto> Add(GenreDto genreDto)
         {
             var genre = _mapper.Map<Genre>(genreDto);
@@ -57,12 +63,6 @@ namespace Application.Services.Implementation
             _genreRepository.Update(genre);
             var affectedRows = await _genreRepository.SaveChangesAsync();
             return affectedRows > 0;
-        }
-
-        public async Task<PaginationDto<GenreDto>> GetAll(FullPaginationQueryParams parameters)
-        {
-            var query = _genreRepository.GetAll();
-            return await _paginationService.GetPageAsync<GenreDto, Genre>(query, parameters);
         }
     }
 }

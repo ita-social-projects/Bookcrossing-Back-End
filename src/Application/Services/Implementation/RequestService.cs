@@ -121,13 +121,13 @@ namespace Application.Services.Implementation
                 $"Your book '{book.Name}' was requested by {user.FirstName} {user.LastName}",
                 $"Надійшов запит щодо вашої книги '{book.Name}' від  {user.FirstName} {user.LastName}",
                 book.Id,
-                NotificationAction.Open);
+                NotificationActions.Open);
             await _notificationsService.NotifyAsync(
                 user.Id,
                 $"The book '{book.Name}' successfully requested.",
                 $"Запит щодо книги '{book.Name}' успішно подано",
                 book.Id,
-                NotificationAction.Open);
+                NotificationActions.Open);
 
             var emailMessageForReceiveConfirmation = new RequestMessage()
             {
@@ -363,14 +363,14 @@ namespace Application.Services.Implementation
                 $"{request.User.FirstName} {request.User.LastName} has successfully received and started reading '{book.Name}'.",
                 $"Користувач {request.User.FirstName} {request.User.LastName} успішно отримав  '{book.Name} та розпочав процес читання",
                 book.Id,
-                NotificationAction.Open);
+                NotificationActions.Open);
 
             await _notificationsService.NotifyAsync(
                 request.User.Id,
                 $"You became a current owner of the book '{book.Name}'",
                 $"Ви стали поточним власником книги '{book.Name}'",
                 book.Id,
-                NotificationAction.Open);
+                NotificationActions.Open);
 
             await _hangfireJobScheduleService.DeleteRequestScheduleJob(requestId);
             return affectedRows > 0;
@@ -408,14 +408,14 @@ namespace Application.Services.Implementation
                 $"Your book '{request.Book.Name}' request was canceled.",
                 $"Ваш запит щодо книги  '{request.Book.Name}' скасовано",
                 request.BookId,
-                NotificationAction.Open);
+                NotificationActions.Open);
 
             await _notificationsService.NotifyAsync(
                 request.User.Id,
                 $"Your request for book '{request.Book.Name}' was canceled.",
                 $"Ваш запит щодо книги  '{request.Book.Name}' скасовано",
                 request.BookId,
-                NotificationAction.Open);
+                NotificationActions.Open);
 
             var book = await _bookRepository.FindByIdAsync(request.BookId);
             book.State = BookState.Available;

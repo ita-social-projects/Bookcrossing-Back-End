@@ -27,7 +27,7 @@ namespace BookCrossingBackEnd.Controllers
         /// <param name="model">This parameter receives email and password from form on client side</param>
         /// <returns>Returns JSON web token or http response code 401(Unauthorized)</returns>
         [HttpPost]
-        [LoginFilter]
+        [LoginFilterAttribute]
         public async Task<ActionResult<UserTokenDto>> Login([FromBody] LoginDto model)
         {
             var user = await _tokenService.VerifyUserCredentials(model);
@@ -55,7 +55,7 @@ namespace BookCrossingBackEnd.Controllers
         }
 
         [HttpPost("refresh")]
-        [LoginFilter]
+        [LoginFilterAttribute]
         public async Task<ActionResult<UserTokenDto>> Refresh([FromBody] TokenDto refreshTokenModel)
         {
             var refresh = await _tokenService.VerifyRefreshToken(refreshTokenModel.RefreshToken);

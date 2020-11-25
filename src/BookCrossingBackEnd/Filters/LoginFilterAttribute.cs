@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace BookCrossingBackEnd.Filters
 {
-    public class LoginFilter : Attribute, IExceptionFilter
+    public class LoginFilterAttribute : Attribute, IExceptionFilter
     {
         public void OnException(ExceptionContext context)
         {

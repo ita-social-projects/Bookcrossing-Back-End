@@ -13,7 +13,7 @@ namespace Application.Dto
 
         public int? BookId { get; set; }
 
-        public NotificationAction Action { get; set; }
+        public NotificationActions Action { get; set; }
 
         public bool IsSeen { get; set; }
 

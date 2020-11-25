@@ -36,7 +36,7 @@ namespace Application.Services.Implementation
             _notificationHubContext = notificationHubContext;
         }
 
-        public async Task NotifyAsync(int userId, string message, string messageUk, int? bookId = null, NotificationAction action = NotificationAction.None)
+        public async Task NotifyAsync(int userId, string message, string messageUk, int? bookId = null, NotificationActions action = NotificationActions.None)
         {
             if (message == null)
             {
@@ -115,7 +115,7 @@ namespace Application.Services.Implementation
             {
                 UserId = message.UserId,
                 Message = message.Message,
-                Action = (NotificationAction)4,
+                Action = (NotificationActions)4,
                 ReceiverUserId = currentUserId
             };
 
@@ -134,7 +134,7 @@ namespace Application.Services.Implementation
                 UserId = currentUserId,
                 Message =  $"To {message}",
                 MessageUk = $"До {message}",
-                Action = (NotificationAction)0
+                Action = (NotificationActions)0
             };
 
             _notificationsRepository.Add(notification);

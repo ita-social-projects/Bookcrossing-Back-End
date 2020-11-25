@@ -204,7 +204,7 @@ namespace Application.Services.Implementation
               message,
               messageuk,
               null,
-              NotificationAction.None);
+              NotificationActions.None);
         }
 
         public async Task RecoverDeletedUser(int userId)

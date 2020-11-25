@@ -17,7 +17,7 @@ namespace Domain.RDBMS.Entities
 
         public int? BookId { get; set; }
 
-        public NotificationAction Action { get; set; }
+        public NotificationActions Action { get; set; }
 
         public bool IsRead { get; set; }
 

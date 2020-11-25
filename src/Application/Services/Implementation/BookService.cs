@@ -454,7 +454,7 @@ namespace Application.Services.Implementation
                message,
                messageUk,
                bookId,
-               NotificationAction.Open);
+               NotificationActions.Open);
         }
 
         public async Task<int> GetNumberOfBooksInReadStatusAsync(int userId)

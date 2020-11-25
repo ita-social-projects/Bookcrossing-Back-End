@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Application.Dto;
+﻿using Application.Dto;
 using Application.Dto.QueryParams;
 using Application.QueryableExtension;
 using Application.Services.Interfaces;
@@ -11,6 +8,9 @@ using Domain.RDBMS.Entities;
 using Infrastructure.RDBMS;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Application.Services.Implementation
 {
