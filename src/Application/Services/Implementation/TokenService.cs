@@ -21,15 +21,13 @@ namespace Application.Services.Implementation
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
-        private readonly IMapper _mapper;
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<RefreshToken> _refreshTokenRepository;
         private readonly PasswordHasher<User> _passwordHasher;
 
-        public TokenService(IConfiguration configuration, IMapper mapper, IRepository<User> userRepository, IRepository<RefreshToken> refreshTokenRepository)
+        public TokenService(IConfiguration configuration, IRepository<User> userRepository, IRepository<RefreshToken> refreshTokenRepository)
         {
             _configuration = configuration;
-            _mapper = mapper;
             _userRepository = userRepository;
             _refreshTokenRepository = refreshTokenRepository;
             _passwordHasher = new PasswordHasher<User>();

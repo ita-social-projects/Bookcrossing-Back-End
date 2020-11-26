@@ -29,9 +29,9 @@ namespace Application.Services.Interfaces
         /// <summary>
         /// Update specified message
         /// </summary>
-        /// <param name="message">Message DTO instance</param>
+        /// <param name="messageDto">Message DTO instance</param>
         /// <returns></returns>
-        Task<bool> Update(SuggestionMessageDto message);
+        Task<bool> Update(SuggestionMessageDto messageDto);
 
         /// <summary>
         /// Remove message from database
@@ -43,8 +43,8 @@ namespace Application.Services.Interfaces
         /// <summary>
         /// Create new message and add it into Database
         /// </summary>
-        /// <param name="message">Message DTO instance</param>
+        /// <param name="messageDto">Message DTO instance</param>
         /// <returns>Returns inserted Message's ID</returns>
-        Task<int> Add(SuggestionMessageDto message);
+        Task<int> Add(SuggestionMessageDto messageDto);
     }
 }

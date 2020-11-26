@@ -30,9 +30,9 @@ namespace Application.Services.Interfaces
         /// <summary>
         /// Update specified Issue
         /// </summary>
-        /// <param name="issue">Issue's DTO instance</param>
+        /// <param name="issueDto">Issue's DTO instance</param>
         /// <returns></returns>
-        Task<bool> Update(IssueDto issue);
+        Task<bool> Update(IssueDto issueDto);
 
         /// <summary>
         /// Remove issue from database

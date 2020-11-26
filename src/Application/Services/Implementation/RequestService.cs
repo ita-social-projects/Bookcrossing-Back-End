@@ -30,11 +30,6 @@ namespace Application.Services.Implementation
         private readonly IRepository<User> _userRepository;
         private readonly IPaginationService _paginationService;
         private readonly IHangfireJobScheduleService _hangfireJobScheduleService;
-        private readonly IRepository<BookGenre> _bookGenreRepository;
-        private readonly IRepository<Language> _bookLanguageRepository;
-        private readonly IRepository<BookAuthor> _bookAuthorRepository;
-        private readonly IRepository<UserRoom> _userLocationRepository;
-        private readonly IRootRepository<BookRootComment> _rootCommentRepository;
         private readonly IWishListService _wishListService;
         private readonly INotificationsService _notificationsService;
 
@@ -45,12 +40,7 @@ namespace Application.Services.Implementation
             IEmailSenderService emailSenderService,
             IRepository<User> userRepository,
             IPaginationService paginationService,
-            IRepository<Language> bookLanguageRepository,
             IHangfireJobScheduleService hangfireJobScheduleService,
-            IRepository<BookAuthor> bookAuthorRepository,
-            IRepository<BookGenre> bookGenreRepository,
-            IRepository<UserRoom> userLocationRepository,
-            IRootRepository<BookRootComment> rootCommentRepository,
             IWishListService wishListService,
             INotificationsService notificationsService)
         {
@@ -61,11 +51,6 @@ namespace Application.Services.Implementation
             _userRepository = userRepository;
             _paginationService = paginationService;
             _hangfireJobScheduleService = hangfireJobScheduleService;
-            _bookGenreRepository = bookGenreRepository;
-            _bookLanguageRepository = bookLanguageRepository;
-            _bookAuthorRepository = bookAuthorRepository;
-            _userLocationRepository = userLocationRepository;
-            _rootCommentRepository = rootCommentRepository;
             _wishListService = wishListService;
             _notificationsService = notificationsService;
         }
@@ -121,13 +106,13 @@ namespace Application.Services.Implementation
                 $"Your book '{book.Name}' was requested by {user.FirstName} {user.LastName}",
                 $"Надійшов запит щодо вашої книги '{book.Name}' від  {user.FirstName} {user.LastName}",
                 book.Id,
-                NotificationAction.Open);
+                NotificationActions.Open);
             await _notificationsService.NotifyAsync(
                 user.Id,
                 $"The book '{book.Name}' successfully requested.",
                 $"Запит щодо книги '{book.Name}' успішно подано",
                 book.Id,
-                NotificationAction.Open);
+                NotificationActions.Open);
 
             var emailMessageForReceiveConfirmation = new RequestMessage()
             {
@@ -313,13 +298,13 @@ namespace Application.Services.Implementation
 
 
             /// <inheritdoc />
-            public async Task<bool> ApproveReceiveAsync(int requestId)
+            public async Task<bool> ApproveReceiveAsync(int id)
         {
             var request = await _requestRepository.GetAll()
                 .Include(x => x.Book)
                 .Include(x => x.User)
                 .Include(x => x.Owner)
-                .FirstOrDefaultAsync(x => x.Id == requestId);
+                .FirstOrDefaultAsync(x => x.Id == id);
             if (request == null)
             {
                 return false;
@@ -363,16 +348,16 @@ namespace Application.Services.Implementation
                 $"{request.User.FirstName} {request.User.LastName} has successfully received and started reading '{book.Name}'.",
                 $"Користувач {request.User.FirstName} {request.User.LastName} успішно отримав  '{book.Name} та розпочав процес читання",
                 book.Id,
-                NotificationAction.Open);
+                NotificationActions.Open);
 
             await _notificationsService.NotifyAsync(
                 request.User.Id,
                 $"You became a current owner of the book '{book.Name}'",
                 $"Ви стали поточним власником книги '{book.Name}'",
                 book.Id,
-                NotificationAction.Open);
+                NotificationActions.Open);
 
-            await _hangfireJobScheduleService.DeleteRequestScheduleJob(requestId);
+            await _hangfireJobScheduleService.DeleteRequestScheduleJob(id);
             return affectedRows > 0;
         }
 
@@ -408,14 +393,14 @@ namespace Application.Services.Implementation
                 $"Your book '{request.Book.Name}' request was canceled.",
                 $"Ваш запит щодо книги  '{request.Book.Name}' скасовано",
                 request.BookId,
-                NotificationAction.Open);
+                NotificationActions.Open);
 
             await _notificationsService.NotifyAsync(
                 request.User.Id,
                 $"Your request for book '{request.Book.Name}' was canceled.",
                 $"Ваш запит щодо книги  '{request.Book.Name}' скасовано",
                 request.BookId,
-                NotificationAction.Open);
+                NotificationActions.Open);
 
             var book = await _bookRepository.FindByIdAsync(request.BookId);
             book.State = BookState.Available;

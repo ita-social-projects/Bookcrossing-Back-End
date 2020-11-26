@@ -46,6 +46,14 @@ namespace BookCrossingBackEnd.Controllers
             return Ok(await _messageService.GetAll());
         }
 
+        [HttpGet("paginated")]
+        public async Task<ActionResult<PaginationDto<SuggestionMessageDto>>> GetAllMessages([FromQuery] FullPaginationQueryParams fullPaginationQuery)
+        {
+            _logger.LogInformation("Getting all paginated messages");
+
+            return Ok(await _messageService.GetAll(fullPaginationQuery));
+        }
+
         // PUT: api/SuggestionMessage
         [HttpPut]
         [Authorize(Roles = "Admin")]
@@ -88,14 +96,6 @@ namespace BookCrossingBackEnd.Controllers
             }
 
             return Ok();
-        }
-
-        [HttpGet("paginated")]
-        public async Task<ActionResult<PaginationDto<SuggestionMessageDto>>> GetAllMessages([FromQuery] FullPaginationQueryParams fullPaginationQuery)
-        {
-            _logger.LogInformation("Getting all paginated messages");
-
-            return Ok(await _messageService.GetAll(fullPaginationQuery));
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Domain.RDBMS.Entities;
-using System.Collections;
 
 namespace Application.Dto.QueryParams
 {

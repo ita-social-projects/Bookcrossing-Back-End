@@ -56,7 +56,7 @@ namespace Application.Services.Implementation
                     $" в іншому випадку запит на книгу буде автоматично скасовано через " +
                     $"{autoCancelTimespan - reminderTimespan}",
                     message.BookId,
-                    NotificationAction.StartReading),
+                    NotificationActions.StartReading),
                 reminderTimespan);
             _scheduleRepository.Add(new ScheduleJob { ScheduleId = notificationJobId, RequestId = message.RequestId });
             await _scheduleRepository.SaveChangesAsync();

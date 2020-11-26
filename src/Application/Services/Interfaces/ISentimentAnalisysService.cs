@@ -1,5 +1,4 @@
-﻿using Application.Dto;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Application.Services.Interfaces
 {

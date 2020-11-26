@@ -65,7 +65,7 @@ namespace BookCrossingBackEnd.Controllers
         public async Task<IActionResult> DeleteAphorismAsync(int id)
         {
             var aphorism = await _aphorismService.RemoveAphorismAsync(id);
-            if (aphorism == false)
+            if (!aphorism)
             {
                 return NotFound();
             }

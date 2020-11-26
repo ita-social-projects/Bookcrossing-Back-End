@@ -19,9 +19,9 @@ namespace Application.Services.Implementation
             _configuration = configuration;
         }
 
-        public async Task<string> UploadImage(IFormFile img)
+        public async Task<string> UploadImage(IFormFile image)
         {
-            if (img == null)
+            if (image == null)
             {
                 return null;
             }
@@ -32,12 +32,12 @@ namespace Application.Services.Implementation
             {
                 Directory.CreateDirectory(uploadsFolder);
             }
-            string uniqueFileName = Guid.NewGuid().ToString() + "_" + img.FileName;
+            string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
             string filePath = Path.Combine(uploadsFolder, uniqueFileName);
             var dbPath = Path.Combine(folderName, uniqueFileName);
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
-                await img.CopyToAsync(fileStream);
+                await image.CopyToAsync(fileStream);
             }
             return dbPath;
 

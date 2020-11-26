@@ -31,9 +31,9 @@ namespace Application.Services.Interfaces
         /// <summary>
         /// Update specified Author
         /// </summary>
-        /// <param name="author">Author's DTO instance</param>
+        /// <param name="authorDto">Author's DTO instance</param>
         /// <returns></returns>
-        Task<bool> Update(AuthorDto author);
+        Task<bool> Update(AuthorDto authorDto);
 
         /// <summary>
         /// Remove author from database
@@ -45,9 +45,9 @@ namespace Application.Services.Interfaces
         /// <summary>
         /// Create new author and add it into Database
         /// </summary>
-        /// <param name="author">Author DTO instance</param>
+        /// <param name="authorDto">Author DTO instance</param>
         /// <returns>Returns created Author's DTO </returns>
-        Task<AuthorDto> Add(AuthorDto author);
+        Task<AuthorDto> Add(AuthorDto authorDto);
 
         /// <summary>
         /// Merges several authors into one

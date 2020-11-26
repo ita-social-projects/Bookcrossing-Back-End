@@ -39,8 +39,6 @@ namespace Infrastructure.RDBMS.Configuration
             builder.HasOne(d => d.User)
                 .WithMany(p => p.RequestUser)
                 .HasForeignKey(d => d.UserId).OnDelete(DeleteBehavior.ClientSetNull);
-            ;
-
         }
     }
 }
