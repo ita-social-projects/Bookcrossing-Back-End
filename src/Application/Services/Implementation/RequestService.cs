@@ -6,17 +6,13 @@ using System.Threading.Tasks;
 using Application.Dto;
 using Application.Dto.Email;
 using Application.Dto.QueryParams;
-using Application.QueryableExtension;
 using Application.Services.Interfaces;
 using AutoMapper;
-using Domain.NoSQL;
-using Domain.NoSQL.Entities;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
 using Domain.RDBMS.Enums;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using MimeKit;
 
 namespace Application.Services.Implementation
@@ -149,7 +145,7 @@ namespace Application.Services.Implementation
                     .Include(i => i.Book).ThenInclude(i => i.BookGenre).ThenInclude(i => i.Genre)
                     .Include(i => i.Book).ThenInclude(i => i.Language)
                     .Include(i => i.Owner).ThenInclude(i => i.UserRoom).ThenInclude(i => i.Location)
-                    .Include(i => i.User).ThenInclude(i => i.UserRoom).ThenInclude(i => i.Location).Where(predicate).ToList()
+                    .Include(i => i.User).ThenInclude(i => i.UserRoom).ThenInclude(i => i.Location).Where(predicate).AsEnumerable()
                     .Last();
             }
 

@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Dto;
 using Application.Services.Interfaces;
-using AutoMapper;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
 using Microsoft.AspNetCore.Identity;

@@ -7,7 +7,7 @@ namespace Infrastructure.NoSQL
 {
     public class MongoContext
     {
-        private IMongoDatabase _database = null;
+        readonly IMongoDatabase _database = null;
 
         public MongoContext(IMongoSettings settings)
         {

@@ -15,8 +15,8 @@ namespace BookCrossingBackEnd.Controllers
     [ApiController]
     public class UsersController : Controller
     {
-        private IUserService _userService;
-        private IUserResolverService _userResolverService;
+        readonly IUserService _userService;
+        readonly IUserResolverService _userResolverService;
         private readonly ILogger _logger;
 
         public UsersController(IUserService userService, IUserResolverService userResolverService, ILogger<UsersController> logger)

@@ -1,6 +1,5 @@
 ﻿using Application.Dto;
 using Application.Dto.QueryParams;
-using Application.QueryableExtension;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.RDBMS;
