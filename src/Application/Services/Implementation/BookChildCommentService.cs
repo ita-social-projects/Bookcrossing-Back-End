@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using Application.Dto.Comment.Book;
+﻿using Application.Dto.Comment.Book;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.NoSQL;
@@ -11,6 +6,10 @@ using Domain.NoSQL.Entities;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
 using MongoDB.Driver;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Application.Services.Implementation
 {
@@ -42,7 +41,7 @@ namespace Application.Services.Implementation
             int count = 0;
             foreach (var comment in comments)
             {
-                if (comment.IsDeleted != true)
+                if (!comment.IsDeleted)
                 {
                     avarage += comment.PredictedRating;
                     count++;
@@ -233,7 +232,7 @@ namespace Application.Services.Implementation
                 return false;
             }
 
-            if (children.Any(c => c.IsDeleted == false))
+            if (children.Any(c => !c.IsDeleted))
             {
                 return true;
             }

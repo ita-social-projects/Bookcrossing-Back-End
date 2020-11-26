@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using Application.Dto.Comment.Book;
+﻿using Application.Dto.Comment.Book;
 using Application.Services.Interfaces;
 using Domain.NoSQL;
 using Domain.NoSQL.Entities;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
-using Org.BouncyCastle.Math.EC.Rfc7748;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Application.Services.Implementation
 {
@@ -34,7 +32,7 @@ namespace Application.Services.Implementation
             int count = 0;
             foreach (var comment in comments)
             {
-                if (comment.IsDeleted != true)
+                if (!comment.IsDeleted)
                 {
                     avarage += comment.PredictedRating;
                     count++;
@@ -94,7 +92,7 @@ namespace Application.Services.Implementation
         {
             var comment = await _rootCommentRepository.FindByIdAsync(id);
             int deletedCount = 0;
-            if (comment.Comments != null && comment.Comments.Any(c => c.IsDeleted == false))
+            if (comment.Comments != null && comment.Comments.Any(c => !c.IsDeleted))
             {
                 comment.IsDeleted = true;
                 var updateResult = await _rootCommentRepository.UpdateByIdAsync(id, comment);

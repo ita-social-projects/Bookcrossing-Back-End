@@ -24,6 +24,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.ML;
 
+
 namespace BookCrossingBackEnd
 {
     public class Startup
@@ -114,9 +115,8 @@ namespace BookCrossingBackEnd
             .UseMemoryStorage()
             );
 
-            services.AddPredictionEnginePool<ModelInputDto, ModelOutputDto>()
+             services.AddPredictionEnginePool<ModelInputDto, ModelOutputDto>()
                 .FromFile("SentimentAnalysisModel","MLModels/MLModel.zip",true);
-
             services.AddScoped<ISentimentAnalisysService, SentimentAnalysisService>();
             services.AddScoped<IAphorismService, AphorismService>();
         }

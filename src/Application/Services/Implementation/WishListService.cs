@@ -116,7 +116,7 @@ namespace Application.Services.Implementation
                     $"The book '{wish.Book.Name}' from your wish list is available now.",
                     $"Книга '{wish.Book.Name}' із вашого списку бажань стала тепер доступною",
                     wish.BookId,
-                    NotificationAction.Request);
+                    NotificationActions.Request);
                 if (wish.User.IsEmailAllowed)
                 {
                     await _emailSenderService.SendForWishBecameAvailable(

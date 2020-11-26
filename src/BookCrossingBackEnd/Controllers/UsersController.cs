@@ -41,15 +41,6 @@ namespace BookCrossingBackEnd.Controllers
             return Ok(users);
         }
 
-
-        [HttpGet("paginated")]
-        [Authorize]
-        public async Task<ActionResult<PaginationDto<UserDto>>> GetAllUsers([FromQuery] FullPaginationQueryParams fullPaginationQuery)
-        {
-            _logger.LogInformation("Getting all paginated users");
-            return await _userService.GetAllUsers(fullPaginationQuery);
-        }
-
         /// <summary>
         /// Get user by id 
         /// </summary>
@@ -64,6 +55,14 @@ namespace BookCrossingBackEnd.Controllers
             if (user == null)
                 return NotFound();
             return user;
+        }
+
+        [HttpGet("paginated")]
+        [Authorize]
+        public async Task<ActionResult<PaginationDto<UserDto>>> GetAllUsers([FromQuery] FullPaginationQueryParams fullPaginationQuery)
+        {
+            _logger.LogInformation("Getting all paginated users");
+            return await _userService.GetAllUsers(fullPaginationQuery);
         }
 
         // GET api/<controller>/5

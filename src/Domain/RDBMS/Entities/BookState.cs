@@ -2,10 +2,10 @@
 {
     public enum BookState
     {
-        Available,
-        Requested,
-        Reading,
-        InActive,
-        RequestedFromCompany
+        Available = 0,
+        Requested = 1,
+        Reading = 2,
+        InActive = 3,
+        RequestedFromCompany = 4
     }
 }

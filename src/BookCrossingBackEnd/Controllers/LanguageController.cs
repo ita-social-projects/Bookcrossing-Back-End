@@ -43,6 +43,13 @@ namespace BookCrossingBackEnd.Controllers
             return Ok(await _languageService.GetAll());
         }
 
+        [HttpGet("paginated")]
+        public async Task<ActionResult<PaginationDto<LanguageDto>>> GetAllLanguages([FromQuery] FullPaginationQueryParams fullPaginationQuery)
+        {
+            _logger.LogInformation("Getting all paginated languages");
+            return Ok(await _languageService.GetAll(fullPaginationQuery));
+        }
+
         // PUT: api/Language
         [HttpPut]
         [Authorize(Roles = "Admin")]
@@ -75,19 +82,12 @@ namespace BookCrossingBackEnd.Controllers
         {
             _logger.LogInformation("Delete language {Id}", id);
             var language = await _languageService.Remove(id);
-            if (language == false)
+            if (!language)
             {
                 _logger.LogWarning("Delete language ({Id}) NOT FOUND", id);
                 return NotFound();
             }
             return Ok();
-        }
-
-        [HttpGet("paginated")]
-        public async Task<ActionResult<PaginationDto<LanguageDto>>> GetAllLanguages([FromQuery] FullPaginationQueryParams fullPaginationQuery)
-        {
-            _logger.LogInformation("Getting all paginated languages");
-            return Ok(await _languageService.GetAll(fullPaginationQuery));
         }
     }
 }

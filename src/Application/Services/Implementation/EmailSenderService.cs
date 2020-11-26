@@ -45,99 +45,99 @@ namespace Application.Services.Implementation
             await _smtpClient.SendAsync(CreateEmailMessage(message), _emailConfig);
         }
         /// <inheritdoc />
-        public async Task SendThatBookWasReceivedToPreviousOwnerAsync(RequestMessage requestMessage)
+        public async Task SendThatBookWasReceivedToPreviousOwnerAsync(RequestMessage message)
         {
             var body = await GetMessageTemplateFromFile("RequestReceived.html");
 
-            body = body.Replace("{OWNER.NAME}", requestMessage.OwnerName);
-            body = body.Replace("{REQUEST.ID}", Convert.ToString(requestMessage.RequestId));
-            body = body.Replace("{BOOK.NAME}", requestMessage.BookName);
-            body = body.Replace("{USER.NAME}", requestMessage.UserName);
-            body = body.Replace("{UnsubscribeURL}", _unsubscribeUrl + requestMessage.OwnerAddress + "&number=" + CreateSecurityHash(requestMessage.OwnerAddress.ToString()));
+            body = body.Replace("{OWNER.NAME}", message.OwnerName);
+            body = body.Replace("{REQUEST.ID}", Convert.ToString(message.RequestId));
+            body = body.Replace("{BOOK.NAME}", message.BookName);
+            body = body.Replace("{USER.NAME}", message.UserName);
+            body = body.Replace("{UnsubscribeURL}", _unsubscribeUrl + message.OwnerAddress + "&number=" + CreateSecurityHash(message.OwnerAddress.ToString()));
 
-            var message = new Message(new List<string>() { requestMessage.OwnerAddress.ToString() },
-                $"Your book {requestMessage.BookName} was received!", body);
+            var sentMessage = new Message(new List<string>() { message.OwnerAddress.ToString() },
+                $"Your book {message.BookName} was received!", body);
 
-            await _smtpClient.SendAsync(CreateEmailMessage(message), _emailConfig);
+            await _smtpClient.SendAsync(CreateEmailMessage(sentMessage), _emailConfig);
         }
         /// <inheritdoc />
-        public async Task SendThatBookWasReceivedToNewOwnerAsync(RequestMessage requestMessage)
+        public async Task SendThatBookWasReceivedToNewOwnerAsync(RequestMessage message)
         {
             var body = await GetMessageTemplateFromFile("BookReceived.html");
 
-            body = body.Replace("{OWNER.NAME}", requestMessage.OwnerName);
-            body = body.Replace("{REQUEST.ID}", Convert.ToString(requestMessage.RequestId));
-            body = body.Replace("{BOOK.NAME}", requestMessage.BookName);
-            body = body.Replace("{UnsubscribeURL}", _unsubscribeUrl + requestMessage.OwnerAddress + "&number=" + CreateSecurityHash(requestMessage.OwnerAddress.ToString()));
+            body = body.Replace("{OWNER.NAME}", message.OwnerName);
+            body = body.Replace("{REQUEST.ID}", Convert.ToString(message.RequestId));
+            body = body.Replace("{BOOK.NAME}", message.BookName);
+            body = body.Replace("{UnsubscribeURL}", _unsubscribeUrl + message.OwnerAddress + "&number=" + CreateSecurityHash(message.OwnerAddress.ToString()));
 
-            var message = new Message(new List<string>() { requestMessage.OwnerAddress.ToString() },
-                $"Book {requestMessage.BookName} was received!", body);
+            var sentMessage = new Message(new List<string>() { message.OwnerAddress.ToString() },
+                $"Book {message.BookName} was received!", body);
 
-            await _smtpClient.SendAsync(CreateEmailMessage(message), _emailConfig);
+            await _smtpClient.SendAsync(CreateEmailMessage(sentMessage), _emailConfig);
         }
         /// <inheritdoc />
-        public async Task SendForCanceledRequestAsync(RequestMessage requestMessage)
+        public async Task SendForCanceledRequestAsync(RequestMessage message)
         {
             var body = await GetMessageTemplateFromFile("RequestCanceled.html");
 
-            body = body.Replace("{OWNER.NAME}", requestMessage.OwnerName);
-            body = body.Replace("{USER.NAME}", requestMessage.UserName);
-            body = body.Replace("{REQUEST.ID}", Convert.ToString(requestMessage.RequestId));
-            body = body.Replace("{BOOK.NAME}", requestMessage.BookName);
-            body = body.Replace("{UnsubscribeURL}", _unsubscribeUrl + requestMessage.OwnerAddress + "&number=" + CreateSecurityHash(requestMessage.OwnerAddress.ToString()));
+            body = body.Replace("{OWNER.NAME}", message.OwnerName);
+            body = body.Replace("{USER.NAME}", message.UserName);
+            body = body.Replace("{REQUEST.ID}", Convert.ToString(message.RequestId));
+            body = body.Replace("{BOOK.NAME}", message.BookName);
+            body = body.Replace("{UnsubscribeURL}", _unsubscribeUrl + message.OwnerAddress + "&number=" + CreateSecurityHash(message.OwnerAddress.ToString()));
 
-            var message = new Message(new List<string>() { requestMessage.OwnerAddress.ToString() },
-                $"Request for {requestMessage.BookName} was canceled!", body);
+            var sentMessage = new Message(new List<string>() { message.OwnerAddress.ToString() },
+                $"Request for {message.BookName} was canceled!", body);
 
-            await _smtpClient.SendAsync(CreateEmailMessage(message), _emailConfig);
+            await _smtpClient.SendAsync(CreateEmailMessage(sentMessage), _emailConfig);
         }
         /// <inheritdoc />
-        public async Task SendForBookDeactivatedAsync(RequestMessage requestMessage)
+        public async Task SendForBookDeactivatedAsync(RequestMessage message)
         {
             var body = await GetMessageTemplateFromFile("BookDeactivated.html");
 
-            body = body.Replace("{USER.NAME}", requestMessage.UserName);
-            body = body.Replace("{BOOK.ID}", Convert.ToString(requestMessage.BookId));
-            body = body.Replace("{BOOK.NAME}", requestMessage.BookName);
-            body = body.Replace("{UnsubscribeURL}", _unsubscribeUrl + requestMessage.UserAddress + "&number=" + CreateSecurityHash(requestMessage.UserAddress.ToString()));
+            body = body.Replace("{USER.NAME}", message.UserName);
+            body = body.Replace("{BOOK.ID}", Convert.ToString(message.BookId));
+            body = body.Replace("{BOOK.NAME}", message.BookName);
+            body = body.Replace("{UnsubscribeURL}", _unsubscribeUrl + message.UserAddress + "&number=" + CreateSecurityHash(message.UserAddress.ToString()));
 
-            var message = new Message(new List<string>() { requestMessage.UserAddress.ToString() },
-                $"Book {requestMessage.BookName} was deactivated!", body);
+            var sentMessage = new Message(new List<string>() { message.UserAddress.ToString() },
+                $"Book {message.BookName} was deactivated!", body);
 
-            await _smtpClient.SendAsync(CreateEmailMessage(message), _emailConfig);
+            await _smtpClient.SendAsync(CreateEmailMessage(sentMessage), _emailConfig);
         }
         /// <inheritdoc />
-        public async Task SendForBookActivatedAsync(RequestMessage requestMessage)
+        public async Task SendForBookActivatedAsync(RequestMessage message)
         {
             var body = await GetMessageTemplateFromFile("BookActivated.html");
 
-            body = body.Replace("{USER.NAME}", requestMessage.UserName);
-            body = body.Replace("{BOOK.ID}", Convert.ToString(requestMessage.BookId));
-            body = body.Replace("{BOOK.NAME}", requestMessage.BookName);
-            body = body.Replace("{UnsubscribeURL}", _unsubscribeUrl + requestMessage.UserAddress + "&number=" + CreateSecurityHash(requestMessage.UserAddress.ToString()));
+            body = body.Replace("{USER.NAME}", message.UserName);
+            body = body.Replace("{BOOK.ID}", Convert.ToString(message.BookId));
+            body = body.Replace("{BOOK.NAME}", message.BookName);
+            body = body.Replace("{UnsubscribeURL}", _unsubscribeUrl + message.UserAddress + "&number=" + CreateSecurityHash(message.UserAddress.ToString()));
 
-            var message = new Message(new List<string>() { requestMessage.UserAddress.ToString() },
-                $"Book {requestMessage.BookName} was activated!", body);
+            var sentMessage = new Message(new List<string>() { message.UserAddress.ToString() },
+                $"Book {message.BookName} was activated!", body);
 
-            await _smtpClient.SendAsync(CreateEmailMessage(message), _emailConfig);
+            await _smtpClient.SendAsync(CreateEmailMessage(sentMessage), _emailConfig);
         }
 
         /// <inheritdoc />
-        public async Task SendForRequestAsync(RequestMessage requestMessage)
+        public async Task SendForRequestAsync(RequestMessage message)
         {
             var body = await GetMessageTemplateFromFile("RequestEmail.html");
 
-            body = body.Replace("{OWNER.NAME}", requestMessage.OwnerName);
-            body = body.Replace("{USER.NAME}", requestMessage.UserName);
-            body = body.Replace("{REQUEST.ID}", Convert.ToString(requestMessage.RequestId));
-            body = body.Replace("{REQUEST.DATE}", requestMessage.RequestDate.ToString("MMMM dd, yyyy"));
-            body = body.Replace("{BOOK.NAME}", requestMessage.BookName);
-            body = body.Replace("{UnsubscribeURL}", _unsubscribeUrl + requestMessage.OwnerAddress + "&number=" + CreateSecurityHash(requestMessage.OwnerAddress.ToString()));
+            body = body.Replace("{OWNER.NAME}", message.OwnerName);
+            body = body.Replace("{USER.NAME}", message.UserName);
+            body = body.Replace("{REQUEST.ID}", Convert.ToString(message.RequestId));
+            body = body.Replace("{REQUEST.DATE}", message.RequestDate.ToString("MMMM dd, yyyy"));
+            body = body.Replace("{BOOK.NAME}", message.BookName);
+            body = body.Replace("{UnsubscribeURL}", _unsubscribeUrl + message.OwnerAddress + "&number=" + CreateSecurityHash(message.OwnerAddress.ToString()));
 
-            var message = new Message(new List<string>() { requestMessage.OwnerAddress.ToString() },
-                $"Request for {requestMessage.BookName}!", body);
+            var sentMessage = new Message(new List<string>() { message.OwnerAddress.ToString() },
+                $"Request for {message.BookName}!", body);
 
-            await _smtpClient.SendAsync(CreateEmailMessage(message), _emailConfig);
+            await _smtpClient.SendAsync(CreateEmailMessage(sentMessage), _emailConfig);
         }
 
         /// <inheritdoc />
@@ -225,17 +225,17 @@ namespace Application.Services.Implementation
             await _smtpClient.SendAsync(CreateEmailMessage(messageTitle), _emailConfig);
         }
 
-        public async Task SendForOwnershipAsync(RequestMessage requestMessage, string emailMessage)
+        public async Task SendForOwnershipAsync(RequestMessage message, string emailMessage)
         {
             var body = await GetMessageTemplateFromFile("BookOwnership.html");
 
-            body = body.Replace("{USER.NAME}", requestMessage.UserName);
+            body = body.Replace("{USER.NAME}", message.UserName);
             body = body.Replace("{MESSAGE}", emailMessage);
 
-            var message = new Message(new List<string>() { requestMessage.UserAddress.ToString() },
+            var sentMessage = new Message(new List<string>() { message.UserAddress.ToString() },
                 emailMessage, body);
 
-            await _smtpClient.SendAsync(CreateEmailMessage(message), _emailConfig);
+            await _smtpClient.SendAsync(CreateEmailMessage(sentMessage), _emailConfig);
         }
 
 

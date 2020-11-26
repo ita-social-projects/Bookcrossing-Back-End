@@ -35,7 +35,7 @@ namespace Infrastructure.RDBMS
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
+            //On configuring
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

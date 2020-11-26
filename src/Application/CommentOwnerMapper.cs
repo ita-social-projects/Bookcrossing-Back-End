@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Domain.NoSQL.Entities;
@@ -42,6 +40,8 @@ namespace Application
             }
             return rootDtos;
         }
+
+       
 
         public async Task<Dto.Comment.Book.RootDto> MapAsync(BookRootComment rootEntity)
         {

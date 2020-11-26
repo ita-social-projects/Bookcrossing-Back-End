@@ -54,7 +54,7 @@ namespace Infrastructure.RDBMS.Configuration
             builder.Property(e => e.IsEmailAllowed)
                .IsRequired().HasDefaultValue(1)
                .HasColumnName("email_allowed")
-               .HasColumnType("bit"); ;
+               .HasColumnType("bit"); 
 
             builder.Property(e => e.IsDeleted)
              .HasColumnName("isDeleted");

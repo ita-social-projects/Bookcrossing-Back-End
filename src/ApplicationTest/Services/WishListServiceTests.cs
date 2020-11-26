@@ -195,7 +195,7 @@ namespace ApplicationTest.Services
                     $"The book '{_book.Name}' from your wish list is available now.",
                     $"Книга '{_book.Name}' із вашого списку бажань стала тепер доступною",
                     _book.Id,
-                    NotificationAction.Request),
+                    NotificationActions.Request),
                 Times.Once);
             _notificationServiceMock.Verify(
                 obj => obj.NotifyAsync(
@@ -203,7 +203,7 @@ namespace ApplicationTest.Services
                     $"The book '{_book.Name}' from your wish list is available now.",
                     $"Книга '{_book.Name}' із вашого списку бажань стала тепер доступною",
                     _book.Id,
-                    NotificationAction.Request),
+                    NotificationActions.Request),
                 Times.Once);
         }
 

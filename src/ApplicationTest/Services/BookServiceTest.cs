@@ -25,15 +25,11 @@ namespace ApplicationTest.Services
         private IBookService _bookService;
         private Mock<IRepository<BookRating>> _bookRatingRepositoryMock;
         private Mock<IRepository<Book>> _bookRepositoryMock;
-        private Mock<IRepository<BookAuthor>> _bookAuthorRepositoryMock;
-        private Mock<IRepository<BookGenre>> _bookGenreRepositoryMock;
-        private Mock<IRepository<Language>> _bookLanguageRepositoryMock;
         private Mock<IRepository<User>> _userLocationServiceMock;
         private Mock<IUserResolverService> _userResolverServiceMock;
         private Mock<IRepository<Request>> _requestServiceMock;
         private Mock<IImageService> _imageServiceMock;
         private Mock<IEmailSenderService> _emailSenderServiceMock;
-        private Mock<IRootRepository<BookRootComment>> _rootCommentRepository;
         private Mock<IHangfireJobScheduleService> _hangfireJobScheduleService;
         private Mock<IWishListService> _wishListServiceMock;
         private Mock<INotificationsService> _notificationsService;
@@ -43,9 +39,6 @@ namespace ApplicationTest.Services
         public void OneTimeSetUp()
         {
             _bookRepositoryMock = new Mock<IRepository<Book>>();
-            _bookAuthorRepositoryMock = new Mock<IRepository<BookAuthor>>();
-            _bookGenreRepositoryMock = new Mock<IRepository<BookGenre>>();
-            _bookLanguageRepositoryMock = new Mock<IRepository<Language>>();
             _requestServiceMock = new Mock<IRepository<Request>>();
             _userLocationServiceMock = new Mock<IRepository<User>>();
             _userResolverServiceMock = new Mock<IUserResolverService>();
@@ -53,7 +46,6 @@ namespace ApplicationTest.Services
             _emailSenderServiceMock = new Mock<IEmailSenderService>();
             _hangfireJobScheduleService = new Mock<IHangfireJobScheduleService>();
             _imageServiceMock = new Mock<IImageService>();
-            _rootCommentRepository = new Mock<IRootRepository<BookRootComment>>();
             _wishListServiceMock = new Mock<IWishListService>();
             _bookRatingRepositoryMock = new Mock<IRepository<BookRating>>();
             _notificationsService = new Mock<INotificationsService>();
@@ -76,9 +68,6 @@ namespace ApplicationTest.Services
             _bookService = new BookService(
                 _bookRepositoryMock.Object,
                 _mapper,
-                _bookAuthorRepositoryMock.Object,
-                _bookGenreRepositoryMock.Object,
-                _bookLanguageRepositoryMock.Object,
                 _userLocationServiceMock.Object,
                 pagination,
                 _requestServiceMock.Object,
@@ -86,7 +75,6 @@ namespace ApplicationTest.Services
                 _imageServiceMock.Object,
                 _hangfireJobScheduleService.Object,
                 _emailSenderServiceMock.Object,
-                _rootCommentRepository.Object,
                 _wishListServiceMock.Object,
                 _bookRatingRepositoryMock.Object,
                 _notificationsService.Object);
@@ -95,9 +83,6 @@ namespace ApplicationTest.Services
             var genreMock = GetBookGenre().AsQueryable();
             var languageMock = GetBookLanguage().AsQueryable();
             var usersMock = GetUsers().AsQueryable();
-            _bookAuthorRepositoryMock.Setup(s => s.GetAll()).Returns(authorMock);
-            _bookGenreRepositoryMock.Setup(s => s.GetAll()).Returns(genreMock);
-            _bookLanguageRepositoryMock.Setup(s => s.GetAll()).Returns(languageMock);
             _userLocationServiceMock.Setup(s => s.GetAll()).Returns(usersMock);
         }
 
@@ -158,7 +143,7 @@ namespace ApplicationTest.Services
         }
 
         [Test]
-        public async Task GetCurrentOwnedByIdCount_UserExistsAndHaveBooks_ReturnsNumberOfBooks()
+        public void GetCurrentOwnedByIdCount_UserExistsAndHaveBooks_ReturnsNumberOfBooks()
         {
             int userId = 2;
             int expectedNumber = 1;
