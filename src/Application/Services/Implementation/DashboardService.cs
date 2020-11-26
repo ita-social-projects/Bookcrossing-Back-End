@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Dto.Dashboard;
-using Application.QueryableExtension;
 using Application.Services.Interfaces;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Driver;
 
 namespace Application.Services.Implementation
 {

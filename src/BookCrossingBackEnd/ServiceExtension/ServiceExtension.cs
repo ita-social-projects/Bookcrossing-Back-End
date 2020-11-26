@@ -217,7 +217,6 @@ namespace BookCrossingBackEnd.ServiceExtension
         {
             services.AddMvc(options =>
             {
-                //options.Filters.Add(new ModelValidationFilter());
             })
           .AddFluentValidation(cfg =>
           {

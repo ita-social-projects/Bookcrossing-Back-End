@@ -12,10 +12,9 @@ namespace BookCrossingBackEnd.Filters
         {
 
             var exceptionType = context.Exception;
-            var message = exceptionType.Message;
+            string message = exceptionType.Message;
             if (exceptionType is SecurityTokenException)
             {
-                message = exceptionType.Message;
                 context.HttpContext.Response.StatusCode = 400;
                 context.HttpContext.Response.Headers.Add("InvalidRefreshToken", "true");
             }

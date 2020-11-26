@@ -9,7 +9,7 @@ namespace Application.Services.Implementation
     public class SentimentAnalysisService : ISentimentAnalisysService
     {
         private const string _dummyLabel = "0";
-        private PredictionEnginePool<ModelInputDto, ModelOutputDto> _enginePool;
+        readonly PredictionEnginePool<ModelInputDto, ModelOutputDto> _enginePool;
         public SentimentAnalysisService(PredictionEnginePool<ModelInputDto, ModelOutputDto> enginePool)
         {
             _enginePool = enginePool;

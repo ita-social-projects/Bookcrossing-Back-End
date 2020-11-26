@@ -312,7 +312,7 @@ namespace Application.Services.Implementation
         public async Task<bool> ActivateAsync(int bookId)
         {
             var book = _bookRepository.GetAll()
-                .Include(i => i.User).Where(x => x.Id == bookId).ToList()
+                .Include(i => i.User).Where(x => x.Id == bookId).AsEnumerable()
                 .FirstOrDefault();
             if (book == null)
             {
@@ -351,7 +351,7 @@ namespace Application.Services.Implementation
         public async Task<bool> DeactivateAsync(int bookId)
         {
             var book = _bookRepository.GetAll()
-                .Include(i => i.User).Where(x => x.Id == bookId).ToList()
+                .Include(i => i.User).Where(x => x.Id == bookId).AsEnumerable()
                 .FirstOrDefault();
             if (book == null)
             {
@@ -363,7 +363,7 @@ namespace Application.Services.Implementation
                 var request = _requestRepository.GetAll()
                     .Include(i => i.Book)
                     .Include(i => i.Book)
-                    .Include(i => i.User).Where(x => x.BookId == bookId).ToList()
+                    .Include(i => i.User).Where(x => x.BookId == bookId).AsEnumerable()
                     .Last();
                 if (_userLocationRepository.FindByCondition(u => u.Email == book.User.Email).Result.IsEmailAllowed)
                 {
@@ -389,7 +389,6 @@ namespace Application.Services.Implementation
                 string emailMessageForAdmin = $"You have successfully change the book's status to 'Inactive' for '{ book.Name}'";
                 string emailMessageForAdminUk = $" Ви успішно  змінили статус книги на 'Неактивна' для '{ book.Name}'";
                 SendNotificationToUser(userId, book.Id, emailMessageForAdmin, emailMessageForAdminUk);
-;
             }
             book.State = BookState.InActive;
             await _bookRepository.Update(book, new List<string>() { "State" });
