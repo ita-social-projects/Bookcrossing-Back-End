@@ -37,16 +37,16 @@ namespace Application.Services.Implementation
                                                                    .ToListAsync());
         }
 
-        public async Task<PaginationDto<LocationDto>> GetAll(FullPaginationQueryParams parameters)
+        public async Task<PaginationDto<LocationDto>> GetAll(FullPaginationQueryParams fullPaginationQuery)
         {
             var query = _locationRepository.GetAll().IgnoreQueryFilters();
-            return await _paginationService.GetPageAsync<LocationDto, Location>(query, parameters);
+            return await _paginationService.GetPageAsync<LocationDto, Location>(query, fullPaginationQuery);
         }
 
-        public async Task Update(LocationDto locationDto)
+        public async Task Update(LocationDto location)
         {
-            var location = _mapper.Map<Location>(locationDto);
-            _locationRepository.Update(location);
+            var newLocation = _mapper.Map<Location>(location);
+            _locationRepository.Update(newLocation);
             await _locationRepository.SaveChangesAsync();
         }
 
@@ -60,12 +60,12 @@ namespace Application.Services.Implementation
             return _mapper.Map<LocationDto>(location);
         }
 
-        public async Task<int> Add(LocationDto locationDto)
+        public async Task<int> Add(LocationDto location)
         {
-            var location = _mapper.Map<Location>(locationDto);
-            _locationRepository.Add(location);
+            var newLocation = _mapper.Map<Location>(location);
+            _locationRepository.Add(newLocation);
             await _locationRepository.SaveChangesAsync();
-            return location.Id;
+            return newLocation.Id;
         }
     }
 }
