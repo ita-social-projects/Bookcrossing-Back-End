@@ -37,9 +37,9 @@ namespace Application.Services.Implementation
                                                 );
         }
 
-        public async Task<LocationHomeDto> GetById(int Id)
+        public async Task<LocationHomeDto> GetById(int locationId)
         {
-            return _mapper.Map<LocationHomeDto>(await _locationHomeRepository.FindByIdAsync(Id));
+            return _mapper.Map<LocationHomeDto>(await _locationHomeRepository.FindByIdAsync(locationId));
         }
 
         public async Task Update(LocationHomeDto locationHomeDto)
@@ -49,9 +49,9 @@ namespace Application.Services.Implementation
             await _locationHomeRepository.SaveChangesAsync();
         }
 
-        public async Task<LocationHomeDto> Remove(int Id)
+        public async Task<LocationHomeDto> Remove(int locationId)
         {
-            var location = await _locationHomeRepository.FindByIdAsync(Id);
+            var location = await _locationHomeRepository.FindByIdAsync(locationId);
             if (location == null)
             {
                 return null;
