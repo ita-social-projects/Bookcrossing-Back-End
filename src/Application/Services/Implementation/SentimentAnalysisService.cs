@@ -19,11 +19,11 @@ namespace Application.Services.Implementation
         {
             return modelOutputDto.Score.LastOrDefault() * 5;
         }
-        public async Task<float> Predict(string text)
+        public async Task<float> Predict(string test)
         {
             var model = new ModelInputDto()
             {
-                Text = text,
+                Text = test,
                 Label = _dummyLabel
             };
 
