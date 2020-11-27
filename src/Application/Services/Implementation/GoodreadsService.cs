@@ -25,7 +25,7 @@ namespace Application.Services.Implementation
             _settings = settings.Value;
             if (string.IsNullOrWhiteSpace(_settings.ApiKey))
             {
-                throw new SystemException("Api key cannot be null or white spaces");
+                throw new Exception("Api key cannot be null or white spaces");
             }
         }
 
