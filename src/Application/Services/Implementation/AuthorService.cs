@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Application.Dto;
+﻿using Application.Dto;
 using Application.Dto.QueryParams;
-using Application.QueryableExtension;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.RDBMS;
@@ -11,6 +7,9 @@ using Domain.RDBMS.Entities;
 using Infrastructure.RDBMS;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Application.Services.Implementation
 {
@@ -52,10 +51,10 @@ namespace Application.Services.Implementation
             var authors = _authorRepository.GetAll().Where(predicate);
             return _mapper.Map<List<AuthorDto>>(await authors.ToListAsync());
         }
-        public async Task<PaginationDto<AuthorDto>> GetAll(FullPaginationQueryParams parameters)
+        public async Task<PaginationDto<AuthorDto>> GetAll(FullPaginationQueryParams fullPaginationQuery)
         {
             var query = _authorRepository.GetAll();
-            return await _paginationService.GetPageAsync<AuthorDto, Author>(query, parameters);
+            return await _paginationService.GetPageAsync<AuthorDto, Author>(query, fullPaginationQuery);
         }
 
         public async Task<List<AuthorDto>> FilterAuthors(string filter)
@@ -88,17 +87,17 @@ namespace Application.Services.Implementation
             return affectedRows > 0;
         }
 
-        public async Task<AuthorDto> Merge(AuthorMergeDto authorMergeDto)
+        public async Task<AuthorDto> Merge(AuthorMergeDto mergeDto)
         {
             await using var transaction = _context.Database.BeginTransaction();
 
-            authorMergeDto.Author.IsConfirmed = true;
-            authorMergeDto.Author.Id = null;
-            var author = _mapper.Map<Author>(authorMergeDto.Author);
+            mergeDto.Author.IsConfirmed = true;
+            mergeDto.Author.Id = null;
+            var author = _mapper.Map<Author>(mergeDto.Author);
 
-            var bookIds = await _bookAuthorRepository.GetAll().Where(x => authorMergeDto.Authors.Contains(x.AuthorId)).Select(x => x.BookId).Distinct().ToListAsync();
+            var bookIds = await _bookAuthorRepository.GetAll().Where(x => mergeDto.Authors.Contains(x.AuthorId)).Select(x => x.BookId).Distinct().ToListAsync();
 
-            var authors = await _authorRepository.GetAll().Where(x => authorMergeDto.Authors.Contains(x.Id)).ToListAsync();
+            var authors = await _authorRepository.GetAll().Where(x => mergeDto.Authors.Contains(x.Id)).ToListAsync();
             _authorRepository.RemoveRange(authors);
             await _authorRepository.SaveChangesAsync();
 

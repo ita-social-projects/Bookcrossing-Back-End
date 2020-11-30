@@ -70,11 +70,12 @@ namespace BookCrossingBackEnd.ServiceExtension
 
         public static void AddGoodreadsSource(this IServiceCollection services, IConfiguration configuration)
         {
+            const string goodReadsUri = "https://www.goodreads.com";
             services.Configure<GoodreadsSettings>(configuration.GetSection("GoodreadsSettings"));
             services.AddTransient<IOuterBookSourceService, GoodreadsService>();
             services.AddHttpClient<IOuterBookSourceService, GoodreadsService>(options =>
             {
-                options.BaseAddress = new Uri("https://www.goodreads.com");
+                options.BaseAddress = new Uri(goodReadsUri);
             });
         }
 
@@ -106,7 +107,7 @@ namespace BookCrossingBackEnd.ServiceExtension
                         OnMessageReceived = context =>
                         {
                             var accessToken = context.Request.Query["access_token"];
-                            if (string.IsNullOrEmpty(accessToken) == false &&
+                            if (!string.IsNullOrEmpty(accessToken) &&
                                 context.Request.Path.StartsWithSegments(NotificationsHub.URL))
                             {
                                 context.Token = accessToken;
@@ -216,7 +217,6 @@ namespace BookCrossingBackEnd.ServiceExtension
         {
             services.AddMvc(options =>
             {
-                //options.Filters.Add(new ModelValidationFilter());
             })
           .AddFluentValidation(cfg =>
           {

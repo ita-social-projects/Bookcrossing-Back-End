@@ -34,9 +34,9 @@ namespace Application.Services.Interfaces
         /// <summary>
         /// Update specified aphorism
         /// </summary>
-        /// <param name="aphorism">Aphorism DTO instance</param>
+        /// <param name="aphorismDto">Aphorism DTO instance</param>
         /// <returns></returns>
-        Task<bool> UpdateAphorismAsync(AphorismDto aphorism);
+        Task<bool> UpdateAphorismAsync(AphorismDto aphorismDto);
 
         /// <summary>
         /// Remove aphorism from database
@@ -48,8 +48,8 @@ namespace Application.Services.Interfaces
         /// <summary>
         /// Create new aphorism and add it into Database
         /// </summary>
-        /// <param name="aphorism">NewAphorism DTO instance</param>
+        /// <param name="aphorismDto">NewAphorism DTO instance</param>
         /// <returns>Returns created Aphorism DTO </returns>
-        Task<AphorismDto> AddAphorismAsync(AphorismDto aphorism);
+        Task<AphorismDto> AddAphorismAsync(AphorismDto aphorismDto);
     }
 }

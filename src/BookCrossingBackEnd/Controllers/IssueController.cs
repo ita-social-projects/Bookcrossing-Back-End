@@ -35,12 +35,20 @@ namespace BookCrossingBackEnd.Controllers
             return Ok(issue);
         }
 
+
         // GET: api/Issues
         [HttpGet]
         public async Task<ActionResult<IEnumerable<IssueDto>>> GetAllIssues()
         {
             _logger.LogInformation("Getting all issues");
             return Ok(await _issueService.GetAll());
+        }
+
+        [HttpGet("paginated")]
+        public async Task<ActionResult<PaginationDto<IssueDto>>> GetAllIssues([FromQuery] FullPaginationQueryParams fullPaginationQuery)
+        {
+            _logger.LogInformation("Getting all paginated issues");
+            return await _issueService.GetAll(fullPaginationQuery);
         }
 
 
@@ -73,20 +81,12 @@ namespace BookCrossingBackEnd.Controllers
         {
             _logger.LogInformation($"Delete issue {id}", id);
             var issue = await _issueService.Remove(id);
-            if (issue == false)
+            if (!issue)
             {
                 _logger.LogWarning($"Delete issue ({id}) NOT FOUND", id);
                 return NotFound();
             }
             return Ok();
         }
-
-        [HttpGet("paginated")]
-        public async Task<ActionResult<PaginationDto<IssueDto>>> GetAllIssues([FromQuery] FullPaginationQueryParams fullPaginationQuery)
-        {
-            _logger.LogInformation("Getting all paginated issues");
-            return await _issueService.GetAll(fullPaginationQuery);
-        }
-
     }
 }
