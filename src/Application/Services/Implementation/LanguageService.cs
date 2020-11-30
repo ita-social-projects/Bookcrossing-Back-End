@@ -34,12 +34,18 @@ namespace Application.Services.Implementation
             return _mapper.Map<List<LanguageDto>>(await _languageRepository.GetAll().OrderBy(l => l.Name).ToListAsync());
         }
 
-        public async Task<LanguageDto> Add(LanguagePostDto languageDto)
+        public async Task<PaginationDto<LanguageDto>> GetAll(FullPaginationQueryParams fullPaginationQuery)
         {
-            var language = _mapper.Map<Language>(languageDto);
-            _languageRepository.Add(language);
+            var query = _languageRepository.GetAll();
+            return await _paginationService.GetPageAsync<LanguageDto, Language>(query, fullPaginationQuery);
+        }
+
+        public async Task<LanguageDto> Add(LanguagePostDto language)
+        {
+            var newLanguage = _mapper.Map<Language>(language);
+            _languageRepository.Add(newLanguage);
             await _languageRepository.SaveChangesAsync();
-            return _mapper.Map<LanguageDto>(language);
+            return _mapper.Map<LanguageDto>(newLanguage);
         }
 
         public async Task<bool> Remove(int languageId)
@@ -54,19 +60,12 @@ namespace Application.Services.Implementation
             return true;
         }
 
-        public async Task<bool> Update(LanguageDto languageDto)
+        public async Task<bool> Update(LanguageDto language)
         {
-            var language = _mapper.Map<Language>(languageDto);
-            _languageRepository.Update(language);
+            var newLanguage = _mapper.Map<Language>(language);
+            _languageRepository.Update(newLanguage);
             var affectedRows = await _languageRepository.SaveChangesAsync();
             return affectedRows > 0;
         }
-
-        public async Task<PaginationDto<LanguageDto>> GetAll(FullPaginationQueryParams parameters)
-        {
-            var query = _languageRepository.GetAll();
-            return await _paginationService.GetPageAsync<LanguageDto, Language>(query, parameters);
-        }
-
     }
 }

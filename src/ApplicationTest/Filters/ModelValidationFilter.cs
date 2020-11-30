@@ -17,7 +17,7 @@ namespace ApplicationTest.Filters
     internal class ModelValidationFilterTest
     {
         private ModelStateDictionary _modelState;
-        private ModelValidationFilter _filter;
+        private ModelValidationFilterAttribute _filter;
         private ActionContext _actionContext;
         private ActionExecutingContext _actionExecutingContext;
 
@@ -26,7 +26,7 @@ namespace ApplicationTest.Filters
         public void Setup()
         {
             _modelState = new ModelStateDictionary();
-            _filter = new ModelValidationFilter();
+            _filter = new ModelValidationFilterAttribute();
 
             _actionContext = new ActionContext(
                 new DefaultHttpContext(),

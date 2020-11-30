@@ -260,7 +260,7 @@ namespace Infrastructure.RDBMS.Seeder
                 {
                     Id = 32,
                     Phrase = "Книги – морська глибина: Хто в них пірне аж до дна, той, хоч і труду мав досить дивнії перлини виносить.",
-                    PhraseAuthor = "-	І. Франко",
+                    PhraseAuthor = "-І. Франко",
                 },
                 new Aphorism
                 {
@@ -642,19 +642,6 @@ namespace Infrastructure.RDBMS.Seeder
                 {
                     BookId = 1,
                     AuthorId = 1
-                }
-            );
-        }
-
-        private static void Seed(EntityTypeBuilder<SuggestionMessage> builder)
-        {
-            builder.HasData(
-                new SuggestionMessage
-                {
-                    Id = 1,
-                    Summary = "fix problem",
-                    Text = "There is problem with translation",
-                    UserId = 1
                 }
             );
         }

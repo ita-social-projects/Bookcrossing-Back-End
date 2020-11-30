@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Dto.Dashboard;
-using Application.QueryableExtension;
 using Application.Services.Interfaces;
 using Domain.RDBMS;
 using Domain.RDBMS.Entities;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Driver;
 
 namespace Application.Services.Implementation
 {
@@ -86,7 +84,7 @@ namespace Application.Services.Implementation
             {
                 data = data.Where(x => x.User.UserRoom.Location.City == city);
                 userData = userData.Where(x => x.UserRoom.Location.City == city);
-            };
+            }
             data.Where(x => x.DateAdded > DateTime.Now.AddDays(byMonth ? -365 : -30));
             userData.Where(x => x.RegisteredDate > DateTime.Now.AddDays(byMonth ? -365 : -30));
             BookUserDataDto result = new BookUserDataDto();

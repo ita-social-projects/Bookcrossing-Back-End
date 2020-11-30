@@ -203,7 +203,7 @@ namespace ApplicationTest.Services
             _notificationsRepositoryMock.Verify(
                 obj => obj.Add(It.Is<Notification>(notification =>
                     notification.ReceiverUserId == _messageDto.UserId && notification.Message == _messageDto.Message &&
-                    notification.Action == (NotificationAction)4 )),
+                    notification.Action == (NotificationActions)4 )),
                 Times.Once);
             _notificationsRepositoryMock.Verify(obj => obj.SaveChangesAsync());
         }
@@ -271,7 +271,7 @@ namespace ApplicationTest.Services
                     Message = "Test notification 1",
                     UserId = _currentUser.Id,
                     BookId = 1,
-                    Action = NotificationAction.Open,
+                    Action = NotificationActions.Open,
                     IsRead = false,
                     CreatedAt = DateTime.Now
                 },
@@ -282,7 +282,7 @@ namespace ApplicationTest.Services
                     Message = "Test notification 2",
                     UserId = _currentUser.Id,
                     BookId = 1,
-                    Action = NotificationAction.Open,
+                    Action = NotificationActions.Open,
                     IsRead = false,
                     CreatedAt = DateTime.Now
                 },
@@ -293,7 +293,7 @@ namespace ApplicationTest.Services
                     Message = "Test notification 3",
                     UserId = _currentUser.Id,
                     BookId = 1,
-                    Action = NotificationAction.Open,
+                    Action = NotificationActions.Open,
                     IsRead = false,
                     CreatedAt = DateTime.Now
                 },
@@ -304,7 +304,7 @@ namespace ApplicationTest.Services
                     Message = "Test notification 4",
                     UserId = 2,
                     BookId = 1,
-                    Action = NotificationAction.Open,
+                    Action = NotificationActions.Open,
                     IsRead = false,
                     CreatedAt = DateTime.Now
                 }

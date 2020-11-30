@@ -9,7 +9,6 @@ using Domain.RDBMS;
 using Domain.RDBMS.Entities;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Application.Services.Implementation
 {
@@ -65,13 +64,13 @@ namespace Application.Services.Implementation
                 .OrderByDescending(g => g.Count)
                 .ToList();
 
-            if (sortedGroups.Count() > PieChartDataLimit)
+            if (sortedGroups.Count > PieChartDataLimit)
             {
                 var lastElementCount = sortedGroups.ElementAt(PieChartDataLimit - 1).Count;
                 var topBooks = sortedGroups
                     .Where(b => b.Count >= lastElementCount)
                     .ToList();
-                int othersCount = sortedGroups.Skip(topBooks.Count()).Sum(b => b.Count);
+                int othersCount = sortedGroups.Skip(topBooks.Count).Sum(b => b.Count);
                 
                 topBooks.Add(new { Language = "Others", Count = othersCount });
                 sortedGroups = topBooks;
@@ -80,7 +79,7 @@ namespace Application.Services.Implementation
             var topDictionary = sortedGroups
                 .ToDictionary(g => g.Language, c => c.Count);
 
-            return new PieChartData(sortedGroups.Count(), topDictionary);
+            return new PieChartData(sortedGroups.Count, topDictionary);
         }
 
         public async Task<StatisticsChartData> GetReadingStatisticsData(StatisticsQueryParams query)
@@ -396,7 +395,7 @@ namespace Application.Services.Implementation
                 var topBooks = sortedGroups
                     .Take(PieChartDataLimit)
                     .ToList();
-                int othersCount = sortedGroups.Skip(topBooks.Count()).Sum(b => b.Count);
+                int othersCount = sortedGroups.Skip(topBooks.Count).Sum(b => b.Count);
                 topBooks.Add(new { Genre = language == "en" ? "Others" : "Решта", Count = othersCount });
                 sortedGroups = topBooks;
             }

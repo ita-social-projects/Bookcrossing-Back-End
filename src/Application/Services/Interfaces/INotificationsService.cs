@@ -8,7 +8,7 @@ namespace Application.Services.Interfaces
     public interface INotificationsService
     {
         Task NotifyAsync(int userId, string message, string messageUk, int? bookId = null,
-            NotificationAction action = NotificationAction.None);
+            NotificationActions action = NotificationActions.None);
 
         Task<IEnumerable<NotificationDto>> GetAllForCurrentUserAsync();
 

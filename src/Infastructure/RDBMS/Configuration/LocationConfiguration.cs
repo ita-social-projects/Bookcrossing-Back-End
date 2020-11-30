@@ -42,7 +42,7 @@ namespace Infrastructure.RDBMS.Configuration
                 .HasForeignKey(d => d.LocationId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder.HasQueryFilter(location => location.IsActive == true);
+            builder.HasQueryFilter(location => location.IsActive);
         }
     }
 }
